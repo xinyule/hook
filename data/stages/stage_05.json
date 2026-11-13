@@ -8,13 +8,14 @@
   "approx_duration": "5:05",
   "visual_confirmed": ["木条地板与原木横墙", "ROOMS / LASS 类木招牌", "红色台面", "木桶与梯子", "红底金纹大地毯", "两扇圆形舷窗配红绒帷幕", "雕花木墙与拱形双扇门", "蓝紫烛台与航海仪器", "蓝色台阶"],
   "segments": [
-    {"id": "5-A", "name": "舱内杂兵区", "waves": [], "waves_verified": false, "props": ["木桶", "梯子"], "hidden_points": [], "status": "visual_confirmed_attribution_pending"},
-    {"id": "5-B", "name": "通往舱室", "waves": [], "waves_verified": false, "props": ["木门", "烛台"], "hidden_points": [], "status": "inferred_segment"},
-    {"id": "5-C", "name": "红毯舱室 Boss 场", "waves": [], "waves_verified": false, "props": ["舷窗", "帷幕", "拱门"], "hidden_points": [], "status": "visual_confirmed"}
+    {"id": "5-A", "name": "舱内杂兵区", "waves": [{"id": "5A-w1", "spawns": [{"enemy": "grunt", "count": 2}, {"enemy": "drunk", "count": 1}], "max_onscreen": 4}, {"id": "5A-w2", "spawns": [{"enemy": "grunt", "count": 3, "variant": 2}, {"enemy": "flyer", "count": 1}], "max_onscreen": 5}], "waves_verified": false, "props": ["木桶", "梯子"], "spawn_props": [{"type": "barrel", "x": 3.0}, {"type": "crate", "x": -2.5}, {"type": "food", "x": 1.0}], "hidden_points": [{"id": "h5a_1", "x": 4.2, "y": 0.0, "score": 500}, {"id": "h5a_2", "x": -3.0, "y": 0.0, "score": 500}], "status": "m6_waves_filled"},
+    {"id": "5-B", "name": "通往舱室", "waves": [{"id": "5B-w1", "spawns": [{"enemy": "swordsman", "count": 1}, {"enemy": "grunt", "count": 2}], "max_onscreen": 4}, {"id": "5B-w2", "spawns": [{"enemy": "spearman", "count": 2}, {"enemy": "drunk", "count": 1, "variant": 1}], "max_onscreen": 5}], "waves_verified": false, "props": ["木门", "烛台"], "spawn_props": [{"type": "cannon", "x": 5.0}, {"type": "treasure_carrier", "x": -3.0}, {"type": "decoration", "x": 2.0}, {"type": "food", "x": -1.0}], "hidden_points": [{"id": "h5b_1", "x": 5.5, "y": 0.0, "score": 500}, {"id": "h5b_2", "x": -3.5, "y": 0.0, "score": 750}], "status": "m6_waves_filled"},
+    {"id": "5-C", "name": "红毯舱室 Boss 场", "waves": [], "waves_verified": false, "props": ["舷窗", "帷幕", "拱门"], "spawn_props": [{"type": "decoration", "x": -4.0}, {"type": "decoration", "x": 4.0}], "hidden_points": [{"id": "h5c_1", "x": 3.5, "y": 0.0, "score": 1000}], "status": "m6_boss_arena"}
   ],
   "boss": {"id": "boss_05", "arena": "华丽舱室红毯", "anti_jump_attack": true},
   "defeat_sequence": "跪地叩头投降，朝向随玩家左右变化",
   "lighting": "舷窗自然光 + 室内暖黄，织物轻微摆动",
+  "lighting_preset": {"sun_color": [1.0, 0.85, 0.6], "sun_intensity": 0.9, "ambient": [0.6, 0.5, 0.4], "fog": [0.85, 0.75, 0.65]},
   "audio": "室内混响 / 木板脚步 / 刀劈 / 手枪 / 布料摩擦",
   "camera": "叩头演出短时接管镜头",
   "open_questions": ["5-A 木屋内景归属", "5-B 是否真实存在", "手枪连发数", "炮台触发阈值冲突"]

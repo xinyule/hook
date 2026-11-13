@@ -2,10 +2,10 @@ config_version=5
 
 [application]
 
-config/name="hook3d (internal) - M5 Stage 3-4"
-config/description="2.5D side-scrolling faithful remake - M5 Stage 3-4 complete - INTERNAL ONLY"
-run/main_scene="res://scenes/m5.tscn"
-config/version="0.5.0"
+config/name="hook3d (internal) - M6 Stage 5-6"
+config/description="2.5D side-scrolling faithful remake - M6 Stage 5-6 complete - INTERNAL ONLY"
+run/main_scene="res://scenes/m6.tscn"
+config/version="0.6.0"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
 [display]

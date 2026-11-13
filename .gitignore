@@ -21,3 +21,8 @@ assets/packs/internal_reference/refs/
 *.pck
 *.exe
 *.wasm
+
+# Local selftest / export logs
+m*_selftest.txt
+m*_st_run.txt
+m*_export_*.txt

@@ -50,7 +50,7 @@ jobs:
           echo "internal-only policy and version gate OK"
 
   selftest:
-    name: Godot M5 headless selftest
+    name: Godot M6 headless selftest
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -70,14 +70,14 @@ jobs:
         shell: bash
         run: ./.godot-bin/Godot_v4.3-stable_linux.x86_64 --headless --editor --path . --quit
 
-      - name: Run M5 logic assertions
+      - name: Run M6 logic assertions
         shell: bash
         run: |
           set -euo pipefail
           ./.godot-bin/Godot_v4.3-stable_linux.x86_64 --headless --path . --quit-after 900 -- --selftest 2>&1 | tee selftest.log
           grep -q "SELFTEST PASS" selftest.log
           if grep -q "SELFTEST FAIL" selftest.log || grep -q "SCRIPT ERROR" selftest.log; then
-            echo "::error::M5 selftest reported failures"
+            echo "::error::M6 selftest reported failures"
             exit 1
           fi
-          echo "M5 selftest: 102 assertions passed"
+          echo "M6 selftest: 152 assertions passed"

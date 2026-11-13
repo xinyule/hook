@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "note": "M6 Boss 施工数据：SMEE（第 5 关黄衣副船长，叩头 / 禁跳打 / 炮台三连发）与 HOOK（第 6 关三阶段：常规剑击 / 半血召唤杂兵+钩击 / 低血全屏大招冲撞）。全部数值驱动，脚本不硬编码。display_name 为原作血条官方英文名。",
+  "bosses": {
+    "boss_05": {
+      "display_name": "SMEE",
+      "is_fake": false,
+      "hp": 480,
+      "half_width": 0.5,
+      "visual_height": 1.7,
+      "color": [0.9, 0.75, 0.25],
+      "moves": {
+        "kowtow": {
+          "windup_frames": 16,
+          "active_frames": 10,
+          "recover_frames": 28,
+          "reach_m": 1.1,
+          "damage": 14,
+          "knockback_m": 1.5
+        },
+        "slash": {
+          "windup_frames": 14,
+          "active_frames": 8,
+          "recover_frames": 24,
+          "reach_m": 1.2,
+          "damage": 12,
+          "knockback_m": 1.8
+        },
+        "cannon_triple": {
+          "windup_frames": 22,
+          "active_frames": 6,
+          "recover_frames": 30,
+          "range_m": 7.0,
+          "damage": 10,
+          "knockback_m": 1.2
+        }
+      },
+      "ai": {
+        "approach_speed_mps": 1.6,
+        "attack_range_m": 1.1,
+        "anti_jump_window_frames": 40,
+        "cannon_triple_interval_frames": 300
+      },
+      "defeat_sequence": {
+        "type": "kowtow_surrender",
+        "duration_frames": 90
+      }
+    },
+    "boss_06": {
+      "display_name": "HOOK",
+      "is_fake": false,
+      "hp": 700,
+      "half_width": 0.5,
+      "visual_height": 1.8,
+      "color": [0.75, 0.2, 0.2],
+      "moves": {
+        "sword": {
+          "windup_frames": 14,
+          "active_frames": 8,
+          "recover_frames": 22,
+          "reach_m": 1.3,
+          "damage": 14,
+          "knockback_m": 1.8
+        },
+        "hook": {
+          "windup_frames": 18,
+          "active_frames": 6,
+          "recover_frames": 26,
+          "reach_m": 1.5,
+          "damage": 16,
+          "knockback_m": 2.0
+        },
+        "charge": {
+          "windup_frames": 20,
+          "active_frames": 12,
+          "recover_frames": 30,
+          "reach_m": 2.0,
+          "damage": 20,
+          "knockback_m": 3.0
+        }
+      },
+      "ai": {
+        "approach_speed_mps": 1.8,
+        "attack_range_m": 1.3,
+        "phase_2_hp_percent": 60,
+        "phase_3_hp_percent": 30,
+        "adds_refresh_interval_frames": 240,
+        "adds_max_onscreen": 4,
+        "shadow_warning_frames": 16
+      },
+      "defeat_sequence": {
+        "type": "crocodile_ending",
+        "duration_frames": 120,
+        "crocodile_appears": true
+      }
+    }
+  },
+  "boss_bar": {
+    "width_m": 6.0,
+    "height_m": 0.22,
+    "x_ratio": 0.5,
+    "y_ratio": 0.92,
+    "name_font_size": 16
+  }
+}

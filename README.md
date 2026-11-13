@@ -1,4 +1,4 @@
-# 2.5D 横版清关项目 · M5 Stage 3–4 可玩（V0.5.0）· 路线 A 仅内部
+# 2.5D 横版清关项目 · M6 六关通关（V0.6.0）· 路线 A 仅内部
 
 Godot 4.3 / GL Compatibility / Windows + Web 双平台构建。
 
@@ -12,12 +12,12 @@ Godot 4.3 / GL Compatibility / Windows + Web 双平台构建。
 
 | 项 | 值 |
 |---|---|
-| 阶段 | **M5 已交付**（用户授权按 M0→M9 连续推进，不再逐阶段确认） |
-| 项目版本 | **V0.5.0**（规则与台账见 `VERSION.md`） |
+| 阶段 | **M6 已交付**（用户授权按 M0→M9 连续推进，不再逐阶段确认） |
+| 项目版本 | **V0.6.0**（规则与台账见 `VERSION.md`） |
 | 内容路线 | **单轨 A 忠实复刻，仅内部**；B 原创化已取消 |
 | 引擎 | Godot **4.3-stable**，免安装 ZIP，GL Compatibility，固定 60 tick |
 | 一期平台 | Windows 桌面 + Web；Android 后置 |
-| 可玩内容 | **M2 战斗核心**（五角色 / 七类敌人 / 必杀 / 格挡 / 友伤，全部保留）+ **M3 关卡框架**（StageRunner 六关段落流式加载、WaveDirector 波次生成与同屏上限、1–4P 中途加入与命数/投币续关、TIME 计时 + 飞鹰、计分 + 周目倍率、HUD 全套、LoopManager 周目回环）+ **M4 Stage 1–2 可玩**（码头 / 雪原、BUTCHER / JASON、蜂窝 / 金笼 / 铁球 / 鸡群）+ **M5 Stage 3–4 可玩**：船甲板 / 冰海灰盒场景与光照、假 Hook（数量随人数、可互投、无血条）、DAMON（影子预警 / 气功波 / 冰柱当墙 / 踢击 / 击败演出）、彩绘大罐爆炸、长矛投掷互投、冰柱踩踏反跳、企鹅彩蛋、Boss 血条 HUD |
+| 可玩内容 | **M2 战斗核心**（五角色 / 七类敌人 / 必杀 / 格挡 / 友伤，全部保留）+ **M3 关卡框架**（StageRunner 六关段落流式加载、WaveDirector 波次生成与同屏上限、1–4P 中途加入与命数/投币续关、TIME 计时 + 飞鹰、计分 + 周目倍率、HUD 全套、LoopManager 周目回环）+ **M4 Stage 1–2 可玩**（码头 / 雪原、BUTCHER / JASON、蜂窝 / 金笼 / 铁球 / 鸡群）+ **M5 Stage 3–4 可玩**（船甲板 / 冰海、假 Hook、DAMON、罐子爆炸、长矛互投、冰柱反跳、企鹅）+ **M6 Stage 5–6 可玩 + 六关通关结局**：船舱 / 船长室 / 决战甲板灰盒场景与光照、SMEE（叩头禁跳打 / 炮台三连发 / 击败演出）、HOOK 三阶段（剑击 → 半血杂兵刷新 + 钩击 → 低血大招冲撞）与击败演出、运财小兵掉财宝计分、Tinker Bell 高台回血 / 加分、鳄鱼结局演出、Boss 血条 HUD |
 
 设计报告、原作动线表、`内容包命名对照表.md`（已归档作废）与 12 张原作参考截图属于**本地事实底稿，不入库**。本仓库只放代码、数据驱动配置、构建流水线与版本台账。
 
@@ -50,8 +50,8 @@ Godot 4.3 / GL Compatibility / Windows + Web 双平台构建。
 
 1. 用任意 Godot **4.3** 编辑器打开本目录的 `project.godot`（免安装 ZIP 解压即用，不写注册表、不常驻）。
 2. F5 运行 → 3D 灰盒走廊 + 角色胶囊 + HUD。
-3. 数据自检：`node tools/validate_data.js`（22 个 JSON、交叉引用、单轨 A 内部限定、M1/M2 帧表、街机规则）。
-4. 无头逻辑自测（CI 同款，**102 项断言**）：
+3. 数据自检：`node tools/validate_data.js`（24 个 JSON、交叉引用、单轨 A 内部限定、M1/M2 帧表、街机规则）。
+4. 无头逻辑自测（CI 同款，**152 项断言**）：
 
 ```bash
 # 干净仓库需先让 Godot 建立全局类缓存
@@ -77,7 +77,7 @@ HOOK3D_WEB_PASSWORD=<口令> python tools/serve_web.py \
 
 | 工作流 | 触发 | 作用 |
 |---|---|---|
-| `.github/workflows/ci.yml` | push / PR 到 `main`、手动 | Node 数据门禁；单轨 A 内部限定；**Godot headless 102 项自测**；版本号格式 |
+| `.github/workflows/ci.yml` | push / PR 到 `main`、手动 | Node 数据门禁；单轨 A 内部限定；**Godot headless 152 项自测**；版本号格式 |
 | `.github/workflows/build-release.yml` | `v*` tag、手动 | 私有 Release 壳 + Windows x86_64 / Web 双平台导出 + 直接上传 zip |
 
 产物用内部代号 `hook3d`（已移除 B 包候选名）：`build/windows/hook3d.exe`（+ `.pck`）、`build/web/index.html`（+ `.wasm` / `.pck` / `.js`）。本机 git 智能 HTTP 不通，建 tag 实际走 GitHub API：
@@ -91,15 +91,16 @@ git tag v0.1.0 && git push origin v0.1.0     # 触发 Build & Release
 ```
 .
 ├── .github/workflows/     ci.yml / build-release.yml
-├── project.godot          Godot 4 项目配置（config/version = 0.5.0，main_scene = m5.tscn）
+├── project.godot          Godot 4 项目配置（config/version = 0.6.0，main_scene = m6.tscn）
 ├── export_presets.cfg     Windows / Web 导出预设
-├── scenes/                m5.tscn（M5 主场景）、m4.tscn（M4 主场景，保留）、m3.tscn（M3 主场景，保留）、m2.tscn（M2 沙盒，保留）、m1.tscn（M1 原型，保留）、boot.tscn（M0 骨架，保留）
-├── scripts/m5/            m5_data / m5_boss / m5_props / m5_stage_scene / m5_arena
-├── scripts/m4/            m4_data / m4_boss / m4_props / m4_stage_scene / m4_arena（M5 复用，不改）
-├── scripts/m3/            m3_data / m3_stage_runner / m3_wave_director / m3_player_manager / m3_timer / m3_score / m3_hud / m3_arena（M4/M5 复用，不改）
-├── scripts/m2/            m2_data / m2_actor / m2_player / m2_enemy / m2_arena（M3/M4/M5 复用，不改）
+├── scenes/                m6.tscn（M6 主场景）、m5.tscn（M5 主场景，保留）、m4.tscn（M4 主场景，保留）、m3.tscn（M3 主场景，保留）、m2.tscn（M2 沙盒，保留）、m1.tscn（M1 原型，保留）、boot.tscn（M0 骨架，保留）
+├── scripts/m6/            m6_data / m6_boss / m6_props / m6_stage_scene / m6_arena
+├── scripts/m5/            m5_data / m5_boss / m5_props / m5_stage_scene / m5_arena（M6 复用，不改）
+├── scripts/m4/            m4_data / m4_boss / m4_props / m4_stage_scene / m4_arena（M5/M6 复用，不改）
+├── scripts/m3/            m3_data / m3_stage_runner / m3_wave_director / m3_player_manager / m3_timer / m3_score / m3_hud / m3_arena（M4/M5/M6 复用，不改）
+├── scripts/m2/            m2_data / m2_actor / m2_player / m2_enemy / m2_arena（M3/M4/M5/M6 复用，不改）
 ├── scripts/m1/            m1_data / m1_actor / m1_player / m1_enemy / m1_arena（保留）
-├── data/                  22 个 JSON：角色/敌人/Boss/道具/关卡/规则/内容包/HUD
+├── data/                  24 个 JSON：角色/敌人/Boss/道具/关卡/规则/内容包/HUD
 │   ├── combat_m1.json             M1 战斗帧表
 │   ├── combat_m2.json             M2 招式与判定帧表
 │   ├── enemies.json               七类敌人模板与 AI 参数
@@ -108,7 +109,9 @@ git tag v0.1.0 && git push origin v0.1.0     # 触发 Build & Release
 │   ├── props_m4.json              M4 蜂窝 / 铁球 / 鸡群 / 可击碎物件 / 食物配置
 │   ├── bosses_m5.json             M5 假 Hook / DAMON 招式帧表与演出参数
 │   ├── props_m5.json              M5 假 Hook 互投 / 彩绘大罐 / 长矛 / 冰柱 / 企鹅配置
-│   ├── stages/                    六关段落与波次数据（stage_01-04 含 spawn_props / lighting_preset）
+│   ├── bosses_m6.json             M6 SMEE / HOOK 招式帧表、三阶段阈值与演出参数
+│   ├── props_m6.json              M6 运财小兵 / 炮台三连发 / Tinker Bell / 鳄鱼结局配置
+│   ├── stages/                    六关段落与波次数据（stage_01-06 含 spawn_props / lighting_preset）
 │   └── packs/internal_reference/names_a.json   A 包忠实对照名
 ├── assets/packs/internal_reference/   唯一内容包（后续填充自制/重制资产）
 ├── tools/                 validate_data.js、serve_web.py
@@ -124,6 +127,6 @@ git tag v0.1.0 && git push origin v0.1.0     # 触发 Build & Release
 - 不把原作截图、原声音乐、原始像素美术等第三方素材提交进仓库；内容包只放自制/重制资产与对照文本。
 - 不部署 GitHub Pages 或任何公开站点；Release 产物仅私有仓库协作者可下载。
 
-## 下一步（M6，不再等确认）
+## 下一步（M7，不再等确认）
 
-Stage 5–6 完整：船舱 / 船长室 / 决战甲板、SMEE 叩头 / 禁跳打 / 运财小兵 / 炮台三连发、HOOK 三阶段 + 杂兵刷新、Tinker Bell、鳄鱼与结局，六关完整通关。规格见设计报告 **9.10.15** 起，交付后升 **V0.6.0**。
+美术与音频打磨：角色 / 敌人 / Boss 最终模型与动画、六关光照天气、UI 按原作对齐、配乐与音效自制重制（不含任何原作素材）。规格见设计报告 **9.10.16** 起，交付后升 **V0.7.0**。

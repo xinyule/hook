@@ -8,13 +8,14 @@
   "approx_duration": "7:56（含结局）",
   "visual_confirmed": ["沙色木纹甲板", "木板舱壁", "拱形铁栅木门", "HOTEL / ROOMS 类招牌", "绳网与木质炮位", "二层高台光尘精灵", "后景炮台", "地上链锤与炸弹", "蜂窝", "巨大湾兽盘踞木架后", "两名获救孩童"],
   "segments": [
-    {"id": "6-A", "name": "开场", "waves": [], "waves_verified": false, "props": ["携宝逃兵"], "hidden_points": [], "status": "mechanism_confirmed"},
-    {"id": "6-B", "name": "甲板长廊", "waves": [], "waves_verified": false, "props": ["炮位", "木架", "补血食物", "链锤", "炸弹", "蜂窝"], "hidden_points": [], "status": "visual_confirmed_waves_pending"},
-    {"id": "6-C", "name": "决战区", "waves": [], "waves_verified": false, "props": ["后景炮台三连发", "落点预警圈"], "hidden_points": [], "status": "hidden_points_most_numerous"}
+    {"id": "6-A", "name": "开场", "waves": [{"id": "6A-w1", "spawns": [{"enemy": "grunt", "count": 3}, {"enemy": "flyer", "count": 1}], "max_onscreen": 5}], "waves_verified": false, "props": ["携宝逃兵"], "spawn_props": [{"type": "treasure_carrier", "x": 3.0}, {"type": "barrel", "x": -2.0}, {"type": "food", "x": 1.0}], "hidden_points": [{"id": "h6a_1", "x": 4.0, "y": 0.0, "score": 500}], "status": "m6_waves_filled"},
+    {"id": "6-B", "name": "甲板长廊", "waves": [{"id": "6B-w1", "spawns": [{"enemy": "swordsman", "count": 2}, {"enemy": "grunt", "count": 2, "variant": 1}], "max_onscreen": 5}, {"id": "6B-w2", "spawns": [{"enemy": "flail", "count": 1}, {"enemy": "drunk", "count": 1, "variant": 2}, {"enemy": "spearman", "count": 1}], "max_onscreen": 5}], "waves_verified": false, "props": ["炮位", "木架", "补血食物", "链锤", "炸弹", "蜂窝"], "spawn_props": [{"type": "cannon", "x": 5.0}, {"type": "cannon", "x": -5.0}, {"type": "treasure_carrier", "x": -3.0}, {"type": "crate", "x": 2.0}, {"type": "food", "x": 0.0}], "hidden_points": [{"id": "h6b_1", "x": 5.5, "y": 0.0, "score": 500}, {"id": "h6b_2", "x": -5.5, "y": 0.0, "score": 500}, {"id": "h6b_3", "x": 2.5, "y": 0.0, "score": 750}], "status": "m6_waves_filled"},
+    {"id": "6-C", "name": "决战区", "waves": [], "waves_verified": false, "props": ["后景炮台三连发", "落点预警圈", "高台 Tinker Bell"], "spawn_props": [{"type": "tinker_bell", "x": 4.5}, {"type": "decoration", "x": -4.0}, {"type": "decoration", "x": 4.0}], "hidden_points": [{"id": "h6c_1", "x": 4.5, "y": 0.0, "score": 1000}, {"id": "h6c_2", "x": -4.5, "y": 0.0, "score": 1000}], "status": "m6_boss_arena"}
   ],
   "boss": {"id": "boss_06", "arena": "主甲板决战区", "adds": "全兵种持续刷新"},
   "defeat_sequence": "战败逃跑 → 铁钩卡进巨湾兽 → 被吞；结局孩童获救",
   "lighting": "黄昏暖光渐暗，炮口火光，结局暖色收束",
+  "lighting_preset": {"sun_color": [1.0, 0.6, 0.3], "sun_intensity": 0.8, "ambient": [0.6, 0.5, 0.45], "fog": [0.9, 0.7, 0.5]},
   "audio": "炮击 / 船体吱呀 / 最终 Boss 曲 / 结局曲",
   "camera": "炮击用 3D 弹道 + 地面预警圈；结局可跳过过场",
   "loop": {"next": "stage_01", "score_multiplier_per_loop": 1.2, "verified": false},
