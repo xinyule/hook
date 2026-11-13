@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "id": "stage_05",
+  "display_name": "红毯舱室",
+  "verification": "pending_frame_by_frame",
+  "reference": "报告 3.10 / 6 章 Stage 5；动线表 6 节",
+  "longplay_start": "17:29",
+  "approx_duration": "5:05",
+  "visual_confirmed": ["木条地板与原木横墙", "ROOMS / LASS 类木招牌", "红色台面", "木桶与梯子", "红底金纹大地毯", "两扇圆形舷窗配红绒帷幕", "雕花木墙与拱形双扇门", "蓝紫烛台与航海仪器", "蓝色台阶"],
+  "segments": [
+    {"id": "5-A", "name": "舱内杂兵区", "waves": [], "waves_verified": false, "props": ["木桶", "梯子"], "hidden_points": [], "status": "visual_confirmed_attribution_pending"},
+    {"id": "5-B", "name": "通往舱室", "waves": [], "waves_verified": false, "props": ["木门", "烛台"], "hidden_points": [], "status": "inferred_segment"},
+    {"id": "5-C", "name": "红毯舱室 Boss 场", "waves": [], "waves_verified": false, "props": ["舷窗", "帷幕", "拱门"], "hidden_points": [], "status": "visual_confirmed"}
+  ],
+  "boss": {"id": "boss_05", "arena": "华丽舱室红毯", "anti_jump_attack": true},
+  "defeat_sequence": "跪地叩头投降，朝向随玩家左右变化",
+  "lighting": "舷窗自然光 + 室内暖黄，织物轻微摆动",
+  "audio": "室内混响 / 木板脚步 / 刀劈 / 手枪 / 布料摩擦",
+  "camera": "叩头演出短时接管镜头",
+  "open_questions": ["5-A 木屋内景归属", "5-B 是否真实存在", "手枪连发数", "炮台触发阈值冲突"]
+}

@@ -1,0 +1,158 @@
+name: Build & Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  GODOT_VERSION: '4.3-stable'
+  GODOT_RELEASE_BASE: 'https://github.com/godotengine/godot/releases/download/4.3-stable'
+  PRODUCT: 'IsleReclaimed'
+  VERSION_LABEL: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('dev-{0}', github.run_number) }}
+
+jobs:
+  build-windows:
+    name: Windows x86_64
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate configs
+        run: node tools/validate_data.js
+
+      - name: Install Godot editor and export templates
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          curl.exe -L --fail --retry 3 -sS -o godot-editor.zip "${env:GODOT_RELEASE_BASE}/Godot_v4.3-stable_win64.exe.zip"
+          Expand-Archive -Path godot-editor.zip -DestinationPath .godot-bin -Force
+          curl.exe -L --fail --retry 3 -sS -o godot-templates.zip "${env:GODOT_RELEASE_BASE}/Godot_v4.3-stable_export_templates.tpz"
+          Expand-Archive -Path godot-templates.zip -DestinationPath godot-templates -Force
+          $dest = Join-Path $env:APPDATA "Godot\export_templates\4.3.stable"
+          New-Item -ItemType Directory -Force -Path $dest | Out-Null
+          Copy-Item -Path "godot-templates\templates\*" -Destination $dest -Recurse -Force
+          Get-ChildItem $dest | Select-Object -First 5 -ExpandProperty Name
+
+      - name: Export Windows build
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force -Path build/windows | Out-Null
+          $exe = (Get-ChildItem -Path .godot-bin -Filter "*.exe" -File | Where-Object { $_.Name -notlike "*console*" } | Select-Object -First 1).FullName
+          Write-Host "engine: $exe"
+          & $exe --headless --path . --export-release "Windows Desktop" "build/windows/$env:PRODUCT.exe"
+          if ($LASTEXITCODE -ne 0) { throw "Godot Windows export failed with code $LASTEXITCODE" }
+          Get-ChildItem -Recurse build/windows | Select-Object FullName, Length
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force -Path dist | Out-Null
+          $lines = @("product=$env:PRODUCT", "version=$env:VERSION_LABEL", "commit=$env:GITHUB_SHA", "platform=windows-x86_64", "phase=M0 skeleton")
+          $lines | Set-Content -Path build/windows/BUILD_INFO.txt -Encoding utf8
+          $name = "{0}_{1}_windows_x86_64.zip" -f $env:PRODUCT, $env:VERSION_LABEL
+          Compress-Archive -Path "build/windows/*" -DestinationPath (Join-Path dist $name) -Force
+          Get-ChildItem dist | Select-Object Name, Length
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: dist/*.zip
+          if-no-files-found: error
+
+  build-web:
+    name: Web
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate configs
+        run: node tools/validate_data.js
+
+      - name: Install Godot editor and export templates
+        shell: bash
+        run: |
+          set -euxo pipefail
+          curl -fsSL --retry 3 -o godot.zip "$GODOT_RELEASE_BASE/Godot_v4.3-stable_linux.x86_64.zip"
+          unzip -q godot.zip -d .godot-bin
+          curl -fsSL --retry 3 -o templates.zip "$GODOT_RELEASE_BASE/Godot_v4.3-stable_export_templates.tpz"
+          unzip -q templates.zip -d godot-templates
+          dest="$HOME/.local/share/godot/export_templates/4.3.stable"
+          mkdir -p "$dest"
+          cp -r godot-templates/templates/. "$dest/"
+          chmod +x .godot-bin/Godot_v4.3-stable_linux.x86_64
+          ls "$dest" | head -5
+
+      - name: Export Web build
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p build/web
+          ./.godot-bin/Godot_v4.3-stable_linux.x86_64 --headless --path . --export-release "Web" "build/web/index.html"
+          ls -lh build/web
+
+      - name: Package
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p dist
+          printf 'product=%s\nversion=%s\ncommit=%s\nplatform=web\nphase=M0 skeleton\n' "$PRODUCT" "$VERSION_LABEL" "$GITHUB_SHA" > build/web/BUILD_INFO.txt
+          (cd build/web && zip -qr "../../dist/${PRODUCT}_${VERSION_LABEL}_web.zip" .)
+          ls -lh dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: dist/*.zip
+          if-no-files-found: error
+
+  release:
+    name: Publish GitHub Release
+    needs: [build-windows, build-web]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: List artifacts
+        run: ls -lhR dist
+
+      - name: Create release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euxo pipefail
+          printf '%s\n' "## ${TAG} — M0 Skeleton" "" \
+            "Automated Godot 4.3 export from tag ${TAG}." "" \
+            "Artifacts:" \
+            "- Windows x86_64: zipped exe + pck" \
+            "- Web: zipped static build (serve over HTTP, not file://)" "" \
+            "This is the V0.0.1 project skeleton: engine boot screen only, no gameplay logic yet." \
+            "Build and data gates are enforced by .github/workflows/ci.yml." > notes.md
+          gh release create "$TAG" dist/*.zip \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "${TAG} — M0 Skeleton" \
+            --notes-file notes.md \
+            --prerelease \
+            --verify-tag

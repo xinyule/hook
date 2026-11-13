@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "id": "stage_04",
+  "display_name": "冰湾船坞",
+  "verification": "pending_frame_by_frame",
+  "reference": "报告 3.10 / 6 章 Stage 4；动线表 5 节",
+  "longplay_start": "12:35",
+  "approx_duration": "4:54",
+  "visual_confirmed": ["浅蓝冰面与裂纹雪粒", "浮冰", "远处尖冰山", "深蓝海面", "横贯背景的巨大船体（金饰带 / 红舷线 / 成排炮门 / 上层栏杆）", "场景右侧一只冰原海鸟"],
+  "segments": [
+    {"id": "4-A", "name": "冰面推进", "waves": [], "waves_verified": false, "props": ["浮冰"], "hidden_points": [], "status": "visual_confirmed_waves_pending"},
+    {"id": "4-B", "name": "船体前", "waves": [], "waves_verified": false, "props": ["巨型船体背景"], "hidden_points": [], "status": "visual_confirmed_waves_pending"},
+    {"id": "4-C", "name": "Boss 冰场", "waves": [], "waves_verified": false, "props": ["冰柱（可踩的临时碰撞体）", "火焰落点影子 Decal"], "hidden_points": [], "status": "visual_confirmed_waves_pending"}
+  ],
+  "boss": {"id": "boss_04", "arena": "船前开阔冰面", "moves": ["长腿踢击", "追踪气功波", "带火从天而降", "召唤冰柱"]},
+  "lighting": "冷蓝高光与冰面反射；火焰暖光对比",
+  "audio": "冰裂 / 风啸 / 气功蓄力 / 火焰轰击",
+  "camera": "冰柱生成时轻微推近；Boss 战拉远",
+  "open_questions": ["冰柱生成位置与数量", "气功波速度与追踪规则", "企鹅类 NPC 是否仅为背景装饰", "火焰落点是否随机"]
+}

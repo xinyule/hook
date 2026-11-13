@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "id": "stage_01",
+  "display_name": "雾港栈桥",
+  "verification": "pending_frame_by_frame",
+  "reference": "报告 3.10 / 6 章 Stage 1；动线表 2 节",
+  "longplay_start": "1:26",
+  "approx_duration": "2:28",
+  "visual_confirmed": ["木板栈桥与板缝", "绳索木栏杆与系缆桩", "茅草棚", "木桶", "蓝色波纹海面与白云", "远处针叶松", "右侧木屋与 ROOMS 类招牌", "鸡群"],
+  "segments": [
+    {"id": "1-A", "name": "栈桥起点", "waves": [], "waves_verified": false, "props": ["木桶", "木箱"], "hidden_points": [], "status": "visual_confirmed_waves_pending"},
+    {"id": "1-B", "name": "木屋内外过渡", "waves": [], "waves_verified": false, "props": ["红色台面", "梯子", "吊锅", "吊起船锚"], "hidden_points": [], "status": "visual_confirmed_attribution_pending"},
+    {"id": "1-C", "name": "码头 Boss 场", "waves": [], "waves_verified": false, "props": ["右边界实体墙"], "hidden_points": [], "status": "visual_confirmed_waves_pending"}
+  ],
+  "boss": {"id": "boss_01", "arena": "码头木栈桥，右边界可卡位"},
+  "defeat_sequence": "被一群灶禽狂啄",
+  "lighting": "正午暖阳，蓝天，海面高光",
+  "audio": "轻快开场曲 / 木栈脚步 / 海鸥 / 禽叫",
+  "camera": "跟随质心；Boss 血条出现时拉远 15%",
+  "open_questions": ["1-B 木屋内景是否属于本关", "段落数与每段屏幕宽度", "隐藏点位坐标"]
+}

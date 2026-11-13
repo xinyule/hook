@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "ruleset_id": "arcade",
+  "display_name": "街机原味",
+  "status": "一期启用",
+  "CreditSystem": {
+    "enabled": true,
+    "start_lives": 3,
+    "continue_by_credit": true,
+    "continue_keeps_score": true,
+    "join_anytime": true,
+    "max_players": 4,
+    "note": "投币续关与中途加入为一期保留项；字段值待 M0 逐帧复核后校准"
+  },
+  "LoopPolicy": {
+    "enabled": true,
+    "loop_after_final_stage": true,
+    "loop_target_stage": "stage_01",
+    "score_multiplier_per_loop": 1.2,
+    "difficulty_multiplier_per_loop": 1.1,
+    "verified": false,
+    "note": "报告 3.13 将周目难度列为未验证，先给可配置默认值"
+  },
+  "TimePressure": {
+    "enabled": true,
+    "time_bar_initial": 99,
+    "time_bar_unit": "tick",
+    "decrement_per_second": 1,
+    "refill_on_kill": 0,
+    "refill_on_segment_clear": 0,
+    "eagle_enabled": true,
+    "eagle_idle_threshold_seconds": 12,
+    "eagle_hp_cost_percent": 5,
+    "eagle_push_distance_m": 8,
+    "verified": false,
+    "note": "TIME 初值、递减、飞鹰阈值均为未验证占位值，按报告 3.13 / 动线表第 8 节待复核"
+  },
+  "JoinPolicy": {
+    "enabled": true,
+    "mode": "local_coin_join",
+    "slots": 4,
+    "online": false
+  },
+  "future_note": "用户明确『后面可能做成别的形式』；替换本资源引用即可换成 SessionRuleSet，不改战斗与关卡代码"
+}

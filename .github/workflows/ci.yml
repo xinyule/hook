@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Data & policy gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate data-driven configs
+        run: node tools/validate_data.js
+
+      - name: Content pack and artifact policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          # A-pack (internal reference) must never enter the repository or an export.
+          if [ -d assets/packs/internal_reference ]; then
+            echo "::error::internal reference pack found in repository"
+            exit 1
+          fi
+          if [ -d export ] || [ -d build ]; then
+            echo "::error::build artifacts must not be committed"
+            exit 1
+          fi
+          if ! grep -Eq '^config/version="[0-9]+\.[0-9]+\.[0-9]+"$' project.godot; then
+            echo "::error::project.godot has no valid config/version"
+            exit 1
+          fi
+          grep -m1 'config/version=' project.godot
+          echo "pack policy and version gate OK"

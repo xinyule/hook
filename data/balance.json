@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "note": "全局平衡基线。所有字段均为可配置值，M0 逐帧复核后校准；verified=false 表示来源尚未确认",
+  "physics": {
+    "tick_rate": 60,
+    "unit_meters": 1,
+    "player_height_m": 1.7,
+    "lane_depth_m": 4.0,
+    "lane_y_range": [-1.8, 1.8],
+    "screen_width_m": 16.0,
+    "screen_boundary_is_solid": true,
+    "z_offset_visual_only_m": 0.6
+  },
+  "combat": {
+    "hitstop_light_frames": 4,
+    "hitstop_heavy_frames": 7,
+    "hitstop_ultimate_frames": 10,
+    "hurt_light_frames": 12,
+    "hurt_heavy_frames": 24,
+    "grab_hit_frames": 40,
+    "knockdown_frames": 40,
+    "getup_invincible_frames": 10,
+    "combo_cancel_window_frames": 8,
+    "combo_slow_threshold_frames": 18,
+    "landing_ultimate_window_frames": 6,
+    "block_damage_multiplier": 0.2
+  },
+  "special": {
+    "ultimate_hp_cost_percent": 8,
+    "ultimate_min_hp_percent": 15,
+    "grab_max_hits": 5,
+    "throw_damage_multiplier": 2.5,
+    "wall_bounce_count": 1
+  },
+  "spawn": {
+    "max_enemies_onscreen": 12,
+    "offscreen_queue": true
+  },
+  "score": {
+    "kill_base": 100,
+    "combo_bonus_per_hit": 10,
+    "treasure_base": 500,
+    "hidden_point_base": 1000,
+    "verified": false
+  },
+  "difficulty_presets": {
+    "arcade_original": {"enemy_damage": 1.0, "player_lives": 3, "friendly_fire_players": true},
+    "casual": {"enemy_damage": 0.7, "player_lives": 5, "friendly_fire_players": false},
+    "challenge": {"enemy_damage": 1.3, "player_lives": 1, "friendly_fire_players": true}
+  },
+  "performance_target": {
+    "fps": 60,
+    "resolution": "1920x1080",
+    "max_draw_calls": 300,
+    "max_triangles_per_frame": 250000,
+    "max_particles": 1500,
+    "memory_limit_mb": 2048
+  }
+}

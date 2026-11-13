@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "id": "stage_02",
+  "display_name": "霜林笼场",
+  "verification": "pending_frame_by_frame",
+  "reference": "报告 3.10 / 6 章 Stage 2；动线表 3 节",
+  "longplay_start": "3:54",
+  "approx_duration": "4:20",
+  "visual_confirmed": ["雪地细粒", "积雪草坡与褐色土层断面", "枯树", "岩石", "木栅栏", "蓝天与远雪山", "带尖刺的金色笼子", "蜂窝道具"],
+  "segments": [
+    {"id": "2-A", "name": "雪径", "waves": [], "waves_verified": false, "props": ["马蜂窝", "石头堆"], "hidden_points": [], "status": "visual_confirmed_waves_pending"},
+    {"id": "2-B", "name": "林间空场", "waves": [], "waves_verified": false, "props": ["枯树群", "简易木架"], "hidden_points": [], "status": "visual_confirmed_waves_pending"},
+    {"id": "2-C", "name": "Boss 雪场", "waves": [], "waves_verified": false, "props": ["尖刺笼子", "大铁球落点预警圈"], "hidden_points": [], "status": "visual_confirmed_waves_pending"}
+  ],
+  "boss": {"id": "boss_02", "arena": "开阔雪地，笼子位于画面右侧", "phase_2": "半血召唤大铁球"},
+  "special_item": "honeycomb",
+  "defeat_sequence": "被自己召唤的铁球压死",
+  "lighting": "冷白晴空，雪地反光，飘雪粒子",
+  "audio": "寒风 / 枯枝 / 沉重脚步 / 铁球轰鸣",
+  "camera": "铁球砸地时震屏；保留右边界抓投循环",
+  "open_questions": ["蜂窝精确位置与携带上限", "铁球阶段阈值", "段落数"]
+}

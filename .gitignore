@@ -1,0 +1,21 @@
+.godot/
+.import/
+export/
+build/
+dist/
+.godot-bin/
+godot-templates/
+assets/packs/internal_reference/
+
+# Local engine downloads, build logs and credentials (never committed)
+*.zip
+*.tpz
+*.tmp
+*.log
+*.user
+*.local.txt
+
+# Godot export leftovers
+*.pck
+*.exe
+*.wasm

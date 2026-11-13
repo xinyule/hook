@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "note": "七类杂兵与配色变体。中文俗称均为通用词，非专有名词。波次配置在 data/stages/，此处只定义类型模板",
+  "templates": [
+    {
+      "id": "grunt",
+      "name": "小兵",
+      "weapon": "匕首",
+      "hp": 20,
+      "tags": ["melee", "fast_startup"],
+      "variants": [
+        {"color": "white_blue", "attack": "斜划", "note": "最先登场"},
+        {"color": "blue_white", "attack": "直刺"},
+        {"color": "green_red", "attack": "腿肘"}
+      ],
+      "hits_to_kill_by_hero": {"hero_01": 3, "hero_02": 3, "hero_03": 3, "hero_04": 5, "hero_05": 2},
+      "verified": true
+    },
+    {
+      "id": "drunk",
+      "name": "酒鬼",
+      "weapon": "酒瓶 / 喷火",
+      "hp": 45,
+      "tags": ["melee", "slow_windup", "friendly_fire", "high_damage"],
+      "variants": [
+        {"color": "blue", "attack": "喝酒后酒瓶袭击，误伤同伙"},
+        {"color": "green", "attack": "喝酒后喷火，误伤同伙"},
+        {"color": "yellow", "attack": "喷火 + 左右各砸 2 下共 4 下，误伤同伙"}
+      ],
+      "windup_tell": "喝一口酒",
+      "verified": true
+    },
+    {
+      "id": "flyer",
+      "name": "飞人",
+      "weapon": "双飞刀",
+      "hp": 25,
+      "tags": ["aerial", "fast", "ranged"],
+      "variants": [
+        {"color": "green", "attack": "跳起空中旋转"},
+        {"color": "purple", "attack": "跳起飞脚"},
+        {"color": "yellow", "attack": "连掷一串飞刀，偶尔用前两招"}
+      ],
+      "counter": "hero_04 空中翻滚无敌",
+      "verified": true
+    },
+    {
+      "id": "fatty",
+      "name": "胖子兵",
+      "weapon": "叉子",
+      "hp": 90,
+      "tags": ["tanky", "slow", "high_damage", "grapple"],
+      "variants": [
+        {"color": "green", "attack": "跳抓叉捅 / 肚皮压"},
+        {"color": "red", "attack": "普攻叉人"},
+        {"color": "purple", "attack": "技能 + 普攻兼具"}
+      ],
+      "verified": true
+    },
+    {
+      "id": "spearman",
+      "name": "长矛兵",
+      "weapon": "长矛",
+      "hp": 12,
+      "tags": ["ranged", "retreat_with_attack_hitbox", "fragile"],
+      "variants": [{"color": "single", "attack": "投矛后翻跟斗跑掉，翻跟斗带攻击判定"}],
+      "verified": true
+    },
+    {
+      "id": "flail",
+      "name": "链锤兵",
+      "weapon": "链锤",
+      "hp": 70,
+      "tags": ["block", "knockback_on_getup", "friendly_fire"],
+      "variants": [
+        {"color": "red", "attack": "链锤砸人；起身弹开周围敌我并造成伤害"},
+        {"color": "blue", "attack": "链锤打人，会格挡"},
+        {"color": "gray", "attack": "链锤打人，会格挡，死后留下链锤"}
+      ],
+      "verified": true
+    },
+    {
+      "id": "swordsman",
+      "name": "刀兵",
+      "weapon": "长刀",
+      "hp": 65,
+      "tags": ["melee", "slow", "high_damage"],
+      "variants": [
+        {"color": "blue", "attack": "单手握刀"},
+        {"color": "yellow", "attack": "双手握刀为主，偶尔单手"},
+        {"color": "gray", "attack": "单手握刀，擅长格挡，极难击倒"}
+      ],
+      "phase": "中后期主力",
+      "verified": true
+    }
+  ]
+}

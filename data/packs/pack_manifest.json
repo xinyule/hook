@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "default_pack": "public",
+  "export_locked_pack": "public",
+  "packs": {
+    "public": {
+      "path": "res://assets/packs/public/",
+      "purpose": "对外正式版，所有导出与演示使用",
+      "in_repository": true
+    },
+    "internal_reference": {
+      "path": "res://assets/packs/internal_reference/",
+      "purpose": "内测对照包，仅用于与原作手感/招式/关卡逐条回归",
+      "in_repository": false,
+      "in_export": false,
+      "note": "gitignore 排除；构建脚本不得复制此目录；发布门禁扫描此路径"
+    }
+  },
+  "replaceable_fields": [
+    "character.display_name",
+    "character.portrait",
+    "character.model",
+    "character.voice",
+    "boss.display_name",
+    "boss.model",
+    "boss.health_bar_label",
+    "stage.display_name",
+    "stage.skybox",
+    "ui.logo",
+    "ui.title_screen",
+    "ui.font",
+    "ui.palette",
+    "audio.bgm",
+    "audio.sfx",
+    "story.text",
+    "credits.text"
+  ],
+  "shared_fields_note": "玩法、数值、关卡结构、招式表在两包之间共享同一份 data/*.json，A 包只替换表达层",
+  "launch_args": {
+    "pack_selector": "--pack=public|--pack=internal",
+    "default": "--pack=public"
+  }
+}

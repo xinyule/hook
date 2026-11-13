@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "note": "六关 Boss 机制基线。display_name 为 B 对外包候选；内测血条原文对照放在 internal_reference 包，不进产物",
+  "bosses": [
+    {
+      "id": "boss_01",
+      "stage": "stage_01",
+      "display_name": "灶长",
+      "phases": 1,
+      "hp": 300,
+      "moves": ["近身挥砍", "击倒后空砍一刀再起身"],
+      "grabbable": true,
+      "wall_pin_enabled": true,
+      "intro": "灶禽群四散",
+      "defeat_sequence": "被一群灶禽狂啄",
+      "verified": true
+    },
+    {
+      "id": "boss_02",
+      "stage": "stage_02",
+      "display_name": "铁笼力士",
+      "phases": 2,
+      "hp": 520,
+      "phase_threshold_hp_percent": 50,
+      "moves": ["铁管挥舞", "抓人用铁管敲"],
+      "phase_2_moves": ["召唤大铁球砸人（落点预警）"],
+      "grabbable": true,
+      "intro": "从带尖刺的笼子放下，破笼登场",
+      "defeat_sequence": "体力不支，被自己召唤的铁球压死",
+      "special_interaction": {"item": "honeycomb", "effect": "原地无限转向触发连锁，单人可秒；多人时打不死", "verified": true},
+      "verified": true
+    },
+    {
+      "id": "boss_03",
+      "stage": "stage_03",
+      "display_name": "影船长",
+      "phases": 1,
+      "hp_per_instance": 180,
+      "instance_count_by_players": {"1": 2, "2": 3, "3": 3, "4": 3},
+      "moves": ["剑砍", "铁钩勾人"],
+      "no_pistol": true,
+      "grabbable": true,
+      "knockdown_behavior": "爬到离玩家远处再起身",
+      "intro": "从彩绘大罐跳出，有变身硬直",
+      "defeat_sequence": "消失，藏身罐子爆炸",
+      "variants": {
+        "world": "影船长 x2/x3",
+        "japan": "女海盗 → 击败后分身三个（滑铲 / 无敌转圈 / 跳砍）",
+        "enabled_by_default": "world"
+      },
+      "verified": true
+    },
+    {
+      "id": "boss_04",
+      "stage": "stage_04",
+      "display_name": "霜焰行者",
+      "phases": 2,
+      "hp": 480,
+      "moves": ["连续长腿踢击", "气功波（追踪）", "带火从天而降（地面影子预警）", "召唤冰柱"],
+      "ice_pillar_is_platform": true,
+      "grabbable": false,
+      "verified": true
+    },
+    {
+      "id": "boss_05",
+      "stage": "stage_05",
+      "display_name": "副官",
+      "phases": 1,
+      "hp": 400,
+      "moves": ["摔倒起身后立刻刀砍", "手枪射击"],
+      "anti_jump_attack": true,
+      "defeat_sequence": "跪地叩头投降，朝向随玩家左右变化",
+      "later_appearances": [
+        {"stage": "stage_06", "role": "携宝逃兵", "effect": "击打掉落一堆财宝"},
+        {"stage": "stage_06", "role": "后甲板炮台", "effect": "每次三发，带落点预警"}
+      ],
+      "cannon_trigger_hp_percent": 50,
+      "cannon_trigger_conflict": "资料有『半血』与『掉一管血』两种说法，做成可配置阈值，M0 复核后锁定",
+      "verified": true
+    },
+    {
+      "id": "boss_06",
+      "stage": "stage_06",
+      "display_name": "铁钩督军",
+      "phases": 3,
+      "hp": 700,
+      "moves": ["剑刺", "跳到跟前抓人用钩捅", "开枪"],
+      "adds": "全兵种持续刷新（本关主要难点）",
+      "cannon_support": {"enabled": true, "shots_per_volley": 3, "trigger_hp_percent": 50},
+      "defeat_sequence": "战败逃跑 → 返回时铁钩卡进巨湾兽 → 被吞；结局孩子获救",
+      "verified": true
+    }
+  ]
+}

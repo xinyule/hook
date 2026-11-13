@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "note": "五角色数值首版。display_name 取自 B 对外包候选，不含任何原作专有名词；内测对照映射在 internal_reference 包（不入仓库）",
+  "attribute_axes": ["REACH", "POWER", "SPEED"],
+  "characters": [
+    {
+      "id": "hero_01",
+      "display_name": "岚",
+      "role": "平衡型",
+      "weapon": "长剑",
+      "hp": 100,
+      "power": 1.0,
+      "speed": 1.0,
+      "reach": 1.0,
+      "down_attack_max": 4,
+      "special": {"type": "energy_kick", "direction_controllable": true},
+      "ultimate": {"type": "energy_ring", "shape": "radial"},
+      "perks": ["wall_jump_second", "easiest_for_newcomers"],
+      "verified": true
+    },
+    {
+      "id": "hero_02",
+      "display_name": "隼",
+      "role": "速攻型",
+      "weapon": "双刀",
+      "hp": 95,
+      "power": 1.0,
+      "speed": 1.25,
+      "reach": 0.75,
+      "down_attack_max": 3,
+      "special": {"type": "short_slash", "range": "small"},
+      "ultimate": {"type": "sailship_line", "direction_controllable": true},
+      "perks": ["fastest_startup"],
+      "verified": true
+    },
+    {
+      "id": "hero_03",
+      "display_name": "铎",
+      "role": "均衡型",
+      "weapon": "长柄小锤",
+      "hp": 100,
+      "power": 1.0,
+      "speed": 1.1,
+      "reach": 1.1,
+      "down_attack_max": 4,
+      "special": {"type": "wide_hammer", "range": "large"},
+      "ultimate": {"type": "summon_movable_companion"},
+      "perks": ["team_friendly"],
+      "verified": true
+    },
+    {
+      "id": "hero_04",
+      "display_name": "铃",
+      "role": "敏捷型",
+      "weapon": "溜溜球",
+      "hp": 85,
+      "power": 0.7,
+      "speed": 1.15,
+      "reach": 1.1,
+      "down_attack_max": 8,
+      "special": {"type": "wide_yoyo", "range": "large", "slow_last_hit": true},
+      "ultimate": {"type": "spin_candy_scatter"},
+      "perks": ["air_roll_invincible", "counters_aerial_enemies", "jump_attack_hits_downed"],
+      "verified": true
+    },
+    {
+      "id": "hero_05",
+      "display_name": "岩",
+      "role": "力量型",
+      "weapon": "徒手重击",
+      "hp": 130,
+      "power": 1.45,
+      "speed": 0.75,
+      "reach": 1.1,
+      "down_attack_max": 3,
+      "special": {"type": "wide_sweep", "range": "large"},
+      "ultimate": {"type": "fullscreen_scatter_beasts"},
+      "perks": ["highest_damage", "slowest_startup"],
+      "verified": true
+    }
+  ],
+  "conflict_note": "资料对 hero_04『敏捷 vs 出招慢』表述冲突，按『攻击低 + 翻滚无敌 + 倒地追击 8 下 + 连段末段较慢』实现"
+}

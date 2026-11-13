@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "note": "道具与场景机关。具体掉落率、分值、隐藏点坐标为未验证占位值，按动线表 M0 复核清单校准",
+  "categories": {
+    "healing": {
+      "items": ["酒", "香蕉", "烧鸡", "美酒"],
+      "effect": "恢复 HP",
+      "verified": true
+    },
+    "throwable_weapons": {
+      "items": ["棒球", "长矛", "链锤", "炸弹", "石头", "蜂窝"],
+      "carry_into_boss_arena": true,
+      "carry_rule_note": "第三关面朝后方逐根捡长矛可保留进 Boss 场；具体判定待复核",
+      "verified": true
+    },
+    "fixed_props": {
+      "items": ["吊起的船锚", "汤锅", "油桶", "火炉", "马蜂窝", "尖刺笼子", "彩绘大罐", "冰柱", "炮台", "木桶木箱", "铁球"],
+      "interaction": "可击落 / 可投掷 / 可踩踏（按物件）",
+      "verified": true
+    },
+    "treasure": {
+      "items": ["财宝堆", "隐藏宝藏", "隐藏分数点"],
+      "score_base": 1000,
+      "hidden_point_note": "第六关数量最多，单人因 TIME 不够无法全吃，贪分需取舍",
+      "verified": false
+    }
+  },
+  "special_items": [
+    {
+      "id": "honeycomb",
+      "display_name": "蜂窝",
+      "effect": "投掷后触发连锁攻击（鞭炮表现）",
+      "strong_against": ["boss_02"],
+      "appears_in": ["stage_02", "stage_06"],
+      "verified": true
+    }
+  ],
+  "drop_rates_placeholder": {"food": 0.12, "weapon": 0.08, "treasure": 0.03, "verified": false}
+}

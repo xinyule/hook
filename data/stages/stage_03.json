@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "id": "stage_03",
+  "display_name": "彩罐甲板",
+  "verification": "pending_frame_by_frame",
+  "reference": "报告 3.10 / 6 章 Stage 3；动线表 4 节",
+  "longplay_start": "8:14",
+  "approx_duration": "4:21",
+  "visual_confirmed": ["圆木竹编甲板", "金色绳结栏杆", "两根桅柱", "帆索", "彩绘金蓝红大罐", "海面与云", "地上遗留长矛"],
+  "segments": [
+    {"id": "3-A", "name": "登船甲板前段", "waves": [], "waves_verified": false, "props": ["木箱", "桅杆底座"], "hidden_points": [], "status": "visual_confirmed_waves_pending"},
+    {"id": "3-B", "name": "送长矛波", "waves": [], "waves_verified": false, "props": ["长矛 x4"], "hidden_points": [], "status": "mechanism_confirmed_count_pending"},
+    {"id": "3-C", "name": "Boss 甲板", "waves": [], "waves_verified": false, "props": ["彩绘大罐 x3"], "hidden_points": [], "status": "visual_confirmed_no_adds"}
+  ],
+  "boss": {"id": "boss_03", "arena": "甲板中央，无杂兵", "instance_count_by_players": {"1": 2, "2": 3, "3": 3, "4": 3}},
+  "variant_japan": {"enabled": false, "note": "M5 可配置分支，用户未指定，按建议保留"},
+  "defeat_sequence": "影船长消失，罐子爆炸",
+  "lighting": "海面反射光，桅杆投影，云影流动",
+  "audio": "甲板吱呀 / 海浪 / 绳索 / 罐子爆裂",
+  "camera": "Boss 战拉远，保留左右边界",
+  "open_questions": ["三个罐子精确位置与跳出顺序", "长矛保留进 Boss 场的判定条件", "日版分支招式细节"]
+}

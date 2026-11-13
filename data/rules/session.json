@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "ruleset_id": "session",
+  "display_name": "章节制（预留，未启用）",
+  "status": "reserved_interface_only",
+  "note": "接口占位，供未来把『投币续关 / 无限循环』换成别的形式时使用，一期不实现",
+  "CreditSystem": {
+    "enabled": false,
+    "start_lives": 0,
+    "continue_by_credit": false,
+    "checkpoint_save": true,
+    "join_anytime": false,
+    "max_players": 4
+  },
+  "LoopPolicy": {
+    "enabled": false,
+    "loop_after_final_stage": false,
+    "chapter_select": true
+  },
+  "TimePressure": {
+    "enabled": false,
+    "eagle_enabled": false,
+    "stage_timer_mode": "count_up"
+  },
+  "JoinPolicy": {
+    "enabled": true,
+    "mode": "fixed_party",
+    "slots": 4,
+    "online": false
+  }
+}
