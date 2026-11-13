@@ -40,18 +40,17 @@ jobs:
           TAG: ${{ github.ref_name }}
         run: |
           set -euxo pipefail
-          printf '%s\n' "## ${TAG} — M0 Skeleton (internal)" "" \
+          printf '%s\n' "## ${TAG} (internal)" "" \
             "INTERNAL ONLY - route A faithful remake. Do not publish, share or redistribute." \
             "This repository and its releases are private by design; GitHub Pages is deliberately not used." "" \
             "Automated Godot 4.3 export from tag ${TAG}." "" \
             "Artifacts:" \
             "- Windows x86_64: zipped exe + pck" \
             "- Web: zipped static build (serve over HTTP, not file://)" "" \
-            "This is the V0.0.1 project skeleton: engine boot screen only, no gameplay logic yet." \
             "Build and data gates are enforced by .github/workflows/ci.yml." > notes.md
           gh release create "$TAG" \
             --repo "$GITHUB_REPOSITORY" \
-            --title "${TAG} — M0 Skeleton (internal)" \
+            --title "${TAG} (internal)" \
             --notes-file notes.md \
             --prerelease \
             --verify-tag
