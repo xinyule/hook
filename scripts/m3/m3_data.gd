@@ -13,6 +13,12 @@ static var _hud: Dictionary = {}
 static var _stages: Dictionary = {}
 
 static func _read(path: String) -> Dictionary:
+	## 导出构建中 ProjectSettings.globalize_path 返回文件系统路径，
+	## 但资源实际打包在 pck 内。提取 res:// 部分让 FileAccess 走 pck 解析。
+	if path.contains("res://"):
+		var idx := path.find("res://")
+		if idx > 0:
+			path = path.substr(idx)
 	if not FileAccess.file_exists(path):
 		push_error("[M3Data] missing file: %s" % path)
 		return {}
@@ -27,19 +33,19 @@ static func _read(path: String) -> Dictionary:
 ## 街机规则集（投币续关、周目、TIME 压力）。
 static func arcade() -> Dictionary:
 	if _arcade.is_empty():
-		_arcade = _read(ProjectSettings.globalize_path("res://data/rules/arcade.json"))
+		_arcade = _read("res://data/rules/arcade.json")
 	return _arcade
 
 ## 会话规则集（可插拔，默认关闭街机规则）。
 static func session() -> Dictionary:
 	if _session.is_empty():
-		_session = _read(ProjectSettings.globalize_path("res://data/rules/session.json"))
+		_session = _read("res://data/rules/session.json")
 	return _session
 
 ## HUD 布局与飞鹰视觉参数。
 static func hud_m3() -> Dictionary:
 	if _hud.is_empty():
-		_hud = _read(ProjectSettings.globalize_path("res://data/hud_m3.json"))
+		_hud = _read("res://data/hud_m3.json")
 	return _hud
 
 ## 关卡顺序（LoopManager 周目回环用）。
@@ -51,7 +57,7 @@ static func stage(id: String) -> Dictionary:
 	if _stages.has(id):
 		return _stages[id]
 	var path := "res://data/stages/%s.json" % id
-	var data := _read(ProjectSettings.globalize_path(path))
+	var data := _read(path)
 	_stages[id] = data
 	return data
 

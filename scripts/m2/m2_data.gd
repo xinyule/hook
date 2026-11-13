@@ -15,6 +15,12 @@ static var _enemies: Dictionary = {}
 static var _names_a: Dictionary = {}
 
 static func _read(path: String) -> Dictionary:
+	## 导出构建中 ProjectSettings.globalize_path 返回文件系统路径，
+	## 但资源实际打包在 pck 内。提取 res:// 部分让 FileAccess 走 pck 解析。
+	if path.contains("res://"):
+		var idx := path.find("res://")
+		if idx > 0:
+			path = path.substr(idx)
 	if not FileAccess.file_exists(path):
 		push_error("[M2Data] missing file: %s" % path)
 		return {}
@@ -28,32 +34,32 @@ static func _read(path: String) -> Dictionary:
 
 static func balance() -> Dictionary:
 	if _balance.is_empty():
-		_balance = _read(ProjectSettings.globalize_path("res://data/balance.json"))
+		_balance = _read("res://data/balance.json")
 	return _balance
 
 static func combat() -> Dictionary:
 	if _combat.is_empty():
-		_combat = _read(ProjectSettings.globalize_path("res://data/combat_m1.json"))
+		_combat = _read("res://data/combat_m1.json")
 	return _combat
 
 static func combat_m2() -> Dictionary:
 	if _combat_m2.is_empty():
-		_combat_m2 = _read(ProjectSettings.globalize_path("res://data/combat_m2.json"))
+		_combat_m2 = _read("res://data/combat_m2.json")
 	return _combat_m2
 
 static func characters() -> Dictionary:
 	if _characters.is_empty():
-		_characters = _read(ProjectSettings.globalize_path("res://data/characters.json"))
+		_characters = _read("res://data/characters.json")
 	return _characters
 
 static func enemies() -> Dictionary:
 	if _enemies.is_empty():
-		_enemies = _read(ProjectSettings.globalize_path("res://data/enemies.json"))
+		_enemies = _read("res://data/enemies.json")
 	return _enemies
 
 static func names_a() -> Dictionary:
 	if _names_a.is_empty():
-		_names_a = _read(ProjectSettings.globalize_path("res://data/packs/internal_reference/names_a.json"))
+		_names_a = _read("res://data/packs/internal_reference/names_a.json")
 	return _names_a
 
 ## 取单个角色定义，找不到返回空字典。
