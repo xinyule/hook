@@ -1,0 +1,18 @@
+{
+  "schema": "vfx_m7/1",
+  "note": "M7 粒子特效与六关天气配置。全部程序化粒子，无外部素材。",
+  "hit_spark": {
+    "light": { "count": 5, "size": 0.12, "lifetime": 0.25, "speed": 2.2, "gravity": 6.0, "color": [1.0, 0.85, 0.3, 1.0] },
+    "heavy": { "count": 10, "size": 0.18, "lifetime": 0.35, "speed": 3.0, "gravity": 8.0, "color": [1.0, 0.55, 0.2, 1.0] }
+  },
+  "explosion": { "count": 16, "size": 0.3, "lifetime": 0.6, "speed": 4.0, "gravity": 2.0, "color": [1.0, 0.6, 0.2, 1.0], "shake": 0.5 },
+  "treasure_burst": { "count": 8, "size": 0.14, "lifetime": 0.45, "speed": 2.5, "gravity": 7.0, "color": [1.0, 0.9, 0.35, 1.0] },
+  "weather": {
+    "stage_01": { "type": "clear", "particles": 0, "fog_color": [0.9, 0.95, 1.0, 0.0], "tint": [1.0, 1.0, 1.0, 0.0] },
+    "stage_02": { "type": "snow", "particles": 90, "fog_color": [0.85, 0.9, 1.0, 0.18], "tint": [0.9, 0.95, 1.0, 0.10], "speed": 1.6, "spread": 3.0 },
+    "stage_03": { "type": "dusk", "particles": 40, "fog_color": [1.0, 0.8, 0.55, 0.14], "tint": [1.0, 0.82, 0.55, 0.08], "speed": 0.8, "spread": 4.0 },
+    "stage_04": { "type": "ice_fog", "particles": 60, "fog_color": [0.8, 0.9, 1.0, 0.22], "tint": [0.85, 0.95, 1.0, 0.12], "speed": 0.5, "spread": 5.0 },
+    "stage_05": { "type": "ember", "particles": 35, "fog_color": [1.0, 0.7, 0.4, 0.12], "tint": [1.0, 0.75, 0.45, 0.08], "speed": 0.9, "spread": 4.0 },
+    "stage_06": { "type": "final", "particles": 50, "fog_color": [0.6, 0.5, 0.7, 0.16], "tint": [0.75, 0.65, 0.85, 0.10], "speed": 1.2, "spread": 4.5 }
+  }
+}

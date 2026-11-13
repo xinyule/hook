@@ -33,8 +33,8 @@
 | M3 | V0.3.0 | 关卡框架 + HUD + TIME/飞鹰 + 分数 + 1–4 人中途加入 + 循环 | 已交付 |
 | M4 | V0.4.0 | Stage 1–2 可玩（码头 / 雪原、BUTCHER / JASON、蜂窝 / 金笼 / 铁球 / 鸡群） | 已交付 |
 | M5 | V0.5.0 | Stage 3–4 可玩（甲板 / 冰海、假 Hook、DAMON、罐子爆炸、长矛互投、冰柱反跳、企鹅） | 已交付 |
-| M6 | **V0.6.0** | Stage 5–6 可玩，六关通关 + 结局（SMEE / HOOK、运财小兵 / 炮台、Tinker Bell、鳄鱼结局） | **当前 · 已交付** |
-| M7 | V0.7.0 | 美术与音频打磨完成 | 未开始 |
+| M6 | V0.6.0 | Stage 5–6 可玩，六关通关 + 结局（SMEE / HOOK、运财小兵 / 炮台、Tinker Bell、鳄鱼结局） | 已交付 |
+| M7 | **V0.7.0** | 美术与音频打磨完成（风格化 Toon 模型 + 描边、全 VFX、六关天气、程序化音频） | **当前 · 已交付** |
 | M8 | V0.8.0 | 平衡定稿、难度、隐藏要素、成就 | 未开始 |
 | M9 | V0.9.0 → **V1.0.0** | RC → Windows + Web **内部定稿交付**（路线 A，仅内部） | 未开始 |
 
@@ -55,6 +55,8 @@
 | **V0.5.0** | 2026-11-14 | **M5 Stage 3–4 可玩**：船甲板 / 冰海灰盒场景与光照预设（`m5_stage_scene`）；假 Hook（数量随人数 1 人 2 个 / 多人 3 个、可互投、无血条）与 DAMON（影子预警 / 气功波 / 冰柱当墙 / 踢击 / 击败演出，`m5_boss` 继承 M2Actor 接入 M3 敌人管线）；彩绘大罐爆炸（范围伤害 + 震屏）、长矛投掷与互投、冰柱可踩反跳、企鹅彩蛋隐藏点（`m5_props`）；stage_03 / stage_04 真实波次与 `spawn_props` / `lighting_preset` 填充；Boss 血条 HUD（仅真 Boss）；`scenes/m5.tscn` 主场景。新增 `data/bosses_m5.json`、`data/props_m5.json`。复用 M2 战斗核心与 M3 框架层不改。工程修复（本阶段内）：Godot 4 无 `ConeMesh`，冰山占位改 `BoxMesh`；假 Hook 段落地需 `on_floor=true` 才触发互投；企鹅需登记到 `prop_records` 才可击碎计分。验收：headless 自测 **102 项全 PASS**（M3 42 + M5 60）、数据校验 22 文件通过、Windows + Web 导出零警告、导出 exe 内自测 102/102 | 报告 9.10.14；用户授权连续推进；按 9.8.2 升次版本 |
 
 | **V0.6.0** | 2026-11-14 | **M6 Stage 5–6 可玩 + 六关通关结局**：Stage 5 船舱 / 船长室（木条地板、原木墙、红金地毯、圆舷窗 + 红绒帷幕、雕花拱门、暖金烛光）与 Stage 6 决战甲板（木舱壁、拱形铁栅门、右上高台、高对比决战光照）灰盒场景与光照预设（`m6_stage_scene`）；SMEE（叩头禁跳打窗口、炮台三连发、近身挥砍、击败演出）与 HOOK（常规剑击 → 半血召唤杂兵刷新 + 钩击 → 低血全屏大招 / 冲撞，三阶段阈值数据驱动，击败演出跳起）招式状态机（`m6_boss` 继承 M2Actor 接入 M3 敌人管线）；运财小兵击打掉财宝计分、炮台三连发（落点预警）、Tinker Bell 高台回血 / 加分隐藏点、鳄鱼结局演出、可击碎物件（木箱 / 酒桶 / 装饰）；stage_05 / stage_06 真实波次与 `spawn_props` / `lighting_preset` 填充；六关完整通关 + 结局触发 + 末关回环周目；Boss 血条 HUD（SMEE / HOOK）；`scenes/m6.tscn` 主场景。新增 `data/bosses_m6.json`、`data/props_m6.json`。复用 M2 战斗核心与 M3 框架层不改。验收：headless 自测 **152 项全 PASS**（M5 102 + M6 50）、数据校验 24 文件通过、Windows + Web 导出零警告、导出 exe 内自测 152/152 | 报告 9.10.15；用户授权连续推进；按 9.8.2 升次版本 |
+
+| **V0.7.0** | 2026-11-14 | **M7 美术与音频打磨**：五角色 / 敌人 / Boss 灰盒胶囊升级为手绘 Toon 风格化块状模型（头 / 躯干 / 双臂 / 双腿 BoxMesh 分块 + 角色专属配色 + 背面外扩描边，`m7_visual` 幂等升级，调色板与分块参数全在 `data/visual_m7.json`）；全 VFX（命中火花轻 / 重分级、爆炸、财宝爆裂、六关天气粒子：晴 / 雪 / 暮 / 冰雾 / 烛光余烬 / 决战，`m7_vfx` 自管理生命周期，命中 VFX 经覆盖 M2 `_spawn_hit_particles` 挂载点接入，爆炸 VFX 经道具消失观测接入）；六关光照天气调色与 UI 对齐参数（`visual_m7.json` 的 ui 节）；音频**全部程序化合成**（`AudioStreamGenerator`：9 种 SFX + 六关自作曲式 BGM 音符表，零外部音频文件，`m7_audio`）；`scenes/m7.tscn` 主场景。新增 `data/visual_m7.json`、`data/vfx_m7.json`、`data/audio_m7.json`。复用 M2–M6 逻辑层不改。验收：headless 自测 **173 项全 PASS**（M6 152 + M7 21）、数据校验 27 文件通过、Windows + Web 导出零警告、导出 exe 内自测 173/173 | 报告 9.10.16；用户授权连续推进；按 9.8.2 升次版本 |
 
 后续每次升级在此追加一行，写明：版本号、日期、改动摘要、对应报告版本与验收结论。
 
@@ -117,6 +119,16 @@
 | 门禁 | `validate_data.js`（24 文件 / 6 阶段 / 路线 A 单轨）+ CI `selftest` job（M6 152 项断言）+ 双平台导出 |
 | 运行方式 | 同 V0.1.0：私有 Release 下载后本机运行 exe，或内网 `tools/serve_web.py` 预览；**不启用 GitHub Pages** |
 | 说明 | 仅内部；六关完整可玩（Stage 5–6 船舱 / 决战甲板、SMEE / HOOK、鳄鱼结局），通关后回环周目可用 |
+
+## 4.8 M7 云端发布记录（V0.7.0）
+
+| 项 | 值 |
+|---|---|
+| 发布 tag | `v0.7.0` |
+| 产物 | `hook3d_v0.7.0_windows_x86_64.zip`、`hook3d_v0.7.0_web.zip` |
+| 门禁 | `validate_data.js`（27 文件 / 6 阶段 / 路线 A 单轨）+ CI `selftest` job（M7 173 项断言）+ 双平台导出 |
+| 运行方式 | 同 V0.1.0：私有 Release 下载后本机运行 exe，或内网 `tools/serve_web.py` 预览；**不启用 GitHub Pages** |
+| 说明 | 仅内部；六关完整可玩 + 表现层打磨（风格化 Toon 模型 / 全 VFX / 六关天气 / 程序化音频），音频无版权复用 |
 
 ## 4.1 首次云端发布记录（V0.0.1）
 

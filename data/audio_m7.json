@@ -1,0 +1,46 @@
+{
+  "schema": "audio_m7/1",
+  "note": "M7 程序化音频：SFX 音源参数与 BGM 自作曲式音符表。全部 AudioStreamGenerator 合成，零外部音频文件，不含任何原作音频。",
+  "sfx": {
+    "hit_light": { "wave": "square", "freq": 520, "freq_end": 240, "duration": 0.08, "volume": 0.25, "attack": 0.004, "decay": 0.076 },
+    "hit_heavy": { "wave": "sawtooth", "freq": 300, "freq_end": 110, "duration": 0.18, "volume": 0.35, "attack": 0.005, "decay": 0.175 },
+    "jump": { "wave": "sine", "freq": 320, "freq_end": 620, "duration": 0.12, "volume": 0.25, "attack": 0.005, "decay": 0.115 },
+    "throw": { "wave": "triangle", "freq": 420, "freq_end": 180, "duration": 0.14, "volume": 0.28, "attack": 0.005, "decay": 0.135 },
+    "ultimate": { "wave": "sawtooth", "freq": 220, "freq_end": 880, "duration": 0.5, "volume": 0.4, "attack": 0.01, "decay": 0.49 },
+    "pickup": { "wave": "sine", "freq": 660, "freq_end": 990, "duration": 0.1, "volume": 0.25, "attack": 0.005, "decay": 0.095 },
+    "coin": { "wave": "square", "freq": 990, "freq_end": 1320, "duration": 0.09, "volume": 0.22, "attack": 0.004, "decay": 0.086 },
+    "boss_appear": { "wave": "sawtooth", "freq": 110, "freq_end": 55, "duration": 0.8, "volume": 0.4, "attack": 0.02, "decay": 0.78 },
+    "ending": { "wave": "triangle", "freq": 392, "freq_end": 523, "duration": 1.2, "volume": 0.35, "attack": 0.05, "decay": 1.15 }
+  },
+  "bgm": {
+    "tempo_bpm": 132,
+    "note_duration": 0.22,
+    "loop": true,
+    "stages": {
+      "stage_01": {
+        "mood": "bright_jaunty",
+        "notes": [["C5", 0.5], ["E5", 0.5], ["G5", 1], ["E5", 0.5], ["D5", 0.5], ["C5", 1], ["rest", 0.5], ["G4", 0.5], ["A4", 0.5], ["C5", 1]]
+      },
+      "stage_02": {
+        "mood": "cold_steady",
+        "notes": [["A4", 1], ["C5", 1], ["E5", 1], ["D5", 1], ["C5", 1], ["A4", 1], ["G4", 1], ["A4", 1]]
+      },
+      "stage_03": {
+        "mood": "warm_swing",
+        "notes": [["G4", 0.5], ["B4", 0.5], ["D5", 1], ["B4", 0.5], ["G4", 0.5], ["A4", 1], ["B4", 1], ["D5", 1]]
+      },
+      "stage_04": {
+        "mood": "icy_pulse",
+        "notes": [["E5", 0.5], ["E5", 0.5], ["G5", 1], ["F5", 0.5], ["E5", 0.5], ["D5", 1], ["C5", 1], ["E5", 1]]
+      },
+      "stage_05": {
+        "mood": "candlelit_calm",
+        "notes": [["D5", 1], ["F5", 1], ["A5", 1], ["G5", 1], ["F5", 1], ["D5", 1], ["C5", 1], ["D5", 1]]
+      },
+      "stage_06": {
+        "mood": "final_tense",
+        "notes": [["C5", 0.5], ["C5", 0.5], ["D5", 0.5], ["E5", 0.5], ["F5", 1], ["E5", 0.5], ["D5", 0.5], ["C5", 1], ["G4", 1], ["C5", 1]]
+      }
+    }
+  }
+}
