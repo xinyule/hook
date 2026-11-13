@@ -2,10 +2,10 @@ config_version=5
 
 [application]
 
-config/name="hook3d (internal) - M2 combat sandbox"
-config/description="2.5D side-scrolling faithful remake - M2 combat sandbox - INTERNAL ONLY"
-run/main_scene="res://scenes/m2.tscn"
-config/version="0.2.0"
+config/name="hook3d (internal) - M3 stage & HUD"
+config/description="2.5D side-scrolling faithful remake - M3 stage framework & HUD - INTERNAL ONLY"
+run/main_scene="res://scenes/m3.tscn"
+config/version="0.3.0"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
 [display]

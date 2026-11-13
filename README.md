@@ -1,4 +1,4 @@
-# 2.5D 横版清关项目 · M2 战斗沙盒（V0.2.0）· 路线 A 仅内部
+# 2.5D 横版清关项目 · M3 关卡框架与 HUD（V0.3.0）· 路线 A 仅内部
 
 Godot 4.3 / GL Compatibility / Windows + Web 双平台构建。
 
@@ -12,12 +12,12 @@ Godot 4.3 / GL Compatibility / Windows + Web 双平台构建。
 
 | 项 | 值 |
 |---|---|
-| 阶段 | **M2 已交付**（用户授权按 M0→M9 连续推进，不再逐阶段确认） |
-| 项目版本 | **V0.2.0**（规则与台账见 `VERSION.md`） |
+| 阶段 | **M3 已交付**（用户授权按 M0→M9 连续推进，不再逐阶段确认） |
+| 项目版本 | **V0.3.0**（规则与台账见 `VERSION.md`） |
 | 内容路线 | **单轨 A 忠实复刻，仅内部**；B 原创化已取消 |
 | 引擎 | Godot **4.3-stable**，免安装 ZIP，GL Compatibility，固定 60 tick |
 | 一期平台 | Windows 桌面 + Web；Android 后置 |
-| 可玩内容 | **五角色**（PETERPAN/DON/JOHN/MICHAEL/POCKETS）选人 + **七类敌人**（grunt/drunk/flyer/fatty/spearman/flail/swordsman）战斗沙盒：移动 / 跳跃 / 四连段 / 抓投 / 跳击 / **必杀（A+B，扣 8% HP，低于 15% HP 禁用）/ 落地必杀（6 帧窗口）/ 墙跳 / 空投 / 背投 / 倒地追击**；命中去重、命中停顿分级（轻 4 / 重 7 / 必杀 10）、屏幕震动、命中粒子、友伤（含敌间友伤）、格挡（减伤 0.2）；正交相机、实体屏幕边界、HUD |
+| 可玩内容 | **M2 战斗核心**（五角色 / 七类敌人 / 必杀 / 格挡 / 友伤，全部保留）+ **M3 关卡框架**：StageRunner 六关段落流式加载、WaveDirector 波次生成与同屏上限、1–4P 中途加入与命数/投币续关、TIME 计时 + 飞鹰（归零推距扣血）、计分（击杀/连击/宝藏/隐藏点 + 周目倍率）、HUD 全套（4 条 HP + 命数 + TIME 条 + 分数 + 周目）、LoopManager 六关推进与末关回环 |
 
 设计报告、原作动线表、`内容包命名对照表.md`（已归档作废）与 12 张原作参考截图属于**本地事实底稿，不入库**。本仓库只放代码、数据驱动配置、构建流水线与版本台账。
 
@@ -50,8 +50,8 @@ Godot 4.3 / GL Compatibility / Windows + Web 双平台构建。
 
 1. 用任意 Godot **4.3** 编辑器打开本目录的 `project.godot`（免安装 ZIP 解压即用，不写注册表、不常驻）。
 2. F5 运行 → 3D 灰盒走廊 + 角色胶囊 + HUD。
-3. 数据自检：`node tools/validate_data.js`（17 个 JSON、交叉引用、单轨 A 内部限定、M1/M2 帧表、街机规则）。
-4. 无头逻辑自测（CI 同款，**30 项断言**）：
+3. 数据自检：`node tools/validate_data.js`（18 个 JSON、交叉引用、单轨 A 内部限定、M1/M2 帧表、街机规则）。
+4. 无头逻辑自测（CI 同款，**42 项断言**）：
 
 ```bash
 # 干净仓库需先让 Godot 建立全局类缓存
@@ -77,7 +77,7 @@ HOOK3D_WEB_PASSWORD=<口令> python tools/serve_web.py \
 
 | 工作流 | 触发 | 作用 |
 |---|---|---|
-| `.github/workflows/ci.yml` | push / PR 到 `main`、手动 | Node 数据门禁；单轨 A 内部限定；**Godot headless 30 项自测**；版本号格式 |
+| `.github/workflows/ci.yml` | push / PR 到 `main`、手动 | Node 数据门禁；单轨 A 内部限定；**Godot headless 42 项自测**；版本号格式 |
 | `.github/workflows/build-release.yml` | `v*` tag、手动 | 私有 Release 壳 + Windows x86_64 / Web 双平台导出 + 直接上传 zip |
 
 产物用内部代号 `hook3d`（已移除 B 包候选名）：`build/windows/hook3d.exe`（+ `.pck`）、`build/web/index.html`（+ `.wasm` / `.pck` / `.js`）。本机 git 智能 HTTP 不通，建 tag 实际走 GitHub API：
@@ -91,15 +91,17 @@ git tag v0.1.0 && git push origin v0.1.0     # 触发 Build & Release
 ```
 .
 ├── .github/workflows/     ci.yml / build-release.yml
-├── project.godot          Godot 4 项目配置（config/version = 0.2.0，main_scene = m2.tscn）
+├── project.godot          Godot 4 项目配置（config/version = 0.3.0，main_scene = m3.tscn）
 ├── export_presets.cfg     Windows / Web 导出预设
-├── scenes/                m2.tscn（M2 主场景）、m1.tscn（M1 原型，保留）、boot.tscn（M0 骨架，保留）
-├── scripts/m2/            m2_data / m2_actor / m2_player / m2_enemy / m2_arena
+├── scenes/                m3.tscn（M3 主场景）、m2.tscn（M2 沙盒，保留）、m1.tscn（M1 原型，保留）、boot.tscn（M0 骨架，保留）
+├── scripts/m3/            m3_data / m3_stage_runner / m3_wave_director / m3_player_manager / m3_timer / m3_score / m3_hud / m3_arena
+├── scripts/m2/            m2_data / m2_actor / m2_player / m2_enemy / m2_arena（M3 复用，不改）
 ├── scripts/m1/            m1_data / m1_actor / m1_player / m1_enemy / m1_arena（保留）
-├── data/                  17 个 JSON：角色/敌人/Boss/道具/关卡/规则/内容包
+├── data/                  18 个 JSON：角色/敌人/Boss/道具/关卡/规则/内容包/HUD
 │   ├── combat_m1.json             M1 战斗帧表
 │   ├── combat_m2.json             M2 招式与判定帧表
 │   ├── enemies.json               七类敌人模板与 AI 参数
+│   ├── hud_m3.json                M3 HUD 布局与飞鹰参数
 │   └── packs/internal_reference/names_a.json   A 包忠实对照名
 ├── assets/packs/internal_reference/   唯一内容包（后续填充自制/重制资产）
 ├── tools/                 validate_data.js、serve_web.py
@@ -115,6 +117,6 @@ git tag v0.1.0 && git push origin v0.1.0     # 触发 Build & Release
 - 不把原作截图、原声音乐、原始像素美术等第三方素材提交进仓库；内容包只放自制/重制资产与对照文本。
 - 不部署 GitHub Pages 或任何公开站点；Release 产物仅私有仓库协作者可下载。
 
-## 下一步（M3，不再等确认）
+## 下一步（M4，不再等确认）
 
-关卡框架（六关动线）、完整 HUD、TIME / 飞鹰阈值、分数、1–4 人中途加入、投币续关与无限循环。规格见设计报告 **9.10.12** 起，交付后升 **V0.3.0**。
+Stage 1–2 完整：码头/雪原场景、BUTCHER/JASON 演出、蜂窝/笼子/铁球/鸡群等关卡元素。规格见设计报告 **9.10.13** 起，交付后升 **V0.4.0**。

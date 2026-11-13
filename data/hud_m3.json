@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "note": "M3 HUD 布局、飞鹰视觉参数与颜色。数值均由此文件驱动，脚本不硬编码。",
+  "hud": {
+    "hp_bar_width": 2.0,
+    "hp_bar_height": 0.18,
+    "hp_bar_gap": 0.05,
+    "time_bar_width": 4.0,
+    "time_bar_height": 0.2,
+    "score_font_size": 20,
+    "loop_font_size": 16,
+    "lives_icon_size": 0.25,
+    "lives_icon_gap": 0.06,
+    "player_indicator_size": 0.22,
+    "stack_start_x": -6.0,
+    "stack_start_y": 2.6,
+    "stack_row_gap": 0.5
+  },
+  "eagle": {
+    "color": [0.9, 0.85, 0.6],
+    "warning_color": [0.9, 0.3, 0.2],
+    "push_warning_frames": 30,
+    "appear_duration_frames": 40,
+    "fade_out_frames": 20
+  },
+  "colors": {
+    "hp_bar": [0.2, 0.8, 0.3],
+    "hp_bar_low": [0.9, 0.2, 0.2],
+    "time_bar": [0.9, 0.8, 0.2],
+    "time_bar_low": [0.9, 0.3, 0.2],
+    "score": [0.95, 0.95, 0.95],
+    "loop": [0.6, 0.8, 1.0],
+    "player_p1": [0.9, 0.2, 0.2],
+    "player_p2": [0.2, 0.6, 0.9],
+    "player_p3": [0.3, 0.9, 0.4],
+    "player_p4": [0.9, 0.7, 0.2]
+  }
+}

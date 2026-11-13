@@ -50,7 +50,7 @@ jobs:
           echo "internal-only policy and version gate OK"
 
   selftest:
-    name: Godot M2 headless selftest
+    name: Godot M3 headless selftest
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -65,19 +65,19 @@ jobs:
           chmod +x .godot-bin/Godot_v4.3-stable_linux.x86_64
 
       # A fresh checkout has no .godot/ global class cache; without this pass
-      # class_name references (M2Actor / M2Player / M2Data) fail to resolve.
+      # class_name references (M2Actor / M2Player / M2Data / M3StageRunner …) fail to resolve.
       - name: Import project and register global classes
         shell: bash
         run: ./.godot-bin/Godot_v4.3-stable_linux.x86_64 --headless --editor --path . --quit
 
-      - name: Run M2 logic assertions
+      - name: Run M3 logic assertions
         shell: bash
         run: |
           set -euo pipefail
           ./.godot-bin/Godot_v4.3-stable_linux.x86_64 --headless --path . --quit-after 900 -- --selftest 2>&1 | tee selftest.log
           grep -q "SELFTEST PASS" selftest.log
           if grep -q "SELFTEST FAIL" selftest.log || grep -q "SCRIPT ERROR" selftest.log; then
-            echo "::error::M2 selftest reported failures"
+            echo "::error::M3 selftest reported failures"
             exit 1
           fi
-          echo "M2 selftest: 30 assertions passed"
+          echo "M3 selftest: 42 assertions passed"
