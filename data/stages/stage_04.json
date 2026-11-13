@@ -8,12 +8,13 @@
   "approx_duration": "4:54",
   "visual_confirmed": ["浅蓝冰面与裂纹雪粒", "浮冰", "远处尖冰山", "深蓝海面", "横贯背景的巨大船体（金饰带 / 红舷线 / 成排炮门 / 上层栏杆）", "场景右侧一只冰原海鸟"],
   "segments": [
-    {"id": "4-A", "name": "冰面推进", "waves": [], "waves_verified": false, "props": ["浮冰"], "hidden_points": [], "status": "visual_confirmed_waves_pending"},
-    {"id": "4-B", "name": "船体前", "waves": [], "waves_verified": false, "props": ["巨型船体背景"], "hidden_points": [], "status": "visual_confirmed_waves_pending"},
-    {"id": "4-C", "name": "Boss 冰场", "waves": [], "waves_verified": false, "props": ["冰柱（可踩的临时碰撞体）", "火焰落点影子 Decal"], "hidden_points": [], "status": "visual_confirmed_waves_pending"}
+    {"id": "4-A", "name": "冰面推进", "waves": [{"id": "4A-w1", "spawns": [{"enemy": "grunt", "count": 2}, {"enemy": "flyer", "count": 1}], "max_onscreen": 4}, {"id": "4A-w2", "spawns": [{"enemy": "drunk", "count": 2}, {"enemy": "grunt", "count": 2, "variant": 2}], "max_onscreen": 4}], "waves_verified": false, "props": ["浮冰", "企鹅", "冰柱"], "spawn_props": [{"type": "penguin", "x": -2.0}, {"type": "ice_pillar", "x": 2.5}], "hidden_points": [{"id": "h4a_1", "x": 4.0, "y": 0.0}], "status": "m5_waves_filled"},
+    {"id": "4-B", "name": "船体前", "waves": [{"id": "4B-w1", "spawns": [{"enemy": "swordsman", "count": 1}, {"enemy": "grunt", "count": 2}], "max_onscreen": 4}, {"id": "4B-w2", "spawns": [{"enemy": "flail", "count": 1}, {"enemy": "flyer", "count": 2}], "max_onscreen": 4}], "waves_verified": false, "props": ["巨型船体背景", "冰柱 x2"], "spawn_props": [{"type": "ice_pillar", "x": -2.5}, {"type": "ice_pillar", "x": 2.0}], "hidden_points": [{"id": "h4b_1", "x": -3.5, "y": 0.0}], "status": "m5_waves_filled"},
+    {"id": "4-C", "name": "Boss 冰场", "waves": [], "waves_verified": false, "props": ["冰柱（可踩的临时碰撞体）", "火焰落点影子 Decal", "右边界实体墙"], "spawn_props": [{"type": "ice_pillar", "x": 3.0}], "hidden_points": [], "status": "m5_boss_arena"}
   ],
   "boss": {"id": "boss_04", "arena": "船前开阔冰面", "moves": ["长腿踢击", "追踪气功波", "带火从天而降", "召唤冰柱"]},
   "lighting": "冷蓝高光与冰面反射；火焰暖光对比",
+  "lighting_preset": {"sun_color": [0.7, 0.8, 0.95], "sun_intensity": 1.0, "ambient": [0.45, 0.55, 0.7], "fog": [0.75, 0.82, 0.9]},
   "audio": "冰裂 / 风啸 / 气功蓄力 / 火焰轰击",
   "camera": "冰柱生成时轻微推近；Boss 战拉远",
   "open_questions": ["冰柱生成位置与数量", "气功波速度与追踪规则", "企鹅类 NPC 是否仅为背景装饰", "火焰落点是否随机"]

@@ -8,14 +8,15 @@
   "approx_duration": "4:21",
   "visual_confirmed": ["圆木竹编甲板", "金色绳结栏杆", "两根桅柱", "帆索", "彩绘金蓝红大罐", "海面与云", "地上遗留长矛"],
   "segments": [
-    {"id": "3-A", "name": "登船甲板前段", "waves": [], "waves_verified": false, "props": ["木箱", "桅杆底座"], "hidden_points": [], "status": "visual_confirmed_waves_pending"},
-    {"id": "3-B", "name": "送长矛波", "waves": [], "waves_verified": false, "props": ["长矛 x4"], "hidden_points": [], "status": "mechanism_confirmed_count_pending"},
-    {"id": "3-C", "name": "Boss 甲板", "waves": [], "waves_verified": false, "props": ["彩绘大罐 x3"], "hidden_points": [], "status": "visual_confirmed_no_adds"}
+    {"id": "3-A", "name": "登船甲板前段", "waves": [{"id": "3A-w1", "spawns": [{"enemy": "grunt", "count": 2}, {"enemy": "drunk", "count": 1}], "max_onscreen": 4}, {"id": "3A-w2", "spawns": [{"enemy": "grunt", "count": 3, "variant": 2}], "max_onscreen": 4}], "waves_verified": false, "props": ["木箱", "桅杆底座", "彩绘大罐", "长矛"], "spawn_props": [{"type": "painted_jar", "x": 2.5}, {"type": "spear", "x": -2.0}], "hidden_points": [{"id": "h3a_1", "x": 4.0, "y": 0.0}], "status": "m5_waves_filled"},
+    {"id": "3-B", "name": "送长矛波", "waves": [{"id": "3B-w1", "spawns": [{"enemy": "spearman", "count": 2}, {"enemy": "grunt", "count": 2}], "max_onscreen": 4}, {"id": "3B-w2", "spawns": [{"enemy": "drunk", "count": 2}, {"enemy": "grunt", "count": 2, "variant": 1}], "max_onscreen": 4}], "waves_verified": false, "props": ["长矛 x4", "彩绘大罐 x2"], "spawn_props": [{"type": "spear", "x": 1.5}, {"type": "painted_jar", "x": -2.5}], "hidden_points": [{"id": "h3b_1", "x": -3.5, "y": 0.0}], "status": "m5_waves_filled"},
+    {"id": "3-C", "name": "Boss 甲板", "waves": [], "waves_verified": false, "props": ["彩绘大罐 x3", "右边界实体墙"], "spawn_props": [{"type": "painted_jar", "x": 3.0}], "hidden_points": [], "status": "m5_boss_arena"}
   ],
-  "boss": {"id": "boss_03", "arena": "甲板中央，无杂兵", "instance_count_by_players": {"1": 2, "2": 3, "3": 3, "4": 3}},
+  "boss": {"id": "boss_03", "arena": "甲板中央，假 Hook 数量随人数（1人2个/多人3个），无血条", "instance_count_by_players": {"1": 2, "2": 3, "3": 3, "4": 3}},
   "variant_japan": {"enabled": false, "note": "M5 可配置分支，用户未指定，按建议保留"},
   "defeat_sequence": "影船长消失，罐子爆炸",
   "lighting": "海面反射光，桅杆投影，云影流动",
+  "lighting_preset": {"sun_color": [1.0, 0.85, 0.6], "sun_intensity": 1.15, "ambient": [0.55, 0.5, 0.45], "fog": [0.85, 0.8, 0.7]},
   "audio": "甲板吱呀 / 海浪 / 绳索 / 罐子爆裂",
   "camera": "Boss 战拉远，保留左右边界",
   "open_questions": ["三个罐子精确位置与跳出顺序", "长矛保留进 Boss 场的判定条件", "日版分支招式细节"]

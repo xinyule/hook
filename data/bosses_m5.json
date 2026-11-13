@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "note": "M5 Boss 施工数据：假 Hook（boss_03，第 3 关 NPC 假船长，数量随人数、可互投、无血条）与 DAMON（boss_04，第 4 关真 Boss，影子预警 / 气功波 / 冰柱当墙 / 踢击）。全部数值驱动，脚本不硬编码。display_name 为原作血条/标识英文名。",
+  "bosses": {
+    "boss_03": {
+      "display_name": "FAKE_HOOK",
+      "is_fake": true,
+      "hp": 90,
+      "half_width": 0.45,
+      "visual_height": 1.7,
+      "color": [0.85, 0.2, 0.2],
+      "count_by_players": {"1": 2, "2": 3, "3": 3, "4": 3},
+      "moves": {
+        "slash": {
+          "windup_frames": 12,
+          "active_frames": 6,
+          "recover_frames": 22,
+          "reach_m": 1.0,
+          "damage": 8,
+          "knockback_m": 1.2
+        }
+      },
+      "ai": {
+        "approach_speed_mps": 1.8,
+        "attack_range_m": 1.0
+      },
+      "defeat_sequence": {
+        "type": "fake_hook_disappear",
+        "disappear_frames": 30
+      }
+    },
+    "boss_04": {
+      "display_name": "DAMON",
+      "is_fake": false,
+      "hp": 620,
+      "half_width": 0.55,
+      "visual_height": 2.0,
+      "color": [0.7, 0.75, 0.85],
+      "moves": {
+        "kick": {
+          "windup_frames": 14,
+          "active_frames": 8,
+          "recover_frames": 22,
+          "reach_m": 1.2,
+          "damage": 16,
+          "knockback_m": 2.0
+        },
+        "ki_wave": {
+          "windup_frames": 20,
+          "active_frames": 4,
+          "recover_frames": 30,
+          "range_m": 6.0,
+          "damage": 14,
+          "knockback_m": 1.5
+        },
+        "ice_pillar": {
+          "windup_frames": 16,
+          "active_frames": 6,
+          "recover_frames": 28,
+          "range_m": 4.0,
+          "damage": 10,
+          "knockback_m": 0.0
+        }
+      },
+      "ai": {
+        "approach_speed_mps": 1.5,
+        "attack_range_m": 1.2,
+        "shadow_warning_frames": 18,
+        "ki_wave_interval_frames": 240,
+        "ice_pillar_interval_frames": 300,
+        "ki_wave_speed_mps": 8.0,
+        "ki_wave_radius_m": 0.5
+      },
+      "defeat_sequence": {
+        "type": "ki_backfire",
+        "duration_frames": 90,
+        "ice_collapse": true
+      }
+    }
+  },
+  "boss_bar": {
+    "width_m": 6.0,
+    "height_m": 0.22,
+    "x_ratio": 0.5,
+    "y_ratio": 0.92,
+    "name_font_size": 16
+  }
+}

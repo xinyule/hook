@@ -50,7 +50,7 @@ jobs:
           echo "internal-only policy and version gate OK"
 
   selftest:
-    name: Godot M4 headless selftest
+    name: Godot M5 headless selftest
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:

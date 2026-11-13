@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "note": "M5 场景机关与道具施工数据：假 Hook 投掷互投、彩绘大罐爆炸、长矛投掷与互投、冰柱可踩反跳、企鹅彩蛋与隐藏点、冰面反跳。全部数值驱动，脚本不硬编码。",
+  "fake_hook": {
+    "throw_range_m": 3.0,
+    "throw_damage": 18,
+    "throw_knockback_m": 2.5,
+    "throw_land_radius_m": 1.2
+  },
+  "painted_jar": {
+    "hp": 18,
+    "score": 250,
+    "explode_radius_m": 1.8,
+    "explode_damage": 12,
+    "explode_knockback_m": 2.5,
+    "explode_shake": 0.6
+  },
+  "spear": {
+    "throw_range_m": 5.0,
+    "damage": 8,
+    "knockback_m": 1.5,
+    "score": 150
+  },
+  "ice_pillar": {
+    "hp": 20,
+    "score": 200,
+    "standable": true,
+    "bounce_height_m": 1.2,
+    "width_m": 0.6
+  },
+  "penguin": {
+    "hp": 10,
+    "score": 300,
+    "hidden_point_score": 500,
+    "waddle_speed_mps": 0.6
+  },
+  "ice_surface": {
+    "bounce_on_land": true,
+    "bounce_height_m": 0.8
+  },
+  "break_attack_damage": 12
+}
