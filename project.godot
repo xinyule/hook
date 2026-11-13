@@ -2,10 +2,10 @@ config_version=5
 
 [application]
 
-config/name="Isle Reclaimed (M0 Skeleton)"
-config/description="2.5D side-scrolling beat'em up remake - M0 skeleton"
-run/main_scene="res://scenes/boot.tscn"
-config/version="0.0.1"
+config/name="hook3d (internal) - M1 prototype"
+config/description="2.5D side-scrolling faithful remake prototype - INTERNAL ONLY"
+run/main_scene="res://scenes/m1.tscn"
+config/version="0.1.0"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
 [display]
@@ -18,3 +18,8 @@ window/stretch/mode="canvas_items"
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+
+[physics]
+
+common/physics_ticks_per_second=60
+common/max_physics_steps_per_frame=8

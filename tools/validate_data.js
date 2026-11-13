@@ -62,6 +62,20 @@ if (!arcade.CreditSystem || arcade.CreditSystem.continue_by_credit !== true || !
 }
 if (arcade.CreditSystem && arcade.CreditSystem.max_players !== 4) errors.push('arcade ruleset must support 4 players');
 
+// M1 combat frame table and route A expression-layer mapping must exist.
+const combat = data['combat_m1.json'] || {};
+const attackTable = combat.attack_table || {};
+for (const a of ['Attack1', 'Attack2', 'Attack3', 'Special', 'Heavy', 'JumpAttack', 'GrabHit']) {
+  if (!attackTable[a] || !attackTable[a].total_frames || !attackTable[a].active_frame) {
+    errors.push('M1 attack table missing or incomplete: ' + a);
+  }
+}
+if (!combat.grab || combat.grab.max_hits !== 5) errors.push('M1 grab must auto-throw on hit 5');
+if (!combat.enemy_grunt) errors.push('M1 grunt AI config missing');
+if ((data['packs/internal_reference/names_a.json'] || {}).pack !== 'internal_reference') {
+  errors.push('route A faithful-name mapping missing');
+}
+
 const pending = Object.keys(data).filter(k => k.startsWith('stages/')).filter(k => data[k].verification === 'pending_frame_by_frame');
 
 console.log('files=' + files.length + ' | stages=' + stageIds.size + ' | pending_frame_review=' + pending.length);

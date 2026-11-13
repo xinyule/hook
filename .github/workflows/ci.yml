@@ -48,3 +48,36 @@ jobs:
           fi
           grep -m1 'config/version=' project.godot
           echo "internal-only policy and version gate OK"
+
+  selftest:
+    name: Godot M1 headless selftest
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Godot 4.3 headless editor
+        shell: bash
+        run: |
+          set -euxo pipefail
+          curl -fsSL --retry 3 -o godot.zip https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
+          unzip -q godot.zip -d .godot-bin
+          chmod +x .godot-bin/Godot_v4.3-stable_linux.x86_64
+
+      # A fresh checkout has no .godot/ global class cache; without this pass
+      # class_name references (M1Actor / M1Player / M1Data) fail to resolve.
+      - name: Import project and register global classes
+        shell: bash
+        run: ./.godot-bin/Godot_v4.3-stable_linux.x86_64 --headless --editor --path . --quit
+
+      - name: Run M1 logic assertions
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./.godot-bin/Godot_v4.3-stable_linux.x86_64 --headless --path . --quit-after 900 -- --selftest 2>&1 | tee selftest.log
+          grep -q "SELFTEST PASS" selftest.log
+          if grep -q "SELFTEST FAIL" selftest.log || grep -q "SCRIPT ERROR" selftest.log; then
+            echo "::error::M1 selftest reported failures"
+            exit 1
+          fi
+          echo "M1 selftest: 26 assertions passed"

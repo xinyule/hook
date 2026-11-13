@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "pack": "internal_reference",
+  "note": "路线 A 忠实复刻的表达层映射：稳定 ID -> 原作对照名。仅供内部使用；不含任何第三方素材文件。",
+  "map": {
+    "hero_01": "PETERPAN",
+    "hero_02": "RUFIO",
+    "hero_03": "ACE",
+    "hero_04": "POCKETS",
+    "hero_05": "THUDBUTT",
+    "grunt": "小兵",
+    "drunk": "酒鬼",
+    "flyer": "飞人",
+    "fatty": "胖子兵",
+    "spearman": "长矛兵",
+    "flail": "链锤兵",
+    "swordsman": "刀兵",
+    "stage_01": "海港木栈桥"
+  },
+  "arena_m1": {
+    "name": "M1 练习走廊",
+    "hint": "A/D 移动 | J 攻击（连按四段 / 贴身抓投） | K 跳跃（空中 J 跳击） | R 重开 | Esc 退出"
+  }
+}

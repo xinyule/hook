@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "note": "M1 战斗帧表与原型数值。所有值可配置，M0 逐帧复核后校准；代码不得硬编码这些数值。帧数依据设计报告 5.5。",
+  "verified": false,
+  "base_damage": 7,
+  "move_speed_mps": 4.2,
+  "jump_speed_mps": 9.0,
+  "gravity_mps2": 26.0,
+  "grab_range_m": 0.9,
+  "input_buffer_frames": 3,
+  "screen_half_width_m": 7.6,
+  "attack_table": {
+    "Attack1": {"total_frames": 8, "active_frame": 3, "damage_mult": 1.0, "knockback_m": 0.6, "next": "Attack2", "heavy": false},
+    "Attack2": {"total_frames": 9, "active_frame": 3, "damage_mult": 1.0, "knockback_m": 0.6, "next": "Attack3", "heavy": false},
+    "Attack3": {"total_frames": 10, "active_frame": 4, "damage_mult": 1.2, "knockback_m": 0.8, "next": "Attack4", "heavy": false},
+    "Special": {"total_frames": 16, "active_frame": 6, "damage_mult": 1.8, "knockback_m": 1.6, "next": "", "heavy": false},
+    "Heavy": {"total_frames": 22, "active_frame": 9, "damage_mult": 2.2, "knockback_m": 2.4, "next": "", "heavy": true},
+    "JumpAttack": {"total_frames": 12, "active_frame": 3, "damage_mult": 1.4, "knockback_m": 1.0, "next": "", "heavy": false},
+    "GrabHit": {"total_frames": 9, "active_frame": 3, "damage_mult": 0.6, "knockback_m": 0.0, "next": "", "heavy": false}
+  },
+  "grab": {
+    "max_hits": 5,
+    "throw_damage_mult": 2.5,
+    "throw_vx_mps": 7.0,
+    "throw_vy_mps": 6.0,
+    "wall_bounce_count": 1,
+    "note": "第 5 下自动投出；撞墙反弹一次以保留原作卡位打法"
+  },
+  "enemy_grunt": {
+    "speed_mps": 2.2,
+    "attack_range_m": 0.9,
+    "windup_frames": 6,
+    "attack_frames": 4,
+    "recover_frames": 20,
+    "damage": 5,
+    "knockback_m": 0.8,
+    "backoff_m": 0.5,
+    "note": "3.6 小兵：血极少、出招速度全场最快、匕首斜划"
+  },
+  "variant_colors": {
+    "white_blue": [0.92, 0.94, 0.98],
+    "blue_white": [0.25, 0.45, 0.85],
+    "green_red": [0.35, 0.70, 0.40]
+  }
+}
