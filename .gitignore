@@ -5,7 +5,9 @@ build/
 dist/
 .godot-bin/
 godot-templates/
-assets/packs/internal_reference/
+# Third-party original artwork / music / screenshots must never be committed.
+assets/packs/internal_reference/*.psd
+assets/packs/internal_reference/refs/
 
 # Local engine downloads, build logs and credentials (never committed)
 *.zip

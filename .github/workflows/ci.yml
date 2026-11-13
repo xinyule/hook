@@ -25,13 +25,17 @@ jobs:
       - name: Validate data-driven configs
         run: node tools/validate_data.js
 
-      - name: Content pack and artifact policy
+      - name: Internal-only and artifact policy
         shell: bash
         run: |
           set -euo pipefail
-          # A-pack (internal reference) must never enter the repository or an export.
-          if [ -d assets/packs/internal_reference ]; then
-            echo "::error::internal reference pack found in repository"
+          # Route A is single-track and internal-only; a public/B pack must not return.
+          if [ -d assets/packs/public ]; then
+            echo "::error::public pack directory found (route B cancelled)"
+            exit 1
+          fi
+          if ! grep -Eq '"public_release"[[:space:]]*:[[:space:]]*false' data/packs/pack_manifest.json; then
+            echo "::error::route A must stay internal-only"
             exit 1
           fi
           if [ -d export ] || [ -d build ]; then
@@ -43,4 +47,4 @@ jobs:
             exit 1
           fi
           grep -m1 'config/version=' project.godot
-          echo "pack policy and version gate OK"
+          echo "internal-only policy and version gate OK"

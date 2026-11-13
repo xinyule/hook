@@ -11,7 +11,7 @@ permissions:
 env:
   GODOT_VERSION: '4.3-stable'
   GODOT_RELEASE_BASE: 'https://github.com/godotengine/godot/releases/download/4.3-stable'
-  PRODUCT: 'IsleReclaimed'
+  PRODUCT: 'hook3d'
   VERSION_LABEL: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('dev-{0}', github.run_number) }}
 
 jobs:
@@ -23,6 +23,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - name: Remove stale release (idempotent)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euxo pipefail
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release delete "$TAG" --repo "$GITHUB_REPOSITORY" --yes
+          fi
       - name: Create prerelease
         shell: bash
         env:
@@ -30,7 +40,9 @@ jobs:
           TAG: ${{ github.ref_name }}
         run: |
           set -euxo pipefail
-          printf '%s\n' "## ${TAG} — M0 Skeleton" "" \
+          printf '%s\n' "## ${TAG} — M0 Skeleton (internal)" "" \
+            "INTERNAL ONLY - route A faithful remake. Do not publish, share or redistribute." \
+            "This repository and its releases are private by design; GitHub Pages is deliberately not used." "" \
             "Automated Godot 4.3 export from tag ${TAG}." "" \
             "Artifacts:" \
             "- Windows x86_64: zipped exe + pck" \
@@ -39,7 +51,7 @@ jobs:
             "Build and data gates are enforced by .github/workflows/ci.yml." > notes.md
           gh release create "$TAG" \
             --repo "$GITHUB_REPOSITORY" \
-            --title "${TAG} — M0 Skeleton" \
+            --title "${TAG} — M0 Skeleton (internal)" \
             --notes-file notes.md \
             --prerelease \
             --verify-tag

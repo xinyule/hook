@@ -1,19 +1,18 @@
 {
-  "schema_version": 1,
-  "default_pack": "public",
-  "export_locked_pack": "public",
+  "schema_version": 2,
+  "route": "A",
+  "route_note": "忠实复刻，仅内部学习/测试；B 原创化对外路线已取消（用户 2026-11-13 变更）",
+  "distribution": "internal_only",
+  "public_release": false,
+  "default_pack": "internal_reference",
+  "export_locked_pack": "internal_reference",
   "packs": {
-    "public": {
-      "path": "res://assets/packs/public/",
-      "purpose": "对外正式版，所有导出与演示使用",
-      "in_repository": true
-    },
     "internal_reference": {
       "path": "res://assets/packs/internal_reference/",
-      "purpose": "内测对照包，仅用于与原作手感/招式/关卡逐条回归",
-      "in_repository": false,
-      "in_export": false,
-      "note": "gitignore 排除；构建脚本不得复制此目录；发布门禁扫描此路径"
+      "purpose": "唯一内容包：原作名称、造型、剧情、Boss 名、UI 的忠实对照与实现",
+      "in_repository": true,
+      "in_export": true,
+      "note": "仅存自制/重制资产与对照文本；第三方原作美术、音乐、截图等受版权保护的原始素材不入库"
     }
   },
   "replaceable_fields": [
@@ -35,9 +34,15 @@
     "story.text",
     "credits.text"
   ],
-  "shared_fields_note": "玩法、数值、关卡结构、招式表在两包之间共享同一份 data/*.json，A 包只替换表达层",
+  "shared_fields_note": "玩法、数值、关卡结构、招式表统一写在 data/*.json；内容包只负责表达层，便于后续单独替换",
   "launch_args": {
-    "pack_selector": "--pack=public|--pack=internal",
-    "default": "--pack=public"
-  }
+    "pack_selector": "--pack=internal",
+    "default": "--pack=internal"
+  },
+  "restrictions": [
+    "不得公开发布、上架、商业化或对外分发任何构建产物",
+    "不得把仓库转为 public",
+    "不得部署到公开可访问的站点（含 GitHub Pages）",
+    "不得把原作截图、原声音乐、原始像素美术等第三方素材提交进仓库"
+  ]
 }

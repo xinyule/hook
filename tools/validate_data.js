@@ -1,5 +1,5 @@
 // M0 data sanity check. Usage: node tools/validate_data.js
-// Checks JSON validity, cross-references, pack policy and IP hygiene.
+// Checks JSON validity, cross-references, pack policy and internal-only distribution.
 const fs = require('fs');
 const path = require('path');
 
@@ -21,12 +21,8 @@ for (const f of files) {
   catch (e) { errors.push('JSON parse failed: ' + path.relative(root, f) + ' -> ' + e.message); }
 }
 
-// IP hygiene: no original-work proper nouns may enter the shipped data.
-const rawAll = files.map(f => fs.readFileSync(f, 'utf8')).join('\n');
-const banned = ['PETERPAN', 'RUFIO', 'THUDBUTT', 'POCKETS', 'BUTCHER', 'JASON', 'DAMON', 'SMEE', 'IREM', 'TRI-STAR', '铁钩船长', '虎克船长'];
-for (const w of banned) {
-  if (rawAll.indexOf(w) >= 0) errors.push('IP hygiene: banned original-work term found in data/: ' + w);
-}
+// Route A (faithful remake) is internal-only. There is no public-facing build
+// to police, so the gate enforces the internal-only distribution contract instead.
 
 const chars = data['characters.json'] || {};
 const enemies = data['enemies.json'] || {};
@@ -50,11 +46,16 @@ for (const k of Object.keys(data).filter(k => k.startsWith('stages/'))) {
   }
 }
 
-if (manifest.default_pack !== 'public') errors.push('default pack must be public');
-if (manifest.export_locked_pack !== 'public') errors.push('export must be locked to public');
+// Single-track route A: exactly one content pack, internal distribution only.
+if (manifest.route !== 'A') errors.push('route must be A (B original route cancelled)');
+if (manifest.distribution !== 'internal_only') errors.push('distribution must be internal_only');
+if (manifest.public_release !== false) errors.push('public_release must be false');
+if (manifest.default_pack !== 'internal_reference') errors.push('default pack must be internal_reference');
+if (manifest.export_locked_pack !== 'internal_reference') errors.push('export must be locked to internal_reference');
+if ((manifest.packs || {}).public) errors.push('public pack must not exist (route B cancelled)');
 const internal = (manifest.packs || {}).internal_reference || {};
-if (internal.in_export !== false || internal.in_repository !== false) {
-  errors.push('internal_reference pack must be excluded from repository and export');
+if (internal.in_export !== true || internal.in_repository !== true) {
+  errors.push('internal_reference must be the shippable pack for route A');
 }
 if (!arcade.CreditSystem || arcade.CreditSystem.continue_by_credit !== true || !arcade.LoopPolicy || arcade.LoopPolicy.loop_after_final_stage !== true) {
   errors.push('arcade ruleset must keep coin-continue and infinite loop (一期保留项)');
@@ -69,4 +70,4 @@ if (errors.length) {
   errors.forEach(e => console.error('  - ' + e));
   process.exit(1);
 }
-console.log('OK: data valid, pack policy clean, arcade rules preserved, no original IP terms.');
+console.log('OK: data valid, single-track route A (internal-only), arcade rules preserved.');
