@@ -15,8 +15,39 @@ env:
   VERSION_LABEL: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('dev-{0}', github.run_number) }}
 
 jobs:
+  # Create the release shell first. Build jobs upload their zips directly to it,
+  # so no Actions artifact storage is needed (the account quota is exhausted).
+  create-release:
+    name: Create release shell
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Create prerelease
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euxo pipefail
+          printf '%s\n' "## ${TAG} — M0 Skeleton" "" \
+            "Automated Godot 4.3 export from tag ${TAG}." "" \
+            "Artifacts:" \
+            "- Windows x86_64: zipped exe + pck" \
+            "- Web: zipped static build (serve over HTTP, not file://)" "" \
+            "This is the V0.0.1 project skeleton: engine boot screen only, no gameplay logic yet." \
+            "Build and data gates are enforced by .github/workflows/ci.yml." > notes.md
+          gh release create "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "${TAG} — M0 Skeleton" \
+            --notes-file notes.md \
+            --prerelease \
+            --verify-tag
+
   build-windows:
     name: Windows x86_64
+    needs: create-release
+    if: ${{ !cancelled() && (needs.create-release.result == 'success' || needs.create-release.result == 'skipped') }}
     runs-on: windows-latest
     timeout-minutes: 60
     steps:
@@ -24,7 +55,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Validate configs
         run: node tools/validate_data.js
@@ -47,7 +78,9 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           New-Item -ItemType Directory -Force -Path build/windows | Out-Null
-          $exe = (Get-ChildItem -Path .godot-bin -Filter "*.exe" -File | Where-Object { $_.Name -notlike "*console*" } | Select-Object -First 1).FullName
+          # The portable editor .exe is a GUI-subsystem app: PowerShell returns
+          # immediately and never sets $LASTEXITCODE. Use the console wrapper.
+          $exe = (Get-ChildItem -Path .godot-bin -Filter "*console.exe" -File | Select-Object -First 1).FullName
           Write-Host "engine: $exe"
           & $exe --headless --path . --export-release "Windows Desktop" "build/windows/$env:PRODUCT.exe"
           if ($LASTEXITCODE -ne 0) { throw "Godot Windows export failed with code $LASTEXITCODE" }
@@ -64,14 +97,23 @@ jobs:
           Compress-Archive -Path "build/windows/*" -DestinationPath (Join-Path dist $name) -Force
           Get-ChildItem dist | Select-Object Name, Length
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: windows-build
-          path: dist/*.zip
-          if-no-files-found: error
+      - name: Upload to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $zip = (Get-ChildItem dist -Filter *.zip | Select-Object -First 1).FullName
+          gh --version
+          gh release upload "$env:TAG" $zip --repo "$env:GITHUB_REPOSITORY" --clobber
+          if ($LASTEXITCODE -ne 0) { throw "release upload failed with code $LASTEXITCODE" }
 
   build-web:
     name: Web
+    needs: create-release
+    if: ${{ !cancelled() && (needs.create-release.result == 'success' || needs.create-release.result == 'skipped') }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -79,7 +121,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Validate configs
         run: node tools/validate_data.js
@@ -115,44 +157,13 @@ jobs:
           (cd build/web && zip -qr "../../dist/${PRODUCT}_${VERSION_LABEL}_web.zip" .)
           ls -lh dist
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: web-build
-          path: dist/*.zip
-          if-no-files-found: error
-
-  release:
-    name: Publish GitHub Release
-    needs: [build-windows, build-web]
-    if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          path: dist
-          merge-multiple: true
-
-      - name: List artifacts
-        run: ls -lhR dist
-
-      - name: Create release
+      - name: Upload to release
+        if: startsWith(github.ref, 'refs/tags/v')
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
         run: |
           set -euxo pipefail
-          printf '%s\n' "## ${TAG} — M0 Skeleton" "" \
-            "Automated Godot 4.3 export from tag ${TAG}." "" \
-            "Artifacts:" \
-            "- Windows x86_64: zipped exe + pck" \
-            "- Web: zipped static build (serve over HTTP, not file://)" "" \
-            "This is the V0.0.1 project skeleton: engine boot screen only, no gameplay logic yet." \
-            "Build and data gates are enforced by .github/workflows/ci.yml." > notes.md
-          gh release create "$TAG" dist/*.zip \
-            --repo "$GITHUB_REPOSITORY" \
-            --title "${TAG} — M0 Skeleton" \
-            --notes-file notes.md \
-            --prerelease \
-            --verify-tag
+          gh --version
+          gh release upload "$TAG" dist/*.zip --repo "$GITHUB_REPOSITORY" --clobber
