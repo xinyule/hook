@@ -65,19 +65,19 @@ jobs:
           chmod +x .godot-bin/Godot_v4.3-stable_linux.x86_64
 
       # A fresh checkout has no .godot/ global class cache; without this pass
-      # class_name references (M2Actor / M2Player / M2Data / M3StageRunner / M4Boss …) fail to resolve.
+      # class_name references (M2Actor / M2Player / M2Data / M3StageRunner / M4Boss / M5Boss …) fail to resolve.
       - name: Import project and register global classes
         shell: bash
         run: ./.godot-bin/Godot_v4.3-stable_linux.x86_64 --headless --editor --path . --quit
 
-      - name: Run M4 logic assertions
+      - name: Run M5 logic assertions
         shell: bash
         run: |
           set -euo pipefail
           ./.godot-bin/Godot_v4.3-stable_linux.x86_64 --headless --path . --quit-after 900 -- --selftest 2>&1 | tee selftest.log
           grep -q "SELFTEST PASS" selftest.log
           if grep -q "SELFTEST FAIL" selftest.log || grep -q "SCRIPT ERROR" selftest.log; then
-            echo "::error::M4 selftest reported failures"
+            echo "::error::M5 selftest reported failures"
             exit 1
           fi
-          echo "M4 selftest: 82 assertions passed"
+          echo "M5 selftest: 102 assertions passed"
