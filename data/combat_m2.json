@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "note": "M2 战斗帧表与判定完善参数。五角色招式差异、必杀、临落地绝招、踩墙、空投、倒地追击、后摔投；Hitbox 资源化、命中去重、Hitstop 分级、震屏粒子、友伤、格挡。所有值可配置，逐帧复核后校准；代码不得硬编码。帧数依据设计报告 5.5 / 9.10.11。",
+  "verified": false,
+  "base": {
+    "move_speed_mps": 4.2,
+    "jump_speed_mps": 9.0,
+    "gravity_mps2": 26.0,
+    "grab_range_m": 0.9,
+    "input_buffer_frames": 3,
+    "screen_half_width_m": 7.6,
+    "combo_cancel_window_frames": 8,
+    "combo_slow_threshold_frames": 18
+  },
+  "character_moves": {
+    "hero_01": {
+      "display_name": "岚",
+      "role": "平衡型",
+      "attack_table": {
+        "Attack1": {"total_frames": 8, "active_frame": 3, "damage_mult": 1.0, "knockback_m": 0.6, "next": "Attack2", "heavy": false},
+        "Attack2": {"total_frames": 9, "active_frame": 3, "damage_mult": 1.0, "knockback_m": 0.6, "next": "Attack3", "heavy": false},
+        "Attack3": {"total_frames": 10, "active_frame": 4, "damage_mult": 1.2, "knockback_m": 0.8, "next": "Attack4", "heavy": false},
+        "Attack4": {"total_frames": 11, "active_frame": 4, "damage_mult": 1.3, "knockback_m": 0.9, "next": "", "heavy": false},
+        "Special": {"total_frames": 16, "active_frame": 6, "damage_mult": 1.8, "knockback_m": 1.6, "next": "", "heavy": false},
+        "Heavy": {"total_frames": 22, "active_frame": 9, "damage_mult": 2.2, "knockback_m": 2.4, "next": "", "heavy": true},
+        "JumpAttack": {"total_frames": 12, "active_frame": 3, "damage_mult": 1.4, "knockback_m": 1.0, "next": "", "heavy": false},
+        "GrabHit": {"total_frames": 9, "active_frame": 3, "damage_mult": 0.6, "knockback_m": 0.0, "next": "", "heavy": false}
+      },
+      "special": {"type": "energy_kick", "direction_controllable": true, "total_frames": 16, "active_frame": 6, "damage_mult": 1.8, "knockback_m": 1.6},
+      "ultimate": {"type": "energy_ring", "shape": "radial", "total_frames": 45, "damage_mult": 2.5, "knockback_m": 2.0},
+      "down_attack_max": 4,
+      "wall_jump": {"enabled": true, "reverse_full_screen": true},
+      "air_roll_invincible": false,
+      "jump_attack_hits_downed": false,
+      "note": "PETERPAN 原型：最易上手，踩墙二段跳可反向拉摇杆跳近乎全屏"
+    },
+    "hero_02": {
+      "display_name": "隼",
+      "role": "速攻型",
+      "attack_table": {
+        "Attack1": {"total_frames": 7, "active_frame": 3, "damage_mult": 1.0, "knockback_m": 0.5, "next": "Attack2", "heavy": false},
+        "Attack2": {"total_frames": 8, "active_frame": 3, "damage_mult": 1.0, "knockback_m": 0.5, "next": "Attack3", "heavy": false},
+        "Attack3": {"total_frames": 9, "active_frame": 4, "damage_mult": 1.1, "knockback_m": 0.7, "next": "Attack4", "heavy": false},
+        "Attack4": {"total_frames": 10, "active_frame": 4, "damage_mult": 1.2, "knockback_m": 0.8, "next": "", "heavy": false},
+        "Special": {"total_frames": 13, "active_frame": 5, "damage_mult": 1.6, "knockback_m": 1.2, "next": "", "heavy": false},
+        "Heavy": {"total_frames": 19, "active_frame": 8, "damage_mult": 2.0, "knockback_m": 2.0, "next": "", "heavy": true},
+        "JumpAttack": {"total_frames": 11, "active_frame": 3, "damage_mult": 1.3, "knockback_m": 0.9, "next": "", "heavy": false},
+        "GrabHit": {"total_frames": 8, "active_frame": 3, "damage_mult": 0.6, "knockback_m": 0.0, "next": "", "heavy": false}
+      },
+      "special": {"type": "short_slash", "range": "small", "total_frames": 13, "active_frame": 5, "damage_mult": 1.6, "knockback_m": 1.2},
+      "ultimate": {"type": "sailship_line", "direction_controllable": true, "total_frames": 40, "damage_mult": 2.3, "knockback_m": 2.0},
+      "down_attack_max": 3,
+      "wall_jump": {"enabled": false, "reverse_full_screen": false},
+      "air_roll_invincible": false,
+      "jump_attack_hits_downed": false,
+      "note": "RUFIO：出招最快、判定短，速攻型"
+    },
+    "hero_03": {
+      "display_name": "铎",
+      "role": "均衡型",
+      "attack_table": {
+        "Attack1": {"total_frames": 8, "active_frame": 3, "damage_mult": 1.0, "knockback_m": 0.6, "next": "Attack2", "heavy": false},
+        "Attack2": {"total_frames": 9, "active_frame": 3, "damage_mult": 1.0, "knockback_m": 0.6, "next": "Attack3", "heavy": false},
+        "Attack3": {"total_frames": 10, "active_frame": 4, "damage_mult": 1.2, "knockback_m": 0.8, "next": "Attack4", "heavy": false},
+        "Attack4": {"total_frames": 11, "active_frame": 4, "damage_mult": 1.3, "knockback_m": 0.9, "next": "", "heavy": false},
+        "Special": {"total_frames": 17, "active_frame": 6, "damage_mult": 1.9, "knockback_m": 1.8, "next": "", "heavy": false},
+        "Heavy": {"total_frames": 23, "active_frame": 9, "damage_mult": 2.3, "knockback_m": 2.5, "next": "", "heavy": true},
+        "JumpAttack": {"total_frames": 12, "active_frame": 3, "damage_mult": 1.4, "knockback_m": 1.0, "next": "", "heavy": false},
+        "GrabHit": {"total_frames": 9, "active_frame": 3, "damage_mult": 0.6, "knockback_m": 0.0, "next": "", "heavy": false}
+      },
+      "special": {"type": "wide_hammer", "range": "large", "total_frames": 17, "active_frame": 6, "damage_mult": 1.9, "knockback_m": 1.8},
+      "ultimate": {"type": "summon_movable_companion", "total_frames": 50, "damage_mult": 2.2, "knockback_m": 1.8},
+      "down_attack_max": 4,
+      "wall_jump": {"enabled": false, "reverse_full_screen": false},
+      "air_roll_invincible": false,
+      "jump_attack_hits_downed": false,
+      "note": "RUFF：长柄小锤范围大，小技能可召唤可移动同伴，组队向"
+    },
+    "hero_04": {
+      "display_name": "铃",
+      "role": "敏捷型",
+      "attack_table": {
+        "Attack1": {"total_frames": 9, "active_frame": 3, "damage_mult": 0.7, "knockback_m": 0.5, "next": "Attack2", "heavy": false},
+        "Attack2": {"total_frames": 10, "active_frame": 3, "damage_mult": 0.7, "knockback_m": 0.5, "next": "Attack3", "heavy": false},
+        "Attack3": {"total_frames": 11, "active_frame": 4, "damage_mult": 0.8, "knockback_m": 0.7, "next": "Attack4", "heavy": false},
+        "Attack4": {"total_frames": 12, "active_frame": 4, "damage_mult": 0.9, "knockback_m": 0.8, "next": "", "heavy": false},
+        "Special": {"total_frames": 18, "active_frame": 7, "damage_mult": 1.4, "knockback_m": 1.4, "next": "", "heavy": false, "slow_last_hit": true},
+        "Heavy": {"total_frames": 24, "active_frame": 10, "damage_mult": 1.6, "knockback_m": 2.0, "next": "", "heavy": true},
+        "JumpAttack": {"total_frames": 12, "active_frame": 3, "damage_mult": 1.0, "knockback_m": 0.9, "next": "", "heavy": false, "hits_downed": true},
+        "GrabHit": {"total_frames": 9, "active_frame": 3, "damage_mult": 0.5, "knockback_m": 0.0, "next": "", "heavy": false}
+      },
+      "special": {"type": "wide_yoyo", "range": "large", "slow_last_hit": true, "total_frames": 18, "active_frame": 7, "damage_mult": 1.4, "knockback_m": 1.4},
+      "ultimate": {"type": "spin_candy_scatter", "total_frames": 45, "damage_mult": 2.0, "knockback_m": 1.6},
+      "down_attack_max": 8,
+      "wall_jump": {"enabled": false, "reverse_full_screen": false},
+      "air_roll_invincible": true,
+      "jump_attack_hits_downed": true,
+      "note": "POCKETS：攻击最低、出招慢、空中翻滚无敌克制飞人、倒地追击 8 下、跳击可追击倒地敌人"
+    },
+    "hero_05": {
+      "display_name": "岩",
+      "role": "力量型",
+      "attack_table": {
+        "Attack1": {"total_frames": 10, "active_frame": 4, "damage_mult": 1.3, "knockback_m": 0.8, "next": "Attack2", "heavy": false},
+        "Attack2": {"total_frames": 11, "active_frame": 4, "damage_mult": 1.3, "knockback_m": 0.8, "next": "Attack3", "heavy": false},
+        "Attack3": {"total_frames": 12, "active_frame": 5, "damage_mult": 1.6, "knockback_m": 1.0, "next": "Attack4", "heavy": false},
+        "Attack4": {"total_frames": 14, "active_frame": 5, "damage_mult": 1.8, "knockback_m": 1.2, "next": "", "heavy": false},
+        "Special": {"total_frames": 20, "active_frame": 8, "damage_mult": 2.4, "knockback_m": 2.2, "next": "", "heavy": false},
+        "Heavy": {"total_frames": 28, "active_frame": 12, "damage_mult": 3.0, "knockback_m": 3.0, "next": "", "heavy": true},
+        "JumpAttack": {"total_frames": 14, "active_frame": 4, "damage_mult": 1.8, "knockback_m": 1.4, "next": "", "heavy": false},
+        "GrabHit": {"total_frames": 10, "active_frame": 3, "damage_mult": 0.8, "knockback_m": 0.0, "next": "", "heavy": false}
+      },
+      "special": {"type": "wide_sweep", "range": "large", "total_frames": 20, "active_frame": 8, "damage_mult": 2.4, "knockback_m": 2.2},
+      "ultimate": {"type": "fullscreen_scatter_beasts", "total_frames": 55, "damage_mult": 3.2, "knockback_m": 2.5},
+      "down_attack_max": 3,
+      "wall_jump": {"enabled": false, "reverse_full_screen": false},
+      "air_roll_invincible": false,
+      "jump_attack_hits_downed": false,
+      "note": "SLING：伤害最高、出招最慢，力量型"
+    }
+  },
+  "ultimate": {
+    "input": "A+B",
+    "hp_cost_percent": 8,
+    "min_hp_percent": 15,
+    "total_frames": 45,
+    "hitstop_frames": 10,
+    "knockback_m": 2.0,
+    "invincible_frames": 45,
+    "note": "消耗自身 8% 最大 HP 发动全屏大招；HP ≤ 15% 濒死状态不可发动；发动全程无敌"
+  },
+  "landing_ultimate": {
+    "input": "跳跃下落末段 A+B",
+    "window_frames": 6,
+    "total_frames": 30,
+    "damage_mult": 3.0,
+    "knockback_m": 2.0,
+    "note": "临落地绝招：落地前 6 帧窗口内同按 A+B；高手向，S5 称学会后基本无难度"
+  },
+  "wall_jump": {
+    "input": "贴墙时再按跳",
+    "bounce_count": 1,
+    "reverse_full_screen_character": "hero_01",
+    "note": "踩墙二段跳；hero_01（PETERPAN）可反向拉摇杆跳近乎整个屏幕；第四关冰柱亦可当墙"
+  },
+  "air_throw": {
+    "input": "抓住敌人 B + (←/→) + A",
+    "throw_vx_mps": 7.0,
+    "throw_vy_mps": 6.0,
+    "damage_mult": 2.8,
+    "note": "空投：加方向为向左/右投出，不加方向为下坐；被投出的敌人可撞击其他敌人"
+  },
+  "back_throw": {
+    "input": "贴近敌人 A + A + (↓/↑) + A",
+    "throw_vx_mps": 6.0,
+    "damage_mult": 2.0,
+    "note": "向后摔投：四连段末段加方向触发"
+  },
+  "downed_chase": {
+    "input": "敌人倒地后贴近连按 A",
+    "default_max": 4,
+    "pockets_max": 8,
+    "pockets_character": "hero_04",
+    "refresh_frames": 6,
+    "damage_mult": 0.7,
+    "knockback_m": 0.3,
+    "note": "倒地追击：一般角色 3-4 下，POCKETS（hero_04）可达 8 下；每次刷新 6 帧倒地持续"
+  },
+  "grab": {
+    "max_hits": 5,
+    "throw_damage_mult": 2.5,
+    "throw_vx_mps": 7.0,
+    "throw_vy_mps": 6.0,
+    "wall_bounce_count": 1,
+    "note": "抓住敌人连打 5 下自动投出；撞墙反弹一次以保留原作卡位打法（继承 M1）"
+  },
+  "hitbox": {
+    "resource_based": true,
+    "hit_dedup": true,
+    "hit_dedup_scope": "per_attack_instance",
+    "note": "Hitbox 资源化：每个招式独立配置判定框；命中去重表保证单次攻击对同一目标只结算一次"
+  },
+  "hitstop": {
+    "light_frames": 4,
+    "heavy_frames": 7,
+    "ultimate_frames": 10,
+    "note": "命中双方冻结：轻 4 帧、重 7 帧、必杀 10 帧"
+  },
+  "vfx": {
+    "screen_shake": {
+      "light_amplitude": 0.05,
+      "heavy_amplitude": 0.12,
+      "ultimate_amplitude": 0.2,
+      "duration_frames": 8
+    },
+    "particles": {
+      "hit_spark_count": 6,
+      "ultimate_burst_count": 24,
+      "max_concurrent": 1500
+    }
+  },
+  "friendly_fire": {
+    "enemy_to_enemy": true,
+    "player_to_player_configurable": true,
+    "note": "敌我友伤默认开启（酒鬼喷火/链锤起身弹开会误伤同伙）；玩家间友伤由难度预设开关控制"
+  },
+  "block": {
+    "damage_multiplier": 0.2,
+    "knockback_m": 0.3,
+    "note": "格挡：受到伤害降为 20%，轻微击退；链锤兵与刀兵会格挡"
+  }
+}

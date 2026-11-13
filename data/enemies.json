@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "note": "七类杂兵与配色变体。中文俗称均为通用词，非专有名词。波次配置在 data/stages/，此处只定义类型模板",
+  "note": "七类杂兵模板与配色变体。中文俗称均为通用词，非专有名词。波次配置在 data/stages/，此处定义类型模板与 AI 行为参数。M2 起补 ai 配置，代码不得硬编码。",
   "templates": [
     {
       "id": "grunt",
@@ -8,6 +8,18 @@
       "weapon": "匕首",
       "hp": 20,
       "tags": ["melee", "fast_startup"],
+      "ai": {
+        "speed_mps": 2.2,
+        "attack_range_m": 0.9,
+        "windup_frames": 6,
+        "attack_frames": 4,
+        "recover_frames": 20,
+        "damage": 5,
+        "knockback_m": 0.8,
+        "backoff_m": 0.5,
+        "behavior": "approach_and_slash",
+        "note": "血极少、出招速度全场最快、匕首斜划"
+      },
       "variants": [
         {"color": "white_blue", "attack": "斜划", "note": "最先登场"},
         {"color": "blue_white", "attack": "直刺"},
@@ -22,6 +34,19 @@
       "weapon": "酒瓶 / 喷火",
       "hp": 45,
       "tags": ["melee", "slow_windup", "friendly_fire", "high_damage"],
+      "ai": {
+        "speed_mps": 1.8,
+        "attack_range_m": 1.2,
+        "windup_frames": 18,
+        "attack_frames": 6,
+        "recover_frames": 28,
+        "damage": 9,
+        "knockback_m": 1.2,
+        "backoff_m": 0.4,
+        "behavior": "drink_then_attack_friendly_fire",
+        "ranged_attack": {"type": "fire_breath", "range_m": 3.0, "damage": 7, "windup_frames": 24},
+        "note": "喝一口酒后发动酒瓶袭击或喷火，招式误伤同伙"
+      },
       "variants": [
         {"color": "blue", "attack": "喝酒后酒瓶袭击，误伤同伙"},
         {"color": "green", "attack": "喝酒后喷火，误伤同伙"},
@@ -36,6 +61,21 @@
       "weapon": "双飞刀",
       "hp": 25,
       "tags": ["aerial", "fast", "ranged"],
+      "ai": {
+        "speed_mps": 2.8,
+        "attack_range_m": 1.5,
+        "windup_frames": 8,
+        "attack_frames": 5,
+        "recover_frames": 16,
+        "damage": 6,
+        "knockback_m": 1.0,
+        "backoff_m": 0.3,
+        "behavior": "aerial_approach_and_throw",
+        "fly_height_m": 2.5,
+        "jump_attack": {"type": "spin_kick", "damage": 8, "knockback_m": 1.4},
+        "ranged_attack": {"type": "knife_throw", "range_m": 4.0, "damage": 5, "count": 3},
+        "note": "空中行动，跳起旋转/飞脚/连掷飞刀；hero_04 空中翻滚无敌可克制"
+      },
       "variants": [
         {"color": "green", "attack": "跳起空中旋转"},
         {"color": "purple", "attack": "跳起飞脚"},
@@ -50,6 +90,20 @@
       "weapon": "叉子",
       "hp": 90,
       "tags": ["tanky", "slow", "high_damage", "grapple"],
+      "ai": {
+        "speed_mps": 1.5,
+        "attack_range_m": 1.1,
+        "windup_frames": 22,
+        "attack_frames": 7,
+        "recover_frames": 32,
+        "damage": 12,
+        "knockback_m": 1.5,
+        "backoff_m": 0.3,
+        "behavior": "slow_approach_grapple_or_stab",
+        "grapple": {"range_m": 1.0, "damage": 10, "throw_resistance": true},
+        "belly_press": {"damage": 14, "knockback_m": 2.0, "windup_frames": 30},
+        "note": "血厚、出招慢、伤害高，会跳抓叉捅与肚皮压，可被投出"
+      },
       "variants": [
         {"color": "green", "attack": "跳抓叉捅 / 肚皮压"},
         {"color": "red", "attack": "普攻叉人"},
@@ -63,6 +117,20 @@
       "weapon": "长矛",
       "hp": 12,
       "tags": ["ranged", "retreat_with_attack_hitbox", "fragile"],
+      "ai": {
+        "speed_mps": 3.0,
+        "attack_range_m": 3.5,
+        "windup_frames": 10,
+        "attack_frames": 4,
+        "recover_frames": 18,
+        "damage": 6,
+        "knockback_m": 0.6,
+        "backoff_m": 2.0,
+        "behavior": "throw_spear_and_retreat",
+        "ranged_attack": {"type": "spear_throw", "range_m": 5.0, "damage": 6, "projectile_speed_mps": 12.0},
+        "retreat_backflip": {"attack_hitbox": true, "damage": 5, "knockback_m": 1.0},
+        "note": "投矛后翻跟斗跑掉，翻跟斗带攻击判定；血极少但会保持距离"
+      },
       "variants": [{"color": "single", "attack": "投矛后翻跟斗跑掉，翻跟斗带攻击判定"}],
       "verified": true
     },
@@ -72,6 +140,20 @@
       "weapon": "链锤",
       "hp": 70,
       "tags": ["block", "knockback_on_getup", "friendly_fire"],
+      "ai": {
+        "speed_mps": 1.6,
+        "attack_range_m": 1.6,
+        "windup_frames": 16,
+        "attack_frames": 8,
+        "recover_frames": 26,
+        "damage": 8,
+        "knockback_m": 1.3,
+        "backoff_m": 0.4,
+        "behavior": "approach_smash_or_block",
+        "block": {"enabled": true, "chance": 0.6, "damage_multiplier": 0.2},
+        "getup_knockback": {"radius_m": 1.5, "damage": 6, "knockback_m": 1.8, "friendly_fire": true},
+        "note": "链锤砸人，会格挡；被击倒起身时弹开周围敌我并造成伤害"
+      },
       "variants": [
         {"color": "red", "attack": "链锤砸人；起身弹开周围敌我并造成伤害"},
         {"color": "blue", "attack": "链锤打人，会格挡"},
@@ -85,6 +167,20 @@
       "weapon": "长刀",
       "hp": 65,
       "tags": ["melee", "slow", "high_damage"],
+      "ai": {
+        "speed_mps": 1.7,
+        "attack_range_m": 1.3,
+        "windup_frames": 20,
+        "attack_frames": 6,
+        "recover_frames": 30,
+        "damage": 11,
+        "knockback_m": 1.4,
+        "backoff_m": 0.3,
+        "behavior": "slow_heavy_slash_or_block",
+        "block": {"enabled": true, "chance": 0.5, "damage_multiplier": 0.2},
+        "two_handed_slash": {"damage": 15, "knockback_m": 2.0, "windup_frames": 28},
+        "note": "中后期主力，单手/双手握刀，出招慢伤害高，擅长格挡极难击倒"
+      },
       "variants": [
         {"color": "blue", "attack": "单手握刀"},
         {"color": "yellow", "attack": "双手握刀为主，偶尔单手"},
@@ -93,5 +189,17 @@
       "phase": "中后期主力",
       "verified": true
     }
-  ]
+  ],
+  "variant_colors": {
+    "white_blue": [0.92, 0.94, 0.98],
+    "blue_white": [0.25, 0.45, 0.85],
+    "green_red": [0.35, 0.70, 0.40],
+    "blue": [0.25, 0.45, 0.85],
+    "green": [0.35, 0.70, 0.40],
+    "yellow": [0.95, 0.80, 0.20],
+    "purple": [0.55, 0.30, 0.75],
+    "red": [0.85, 0.25, 0.25],
+    "gray": [0.55, 0.55, 0.55],
+    "single": [0.75, 0.65, 0.45]
+  }
 }

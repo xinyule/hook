@@ -76,6 +76,57 @@ if ((data['packs/internal_reference/names_a.json'] || {}).pack !== 'internal_ref
   errors.push('route A faithful-name mapping missing');
 }
 
+// M2 combat frame tables: five-character moves, ultimate, landing ultimate,
+// wall jump, air throw, back throw, downed chase, and judgment-polish params.
+const m2 = data['combat_m2.json'] || {};
+const cm2 = m2.character_moves || {};
+const heroIds = (chars.characters || []).map(c => c.id);
+for (const hid of heroIds) {
+  const cm = cm2[hid];
+  if (!cm) { errors.push('M2 missing character move table: ' + hid); continue; }
+  const at = cm.attack_table || {};
+  for (const a of ['Attack1', 'Attack2', 'Attack3', 'Special', 'Heavy', 'JumpAttack', 'GrabHit']) {
+    if (!at[a] || !at[a].total_frames || !at[a].active_frame) {
+      errors.push('M2 attack table missing or incomplete: ' + hid + '.' + a);
+    }
+  }
+  if (!cm.special || !cm.ultimate) errors.push('M2 missing special/ultimate for ' + hid);
+  if (!cm.down_attack_max) errors.push('M2 missing down_attack_max for ' + hid);
+}
+if (heroIds.length === 5 && Object.keys(cm2).length !== 5) errors.push('M2 must define exactly 5 character move tables');
+for (const k of ['ultimate', 'landing_ultimate', 'wall_jump', 'air_throw', 'back_throw', 'downed_chase', 'grab']) {
+  if (!m2[k]) errors.push('M2 missing section: ' + k);
+}
+if (m2.ultimate && (m2.ultimate.hp_cost_percent !== 8 || m2.ultimate.min_hp_percent !== 15)) {
+  errors.push('M2 ultimate must cost 8% HP and be disabled below 15% HP');
+}
+if (m2.landing_ultimate && m2.landing_ultimate.window_frames !== 6) {
+  errors.push('M2 landing ultimate window must be 6 frames');
+}
+if (m2.downed_chase && (m2.downed_chase.default_max < 3 || m2.downed_chase.default_max > 4)) {
+  errors.push('M2 downed chase default max must be 3-4');
+}
+if (m2.downed_chase && m2.downed_chase.pockets_max !== 8) {
+  errors.push('M2 downed chase POCKETS max must be 8');
+}
+for (const k of ['hitbox', 'hitstop', 'vfx', 'friendly_fire', 'block']) {
+  if (!m2[k]) errors.push('M2 missing judgment section: ' + k);
+}
+if (m2.hitstop && (m2.hitstop.light_frames !== 4 || m2.hitstop.heavy_frames !== 7 || m2.hitstop.ultimate_frames !== 10)) {
+  errors.push('M2 hitstop tiers must be light=4 heavy=7 ultimate=10');
+}
+
+// M2 enemy AI config: every template must carry an ai block with core fields.
+const m2Enemies = enemies.templates || [];
+for (const t of m2Enemies) {
+  if (!t.ai) { errors.push('M2 enemy template missing ai config: ' + t.id); continue; }
+  const ai = t.ai;
+  for (const f of ['speed_mps', 'attack_range_m', 'windup_frames', 'attack_frames', 'recover_frames', 'damage', 'knockback_m']) {
+    if (ai[f] === undefined) errors.push('M2 enemy ' + t.id + ' ai missing field: ' + f);
+  }
+  if (!ai.behavior) errors.push('M2 enemy ' + t.id + ' ai missing behavior');
+}
+
 const pending = Object.keys(data).filter(k => k.startsWith('stages/')).filter(k => data[k].verification === 'pending_frame_by_frame');
 
 console.log('files=' + files.length + ' | stages=' + stageIds.size + ' | pending_frame_review=' + pending.length);
