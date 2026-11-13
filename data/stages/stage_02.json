@@ -8,14 +8,15 @@
   "approx_duration": "4:20",
   "visual_confirmed": ["雪地细粒", "积雪草坡与褐色土层断面", "枯树", "岩石", "木栅栏", "蓝天与远雪山", "带尖刺的金色笼子", "蜂窝道具"],
   "segments": [
-    {"id": "2-A", "name": "雪径", "waves": [], "waves_verified": false, "props": ["马蜂窝", "石头堆"], "hidden_points": [], "status": "visual_confirmed_waves_pending"},
-    {"id": "2-B", "name": "林间空场", "waves": [], "waves_verified": false, "props": ["枯树群", "简易木架"], "hidden_points": [], "status": "visual_confirmed_waves_pending"},
-    {"id": "2-C", "name": "Boss 雪场", "waves": [], "waves_verified": false, "props": ["尖刺笼子", "大铁球落点预警圈"], "hidden_points": [], "status": "visual_confirmed_waves_pending"}
+    {"id": "2-A", "name": "雪径", "waves": [{"id": "2A-w1", "spawns": [{"enemy": "grunt", "count": 3}, {"enemy": "spearman", "count": 1}], "max_onscreen": 5}, {"id": "2A-w2", "spawns": [{"enemy": "grunt", "count": 2, "variant": 1}], "max_onscreen": 4}], "waves_verified": false, "props": ["马蜂窝", "石头堆"], "spawn_props": [{"type": "honeycomb", "x": 4.0}, {"type": "crate", "x": -3.0}], "hidden_points": [{"id": "h2a_1", "x": -1.5, "y": 0.0}], "status": "m4_waves_filled"},
+    {"id": "2-B", "name": "林间空场", "waves": [{"id": "2B-w1", "spawns": [{"enemy": "drunk", "count": 2}, {"enemy": "flyer", "count": 2}, {"enemy": "fatty", "count": 1}], "max_onscreen": 5}], "waves_verified": false, "props": ["枯树群", "简易木架"], "spawn_props": [{"type": "barrel", "x": 2.5}], "hidden_points": [{"id": "h2b_1", "x": 3.0, "y": 0.0}], "status": "m4_waves_filled"},
+    {"id": "2-C", "name": "Boss 雪场", "waves": [], "waves_verified": false, "props": ["尖刺笼子", "大铁球落点预警圈"], "spawn_props": [{"type": "spike_cage", "x": 6.0}], "hidden_points": [], "status": "m4_boss_arena"}
   ],
   "boss": {"id": "boss_02", "arena": "开阔雪地，笼子位于画面右侧", "phase_2": "半血召唤大铁球"},
   "special_item": "honeycomb",
   "defeat_sequence": "被自己召唤的铁球压死",
   "lighting": "冷白晴空，雪地反光，飘雪粒子",
+  "lighting_preset": {"sun_color": [0.8, 0.85, 0.95], "sun_intensity": 1.0, "ambient": [0.6, 0.62, 0.68], "fog": [0.85, 0.88, 0.92]},
   "audio": "寒风 / 枯枝 / 沉重脚步 / 铁球轰鸣",
   "camera": "铁球砸地时震屏；保留右边界抓投循环",
   "open_questions": ["蜂窝精确位置与携带上限", "铁球阶段阈值", "段落数"]

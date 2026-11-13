@@ -40,6 +40,12 @@ func add_treasure() -> int:
 	score += gained
 	return gained
 
+## 可击碎物件计分（M4 场景物件），返回本次得分。
+func add_breakable(base: int) -> int:
+	var gained := int(base * current_multiplier())
+	score += gained
+	return gained
+
 ## 隐藏点计分（去重），返回本次得分（已收集过返回 0）。
 func add_hidden_point(point_id: String) -> int:
 	if _hidden_collected.has(point_id):

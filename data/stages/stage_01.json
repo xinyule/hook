@@ -8,13 +8,14 @@
   "approx_duration": "2:28",
   "visual_confirmed": ["木板栈桥与板缝", "绳索木栏杆与系缆桩", "茅草棚", "木桶", "蓝色波纹海面与白云", "远处针叶松", "右侧木屋与 ROOMS 类招牌", "鸡群"],
   "segments": [
-    {"id": "1-A", "name": "栈桥起点", "waves": [], "waves_verified": false, "props": ["木桶", "木箱"], "hidden_points": [], "status": "visual_confirmed_waves_pending"},
-    {"id": "1-B", "name": "木屋内外过渡", "waves": [], "waves_verified": false, "props": ["红色台面", "梯子", "吊锅", "吊起船锚"], "hidden_points": [], "status": "visual_confirmed_attribution_pending"},
-    {"id": "1-C", "name": "码头 Boss 场", "waves": [], "waves_verified": false, "props": ["右边界实体墙"], "hidden_points": [], "status": "visual_confirmed_waves_pending"}
+    {"id": "1-A", "name": "栈桥起点", "waves": [{"id": "1A-w1", "spawns": [{"enemy": "grunt", "count": 2}, {"enemy": "grunt", "count": 2, "variant": 1}], "max_onscreen": 4}], "waves_verified": false, "props": ["木桶", "木箱"], "spawn_props": [{"type": "barrel", "x": 3.0}, {"type": "crate", "x": -2.5}, {"type": "food", "x": 1.0}], "hidden_points": [{"id": "h1a_1", "x": 4.2, "y": 0.0}], "status": "m4_waves_filled"},
+    {"id": "1-B", "name": "木屋内外过渡", "waves": [{"id": "1B-w1", "spawns": [{"enemy": "drunk", "count": 2}], "max_onscreen": 4}, {"id": "1B-w2", "spawns": [{"enemy": "grunt", "count": 3, "variant": 2}], "max_onscreen": 4}], "waves_verified": false, "props": ["红色台面", "梯子", "吊锅", "吊起船锚"], "spawn_props": [{"type": "pot", "x": 2.0}, {"type": "anchor", "x": -3.0}], "hidden_points": [{"id": "h1b_1", "x": -2.0, "y": 0.0}], "status": "m4_waves_filled"},
+    {"id": "1-C", "name": "码头 Boss 场", "waves": [], "waves_verified": false, "props": ["右边界实体墙"], "spawn_props": [], "hidden_points": [], "status": "m4_boss_arena"}
   ],
   "boss": {"id": "boss_01", "arena": "码头木栈桥，右边界可卡位"},
   "defeat_sequence": "被一群灶禽狂啄",
   "lighting": "正午暖阳，蓝天，海面高光",
+  "lighting_preset": {"sun_color": [1.0, 0.95, 0.8], "sun_intensity": 1.1, "ambient": [0.5, 0.5, 0.55], "fog": [0.8, 0.85, 0.9]},
   "audio": "轻快开场曲 / 木栈脚步 / 海鸥 / 禽叫",
   "camera": "跟随质心；Boss 血条出现时拉远 15%",
   "open_questions": ["1-B 木屋内景是否属于本关", "段落数与每段屏幕宽度", "隐藏点位坐标"]

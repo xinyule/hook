@@ -396,7 +396,11 @@ func _check(cond: bool, label: String, results: Array, counters: Dictionary) -> 
 func run_selftest() -> void:
 	var results: Array = []
 	var counters := {"passed": 0, "failed": 0}
+	_m3_selftest_checks(results, counters)
+	_selftest_output(results, counters, "M3")
 
+## M3 框架层自测断言（M4 及后续阶段直接复用）。
+func _m3_selftest_checks(results: Array, counters: Dictionary) -> void:
 	## 1. 关卡数据加载。
 	stage_runner.load_stage("stage_01")
 	_check(not stage_runner.stage_data.is_empty(), "关卡 stage_01 数据加载", results, counters)
@@ -572,12 +576,12 @@ func run_selftest() -> void:
 	## 38. 周目 +1。
 	_check(loop_count == 1, "末关通关周目 +1", results, counters)
 
-	## 输出结果。
-	var summary := "M3 selftest: %d passed, %d failed" % [counters["passed"], counters["failed"]]
+## 自测结果输出（CI 门禁断言 "SELFTEST PASS" / "SELFTEST FAIL"）。
+func _selftest_output(results: Array, counters: Dictionary, prefix: String) -> void:
+	var summary := "%s selftest: %d passed, %d failed" % [prefix, counters["passed"], counters["failed"]]
 	print(summary)
 	for r in results:
 		print(r)
-	## CI 门禁（ci.yml）断言 "SELFTEST PASS" / "SELFTEST FAIL"。
 	print("SELFTEST PASS" if counters["failed"] == 0 else "SELFTEST FAIL")
 	if counters["failed"] > 0:
-		push_error("M3 selftest FAILED: %d checks" % counters["failed"])
+		push_error("%s selftest FAILED: %d checks" % [prefix, counters["failed"]])

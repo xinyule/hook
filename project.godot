@@ -2,10 +2,10 @@ config_version=5
 
 [application]
 
-config/name="hook3d (internal) - M3 stage & HUD"
-config/description="2.5D side-scrolling faithful remake - M3 stage framework & HUD - INTERNAL ONLY"
-run/main_scene="res://scenes/m3.tscn"
-config/version="0.3.0"
+config/name="hook3d (internal) - M4 Stage 1-2"
+config/description="2.5D side-scrolling faithful remake - M4 Stage 1-2 complete - INTERNAL ONLY"
+run/main_scene="res://scenes/m4.tscn"
+config/version="0.4.0"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
 [display]

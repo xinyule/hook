@@ -33,7 +33,7 @@ func setup(anode: Node3D, pman: Node3D) -> void:
 ## 载入波次列表并开始。空波次列表视为无波次，不触发段完成事件
 ##（避免与主场景 _on_segment_cleared 形成同步递归；M3 阶段占位关卡波次为空）。
 func load_waves(wave_list: Array, spawn_x: float, side: int = 1) -> void:
-	waves = wave_list
+	waves = wave_list.duplicate()
 	wave_index = 0
 	_spawn_x = spawn_x
 	_spawn_side = side
@@ -47,6 +47,7 @@ func is_active() -> bool:
 	return _active
 
 ## 开始下一波，展开 spawns 到待生成队列。
+## spawn 条目可带 "variant"（敌人配色变体，默认 0），M4 真实波次使用。
 func _start_next_wave() -> void:
 	if wave_index >= waves.size():
 		_active = false
@@ -59,8 +60,9 @@ func _start_next_wave() -> void:
 	for s in spawns:
 		var eid: String = s.get("enemy", "grunt")
 		var count: int = int(s.get("count", 1))
+		var variant: int = int(s.get("variant", 0))
 		for i in count:
-			_pending.append(eid)
+			_pending.append([eid, variant])
 	## 本波屏幕上限（wave 可覆盖全局上限）。
 	var local_cap := int(w.get("max_onscreen", _max_onscreen))
 	_max_onscreen = local_cap
@@ -73,8 +75,8 @@ func tick(dt: float) -> void:
 	## 生成敌人（受同屏上限约束）。
 	var onscreen := _count_onscreen()
 	while _pending.size() > 0 and onscreen < _max_onscreen:
-		var eid: String = _pending.pop_front()
-		_spawn_enemy(eid)
+		var entry: Array = _pending.pop_front()
+		_spawn_enemy(entry[0], int(entry[1]))
 		onscreen += 1
 	## 检测当前波是否清空。
 	if _pending.is_empty() and _wave_enemies.is_empty():
@@ -90,7 +92,7 @@ func _count_onscreen() -> int:
 	return n
 
 ## 生成单个敌人。
-func _spawn_enemy(eid: String) -> void:
+func _spawn_enemy(eid: String, variant: int = 0) -> void:
 	var tpl: Dictionary = M2Data.enemy(eid)
 	if tpl.is_empty():
 		return
@@ -99,7 +101,7 @@ func _spawn_enemy(eid: String) -> void:
 	e.name = "Wave_%s" % eid
 	## 先入树再初始化，避免 !is_inside_tree() 警告。
 	arena.add_child(e)
-	e.setup_enemy(eid, sx, 0)
+	e.setup_enemy(eid, sx, variant)
 	## 指定目标玩家（取第一个存活玩家）。
 	var target: Array = player_manager.active_players()
 	if not target.is_empty():
