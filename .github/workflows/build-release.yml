@@ -46,7 +46,8 @@ jobs:
             "Automated Godot 4.3 export from tag ${TAG}." "" \
             "Artifacts:" \
             "- Windows x86_64: zipped exe + pck" \
-            "- Web: zipped static build (serve over HTTP, not file://)" "" \
+            "- Web: zipped static build (serve over HTTP, not file://)" \
+            "- Android: zipped APK (on-screen virtual buttons)" "" \
             "Build and data gates are enforced by .github/workflows/ci.yml." > notes.md
           gh release create "$TAG" \
             --repo "$GITHUB_REPOSITORY" \
@@ -178,3 +179,75 @@ jobs:
           set -euxo pipefail
           gh --version
           gh release upload "$TAG" dist/*.zip --repo "$GITHUB_REPOSITORY" --clobber
+
+  build-android:
+    name: Android
+    needs: create-release
+    if: ${{ !cancelled() && (needs.create-release.result == 'success' || needs.create-release.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate configs
+        run: node tools/validate_data.js
+
+      - name: Install Godot editor and export templates
+        shell: bash
+        run: |
+          set -euxo pipefail
+          curl -fsSL --retry 3 -o godot.zip "$GODOT_RELEASE_BASE/Godot_v4.3-stable_linux.x86_64.zip"
+          unzip -q godot.zip -d .godot-bin
+          curl -fsSL --retry 3 -o templates.zip "$GODOT_RELEASE_BASE/Godot_v4.3-stable_export_templates.tpz"
+          unzip -q templates.zip -d godot-templates
+          dest="$HOME/.local/share/godot/export_templates/4.3.stable"
+          mkdir -p "$dest"
+          cp -r godot-templates/templates/. "$dest/"
+          chmod +x .godot-bin/Godot_v4.3-stable_linux.x86_64
+
+      - name: Install Android SDK cmdline-tools
+        shell: bash
+        run: |
+          set -euxo pipefail
+          export ANDROID_HOME="$HOME/android-sdk"
+          export ANDROID_SDK_ROOT="$ANDROID_HOME"
+          mkdir -p "$ANDROID_HOME/cmdline-tools"
+          curl -fsSL --retry 3 -o cmdtools.zip "https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip"
+          unzip -q cmdtools.zip -d "$ANDROID_HOME/cmdline-tools"
+          mv "$ANDROID_HOME/cmdline-tools/cmdline-tools" "$ANDROID_HOME/cmdline-tools/latest"
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null 2>&1 || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> "$GITHUB_ENV"
+
+      - name: Export Android build
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p build/android
+          ./.godot-bin/Godot_v4.3-stable_linux.x86_64 --headless --path . --export-release "Android" "build/android/$PRODUCT.apk"
+          ls -lh build/android
+
+      - name: Package
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p dist
+          printf 'product=%s\nversion=%s\ncommit=%s\nplatform=android\nphase=M9 internal final\n' "$PRODUCT" "$VERSION_LABEL" "$GITHUB_SHA" > build/android/BUILD_INFO.txt
+          (cd build/android && zip -qr "../../dist/${PRODUCT}_${VERSION_LABEL}_android.zip" .)
+          ls -lh dist
+
+      - name: Upload to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euxo pipefail
+          gh --version
+          gh release upload "$TAG" dist/*android*.zip --repo "$GITHUB_REPOSITORY" --clobber

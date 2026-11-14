@@ -60,7 +60,7 @@
 
 | **V0.8.0** | 2026-11-14 | **M8 平衡与完整度**：三档难度（easy / normal / hard）即时切换——敌人 HP / 伤害倍率、TIME 初值、分数倍率，在场敌人按难度实时缩放（meta 标记防重复），飞鹰扣血按难度取绝对值不累积（`m8_balance`）；五角色调优（含 RUFIO 补强）与辅助开关（自动连击辅助 / 友伤警示 / 起身无敌延长）；六关全部隐藏点登记与去重收集统计、全收集成就（`m8_treasure`，`scan()` 遍历全关卡隐藏点）；成就跟踪（条件式定义、事件驱动解锁、去重、已解锁列表查询）、练习模式（无限续关 / 静止假人 / 时间减速，不影响正式计分与成就）、最高分（按角色 + 关卡记录，`user://hook3d_highscore.json` 本地持久化，`m8_systems`）；通关 / 击败事件通知成就与最高分；`scenes/m8.tscn` 主场景。新增 `data/balance_m8.json`。复用 M2–M7 逻辑层不改。工程修复（本阶段内）：`m8_systems` 的 `get()` 覆盖 Godot 4 `Object.get(StringName)` 改 `get_highscore`；`m8_treasure` 的 `scan()` 由仅扫当前段改为遍历全关卡隐藏点（跨段点可收集）；`m8_balance` 的飞鹰扣血由累积乘倍率改为绝对值（防多次加载累积）。验收：headless 自测 **205 项全 PASS**（M7 173 + M8 32）、数据校验 28 文件通过、Windows + Web 导出零警告、导出 exe 内自测 205/205 | 报告 9.10.17；用户授权连续推进；按 9.8.2 升次版本 |
 
-| **V1.0.0** | 2026-11-14 | **M9 打包与内部定稿交付**：性能达标核查（目标 60fps / 单帧预算 16.67ms / 同屏实体上限 12 / 内存预算 2048MB，超标告警，`m9_perf`）；内部限定合规自检——仓库 private / `public_release=false` / `distribution=internal_only` / 无 GitHub Pages / 无第三方原始素材入库，逐项核查产出合规检查表（`m9_compliance`）；出招表与操作说明数据化（五角色招式 / 必杀 / 抓投 / 倒地追击 + 移动 / 攻击 / 必杀 / 加入 / 续关键位，`m9_docs`）；交付清单构建（双平台产物 / 数据文件 / 合规检查表 / 版本号一致性）；系统性彻查 28 项（五角色招式表 / 角色调优 / 必杀 / 倒地追击 / 命中停顿 / 格挡 / 友伤 / 六关 stage / 段落 / 波次 / 光照 / 隐藏点 / Boss 数据 / 七类敌人 / 机关配置 / 可玩性闭环 / 周目回环 / 版本号一致 / 全系统挂载）；`scenes/m9.tscn` 主场景。新增 `data/delivery_m9.json`。复用 M2–M8 逻辑层不改。工程修复（本阶段内）：GDScript 保留字 `pass` 不可作变量名改 `ok`；GDScript 不支持元组解包，检查函数返回 Dictionary 而非 Array；导出构建中 `project.godot` 编译进 `project.binary`，版本号读取改走 `ProjectSettings`；`Array.erase(idx)` 改 `remove_at(idx)`。验收：headless 自测 **254 项全 PASS**（M8 205 + M9 49：交付层 21 + 系统性彻查 28）、数据校验 29 文件通过、Windows + Web 导出零警告、导出 exe 内自测 254/254 | 报告 9.10.18；用户授权连续推进；按 9.8.2 升次版本。**M0–M9 全部里程碑交付完成** |
+| **V1.0.0** | 2026-11-14 | **M9 打包与内部定稿交付**：性能达标核查（目标 60fps / 单帧预算 16.67ms / 同屏实体上限 12 / 内存预算 2048MB，超标告警，`m9_perf`）；内部限定合规自检——仓库 private / `public_release=false` / `distribution=internal_only` / 无 GitHub Pages / 无第三方原始素材入库，逐项核查产出合规检查表（`m9_compliance`）；出招表与操作说明数据化（五角色招式 / 必杀 / 抓投 / 倒地追击 + 移动 / 攻击 / 必杀 / 加入 / 续关键位，`m9_docs`）；交付清单构建（三平台产物 / 数据文件 / 合规检查表 / 版本号一致性）；系统性彻查 28 项（五角色招式表 / 角色调优 / 必杀 / 倒地追击 / 命中停顿 / 格挡 / 友伤 / 六关 stage / 段落 / 波次 / 光照 / 隐藏点 / Boss 数据 / 七类敌人 / 机关配置 / 可玩性闭环 / 周目回环 / 版本号一致 / 全系统挂载）；`scenes/m9.tscn` 主场景。新增 `data/delivery_m9.json`。复用 M2–M8 逻辑层不改。工程修复（本阶段内）：GDScript 保留字 `pass` 不可作变量名改 `ok`；GDScript 不支持元组解包，检查函数返回 Dictionary 而非 Array；导出构建中 `project.godot` 编译进 `project.binary`，版本号读取改走 `ProjectSettings`；`Array.erase(idx)` 改 `remove_at(idx)`。验收：headless 自测 **254 项全 PASS**（M8 205 + M9 49：交付层 21 + 系统性彻查 28）、数据校验 29 文件通过、Windows + Web 导出零警告、导出 exe 内自测 254/254 | 报告 9.10.18；用户授权连续推进；按 9.8.2 升次版本。**M0–M9 全部里程碑交付完成** |
 
 后续每次升级在此追加一行，写明：版本号、日期、改动摘要、对应报告版本与验收结论。
 
@@ -149,8 +149,8 @@
 | 项 | 值 |
 |---|---|
 | 发布 tag | `v1.0.0` |
-| 产物 | `hook3d_v1.0.0_windows_x86_64.zip`、`hook3d_v1.0.0_web.zip` |
-| 门禁 | `validate_data.js`（29 文件 / 6 阶段 / 路线 A 单轨）+ CI `selftest` job（M9 254 项断言）+ 双平台导出 |
+| 产物 | `hook3d_v1.0.0_windows_x86_64.zip`、`hook3d_v1.0.0_web.zip`、`hook3d_v1.0.0_android.zip` |
+| 门禁 | `validate_data.js`（29 文件 / 6 阶段 / 路线 A 单轨）+ CI `selftest` job（M9 254 项断言）+ 三平台导出（Windows / Web / Android，安卓含虚拟按键） |
 | 运行方式 | 同 V0.1.0：私有 Release 下载后本机运行 exe，或内网 `tools/serve_web.py` 预览；**不启用 GitHub Pages** |
 | 说明 | 仅内部；**M0–M9 全部里程碑交付完成**。内部定稿包含性能达标核查、内部限定合规自检、出招表与操作说明、交付清单；版本 V1.0.0 为首个内部定稿版（路线 A，仅内部，不存在对外正式版） |
 

@@ -36,7 +36,7 @@ func _add_button(label: String, actions: Array, cx: float, cy: float, ultimate: 
 	btn.text = label
 	btn.custom_minimum_size = Vector2(112.0, 112.0)
 	btn.position = Vector2(cx - 56.0, cy - 56.0)
-	btn.align = Item.ALIGN_CENTER
+	## Button 默认文字居中，无需显式设置 align。
 	## 半透明深色圆角底 + 亮色描边，与游戏画面协调。
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.08, 0.08, 0.10, 0.72)
@@ -78,12 +78,12 @@ func _add_button(label: String, actions: Array, cx: float, cy: float, ultimate: 
 	add_child(btn)
 	_buttons.append({"btn": btn, "actions": actions})
 
-## 按钮按下：模拟动作按下。
+## 按钮按下：模拟动作按下（Godot 4 用 set_action_value 模拟，call 动态调用绕过静态解析）。
 func _on_pressed(actions: Array) -> void:
 	for a in actions:
-		Input.set_action_pressed(str(a))
+		Input.call("set_action_value", StringName(str(a)), 1.0)
 
 ## 按钮释放：模拟动作释放。
 func _on_released(actions: Array) -> void:
 	for a in actions:
-		Input.set_action_released(str(a))
+		Input.call("set_action_value", StringName(str(a)), 0.0)

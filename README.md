@@ -1,6 +1,6 @@
 # 2.5D 横版清关项目 · M9 内部定稿交付（V1.0.0）· 路线 A 仅内部
 
-Godot 4.3 / GL Compatibility / Windows + Web 双平台构建。
+Godot 4.3 / GL Compatibility / Windows + Web + Android 三平台构建。
 
 ## 当前状态
 
@@ -10,7 +10,7 @@ Godot 4.3 / GL Compatibility / Windows + Web 双平台构建。
 | 项目版本 | **V1.0.0**（规则与台账见 `VERSION.md`） |
 | 内容路线 | **单轨 A 忠实复刻，仅内部**；B 原创化已取消 |
 | 引擎 | Godot **4.3-stable**，免安装 ZIP，GL Compatibility，固定 60 tick |
-| 一期平台 | Windows 桌面 + Web；Android 后置 |
+| 一期平台 | Windows 桌面 + Web + Android（安卓含屏幕虚拟按键） |
 | 可玩内容 | **M2 战斗核心**（五角色 / 七类敌人 / 必杀 / 格挡 / 友伤，全部保留）+ **M3 关卡框架**（StageRunner 六关段落流式加载、WaveDirector 波次生成与同屏上限、1–4P 中途加入与命数/投币续关、TIME 计时 + 飞鹰、计分 + 周目倍率、HUD 全套、LoopManager 周目回环）+ **M4 Stage 1–2 可玩**（码头 / 雪原、BUTCHER / JASON、蜂窝 / 金笼 / 铁球 / 鸡群）+ **M5 Stage 3–4 可玩**（船甲板 / 冰海、假 Hook、DAMON、罐子爆炸、长矛互投、冰柱反跳、企鹅）+ **M6 Stage 5–6 可玩 + 六关通关结局**（船舱 / 船长室 / 决战甲板、SMEE / HOOK、运财小兵 / 炮台、Tinker Bell、鳄鱼结局）+ **M7 表现层打磨**：五角色 / 敌人 / Boss 手绘 Toon 风格化块状模型（分块 + 专属配色 + 描边）、全 VFX（命中火花 / 爆炸 / 财宝爆裂 / 六关天气粒子）、六关光照天气、程序化音频（SFX + 六关自作曲式 BGM，零外部音频文件）+ **M8 平衡与完整度**：三档难度（easy / normal / hard，敌人 HP / 伤害倍率、TIME 初值、分数倍率，在场敌人实时缩放）、五角色调优与辅助开关（自动连击辅助 / 友伤警示 / 起身无敌延长）、六关隐藏宝藏登记与去重统计、成就跟踪（条件式 / 事件驱动 / 去重）、练习模式（无限续关 / 静止假人 / 时间减速）、最高分（按角色 + 关卡，`user://` 本地持久化）+ **M9 内部定稿交付**：性能达标核查（60fps / 单帧预算 / 同屏实体上限 / 内存预算）、内部限定合规自检（仓库 private / `public_release=false` / 无 Pages / 无第三方原始素材）、出招表与操作说明数据化、交付清单构建、系统性彻查 28 项 |
 
 设计报告、原作动线表、`内容包命名对照表.md`（已归档作废）与 12 张原作参考截图属于**本地事实底稿，不入库**。本仓库只放代码、数据驱动配置、构建流水线与版本台账。
@@ -27,7 +27,7 @@ Godot 4.3 / GL Compatibility / Windows + Web 双平台构建。
 | 必杀技（A+B，扣 8% HP） | `J` + `K` 同时按 |
 | 重开、退出 | `R`、`Esc` |
 
-- **五角色**：PETERPAN / DON / JOHN / MICHAEL / POCKETS，各有独立招式表（速度、判定、倒地追击上限等差异），启动时选人。
+- **五角色**：PETERPAN / RUFIO / ACE / POCKETS / THUDBUTT，各有独立招式表（速度、判定、倒地追击上限等差异），启动时选人。
 - **四连段**：连按 `J` 四下；第 4 下按得快出 `Special`（16 帧），故意慢按出 `Heavy`（22 帧、击退大）。
 - **抓投**：贴身按 `J` 自动抓住，连按 5 下第 5 下**自动投出**；支持**空中投**与**背投**。
 - **必杀技**：`J`+`K` 同时按触发，扣 8% 当前 HP，进入必杀状态并有无敌帧；HP 低于 15% 时禁用。
@@ -45,7 +45,7 @@ Godot 4.3 / GL Compatibility / Windows + Web 双平台构建。
 1. 用任意 Godot **4.3** 编辑器打开本目录的 `project.godot`（免安装 ZIP 解压即用，不写注册表、不常驻）。
 2. F5 运行 → 3D 灰盒走廊 + 角色胶囊 + HUD。
 3. 数据自检：`node tools/validate_data.js`（28 个 JSON、交叉引用、单轨 A 内部限定、M1/M2 帧表、街机规则）。
-4. 无头逻辑自测（CI 同款，**205 项断言**）：
+4. 无头逻辑自测（CI 同款，**254 项断言**）：
 
 ```bash
 # 干净仓库需先让 Godot 建立全局类缓存
@@ -71,7 +71,7 @@ HOOK3D_WEB_PASSWORD=<口令> python tools/serve_web.py \
 
 | 工作流 | 触发 | 作用 |
 |---|---|---|
-| `.github/workflows/ci.yml` | push / PR 到 `main`、手动 | Node 数据门禁；单轨 A 内部限定；**Godot headless 205 项自测**；版本号格式 |
+| `.github/workflows/ci.yml` | push / PR 到 `main`、手动 | Node 数据门禁；单轨 A 内部限定；**Godot headless 254 项自测**；版本号格式 |
 | `.github/workflows/build-release.yml` | `v*` tag、手动 | 私有 Release 壳 + Windows x86_64 / Web 双平台导出 + 直接上传 zip |
 
 产物用内部代号 `hook3d`（已移除 B 包候选名）：`build/windows/hook3d.exe`（+ `.pck`）、`build/web/index.html`（+ `.wasm` / `.pck` / `.js`）。本机 git 智能 HTTP 不通，建 tag 实际走 GitHub API：
@@ -85,10 +85,11 @@ git tag v0.1.0 && git push origin v0.1.0     # 触发 Build & Release
 ```
 .
 ├── .github/workflows/     ci.yml / build-release.yml
-├── project.godot          Godot 4 项目配置（config/version = 0.8.0，main_scene = m8.tscn）
-├── export_presets.cfg     Windows / Web 导出预设
-├── scenes/                m8.tscn（M8 主场景）、m7.tscn（M7 主场景，保留）、m6.tscn（M6 主场景，保留）、m5.tscn（M5 主场景，保留）、m4.tscn（M4 主场景，保留）、m3.tscn（M3 主场景，保留）、m2.tscn（M2 沙盒，保留）、m1.tscn（M1 原型，保留）、boot.tscn（M0 骨架，保留）
-├── scripts/m8/            m8_data / m8_balance / m8_treasure / m8_systems / m8_arena
+├── project.godot          Godot 4 项目配置（config/version = 1.0.0，main_scene = m9.tscn）
+├── export_presets.cfg     Windows / Web / Android 导出预设
+├── scenes/                m9.tscn（M9 主场景）、m8.tscn（M8 主场景，保留）、m7.tscn（M7 主场景，保留）、m6.tscn（M6 主场景，保留）、m5.tscn（M5 主场景，保留）、m4.tscn（M4 主场景，保留）、m3.tscn（M3 主场景，保留）、m2.tscn（M2 沙盒，保留）、m1.tscn（M1 原型，保留）、boot.tscn（M0 骨架，保留）
+├── scripts/m9/            m9_data / m9_compliance / m9_perf / m9_docs / m9_touch / m9_arena
+├── scripts/m8/            m8_data / m8_balance / m8_treasure / m8_systems / m8_arena（M9 复用，不改）
 ├── scripts/m7/            m7_data / m7_visual / m7_vfx / m7_audio / m7_arena（M8 复用，不改）
 ├── scripts/m6/            m6_data / m6_boss / m6_props / m6_stage_scene / m6_arena（M7 复用，不改）
 ├── scripts/m5/            m5_data / m5_boss / m5_props / m5_stage_scene / m5_arena（M6/M7 复用，不改）
@@ -96,7 +97,7 @@ git tag v0.1.0 && git push origin v0.1.0     # 触发 Build & Release
 ├── scripts/m3/            m3_data / m3_stage_runner / m3_wave_director / m3_player_manager / m3_timer / m3_score / m3_hud / m3_arena（M4/M5/M6/M7 复用，不改）
 ├── scripts/m2/            m2_data / m2_actor / m2_player / m2_enemy / m2_arena（M3/M4/M5/M6/M7 复用，不改）
 ├── scripts/m1/            m1_data / m1_actor / m1_player / m1_enemy / m1_arena（保留）
-├── data/                  28 个 JSON：角色/敌人/Boss/道具/关卡/规则/内容包/HUD/视觉/VFX/音频/平衡
+├── data/                  29 个 JSON：角色/敌人/Boss/道具/关卡/规则/内容包/HUD/视觉/VFX/音频/平衡/交付
 │   ├── combat_m1.json             M1 战斗帧表
 │   ├── combat_m2.json             M2 招式与判定帧表
 │   ├── enemies.json               七类敌人模板与 AI 参数
@@ -111,6 +112,7 @@ git tag v0.1.0 && git push origin v0.1.0     # 触发 Build & Release
 │   ├── vfx_m7.json                M7 粒子特效与六关天气配置
 │   ├── audio_m7.json              M7 程序化 SFX 参数与 BGM 音符表
 │   ├── balance_m8.json            M8 三档难度 / 角色调优 / 辅助 / 成就 / 练习 / 最高分配置
+│   ├── delivery_m9.json           M9 性能阈值 / 合规检查项 / 出招表与操作说明
 │   ├── stages/                    六关段落与波次数据（stage_01-06 含 spawn_props / lighting_preset）
 │   └── packs/internal_reference/names_a.json   A 包忠实对照名
 ├── assets/packs/internal_reference/   唯一内容包（后续填充自制/重制资产）
@@ -127,6 +129,6 @@ git tag v0.1.0 && git push origin v0.1.0     # 触发 Build & Release
 - 不把原作截图、原声音乐、原始像素美术等第三方素材提交进仓库；内容包只放自制/重制资产与对照文本。
 - 不部署 GitHub Pages 或任何公开站点；Release 产物仅私有仓库协作者可下载。
 
-## 下一步（M9，不再等确认）
+## 项目状态
 
-打包与内部交付：最终双平台导出与性能复核、内部限定红线检查（无私有仓库外泄 / 无原作素材 / 无公开站点）、出招表与操作说明、私有 Release 交付 V0.9.0（RC）。规格见设计报告 **9.10.18** 起。
+**M0–M9 全部里程碑已交付完成，项目 V1.0.0 内部定稿。** 三平台产物（Windows / Web / Android，安卓含屏幕虚拟按键）通过私有 Release 分发；性能达标核查、内部限定合规自检、系统性彻查（人物 / 场景 / 关卡 / Boss / 战斗 / NPC / 数值一致性）254 项自测全 PASS。规格见设计报告 **9.10.18**。
