@@ -1,0 +1,55 @@
+{
+  "schema": "delivery_m9/1",
+  "note": "M9 打包与内部交付数据：性能达标阈值、内部限定合规检查项、出招表与操作说明。全部数据驱动，不硬编码。",
+  "performance": {
+    "target_fps": 60,
+    "frame_budget_ms": 16.67,
+    "max_entities_onscreen": 12,
+    "memory_budget_mb": 2048,
+    "resolution": { "width": 1920, "height": 1080 }
+  },
+  "compliance": {
+    "items": [
+      { "id": "repo_private", "label": "仓库保持私有（private）", "check": "repo_visibility", "expect": "private" },
+      { "id": "public_release_false", "label": "pack_manifest public_release=false", "check": "pack_manifest_field", "field": "public_release", "expect": false },
+      { "id": "distribution_internal", "label": "distribution=internal_only", "check": "pack_manifest_field", "field": "distribution", "expect": "internal_only" },
+      { "id": "no_github_pages", "label": "未启用 GitHub Pages 或公开站点", "check": "no_pages_config" },
+      { "id": "no_thirdparty_assets", "label": "仓库与产物无第三方原始素材（截图/原声/像素美术）", "check": "no_thirdparty_assets" }
+    ],
+    "forbidden_asset_extensions": [".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tga", ".psd", ".ogg", ".mp3", ".wav", ".mid", ".midi"]
+  },
+  "docs": {
+    "moves": [
+      { "hero_id": "hero_01", "name": "PETERPAN", "attacks": ["Attack1", "Attack2", "Attack3", "Attack4", "Special", "Heavy", "JumpAttack", "GrabHit"], "ultimate": true, "downed_chase": 4 },
+      { "hero_id": "hero_02", "name": "RUFIO", "attacks": ["Attack1", "Attack2", "Attack3", "Attack4", "Special", "Heavy", "JumpAttack", "GrabHit"], "ultimate": true, "downed_chase": 4 },
+      { "hero_id": "hero_03", "name": "ACE", "attacks": ["Attack1", "Attack2", "Attack3", "Attack4", "Special", "Heavy", "JumpAttack", "GrabHit"], "ultimate": true, "downed_chase": 4 },
+      { "hero_id": "hero_04", "name": "POCKETS", "attacks": ["Attack1", "Attack2", "Attack3", "Attack4", "Special", "Heavy", "JumpAttack", "GrabHit"], "ultimate": true, "downed_chase": 8 },
+      { "hero_id": "hero_05", "name": "THUDBUTT", "attacks": ["Attack1", "Attack2", "Attack3", "Attack4", "Special", "Heavy", "JumpAttack", "GrabHit"], "ultimate": true, "downed_chase": 4 }
+    ],
+    "controls": [
+      { "id": "move_left", "label": "左移", "keys": ["A"] },
+      { "id": "move_right", "label": "右移", "keys": ["D"] },
+      { "id": "attack", "label": "攻击（四连段，快慢分支 Special / Heavy，贴身抓投 5 下自动投出）", "keys": ["J"] },
+      { "id": "jump", "label": "跳跃（空中 J 跳击）", "keys": ["K"] },
+      { "id": "ultimate", "label": "必杀（J+K，扣 8% HP，低于 15% HP 禁用，发动全程无敌）", "keys": ["J", "K"] },
+      { "id": "join", "label": "2-4P 中途加入", "keys": ["2", "3", "4"] },
+      { "id": "coin", "label": "投币续关（命数用尽后，原分数继续）", "keys": ["5"] }
+    ],
+    "notes": [
+      "2.5D 横版清关，平面判定 + 实体屏幕边界，贴墙卡位与抓投循环成立。",
+      "TIME 归零触发飞鹰：推距 + 扣血；idle 超阈值重复触发。",
+      "六关顺序推进，末关通关后回环周目，周目倍率 1.2^n。",
+      "三档难度（easy/normal/hard）影响敌人 HP/伤害、分数倍率与 TIME 初值。",
+      "P2-P4 键位见游戏内加入提示；仅内部使用：仓库私有，禁止公开发布、上架、商业化或对外分发。"
+    ]
+  },
+  "delivery": {
+    "artifacts": [
+      { "id": "windows", "label": "Windows 桌面可执行包", "platform": "windows" },
+      { "id": "web", "label": "Web 浏览器可运行包", "platform": "web" },
+      { "id": "android", "label": "安卓 APK 包（含虚拟按键）", "platform": "android" }
+    ],
+    "version_target": "1.0.0",
+    "internal_only": true
+  }
+}
