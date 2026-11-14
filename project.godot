@@ -2,10 +2,10 @@ config_version=5
 
 [application]
 
-config/name="hook3d (internal) - M7 visual & audio polish"
-config/description="2.5D side-scrolling faithful remake - M7 visual & audio polish - INTERNAL ONLY"
-run/main_scene="res://scenes/m7.tscn"
-config/version="0.7.0"
+config/name="hook3d (internal) - M8 balance & completeness"
+config/description="2.5D side-scrolling faithful remake - M8 balance & completeness - INTERNAL ONLY"
+run/main_scene="res://scenes/m8.tscn"
+config/version="0.8.0"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
 [display]

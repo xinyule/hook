@@ -1,0 +1,52 @@
+{
+  "schema": "balance_m8/1",
+  "note": "M8 平衡定稿与完整度数据：难度三档、角色调优（含 RUFIO 补强）、辅助选项、贪分/PK、成就、练习模式、最高分约定。",
+  "difficulties": {
+    "easy": { "enemy_hp_mult": 0.8, "enemy_damage_mult": 0.7, "score_mult": 0.8, "time_initial": 120 },
+    "normal": { "enemy_hp_mult": 1.0, "enemy_damage_mult": 1.0, "score_mult": 1.0, "time_initial": 99 },
+    "hard": { "enemy_hp_mult": 1.3, "enemy_damage_mult": 1.3, "score_mult": 1.5, "time_initial": 75 }
+  },
+  "character_tuning": {
+    "hero_01": { "hp_adj": 0, "speed_mult": 1.0, "damage_mult": 1.0, "ult_hp_cost_percent": 8, "downed_hits": 4 },
+    "hero_02": { "hp_adj": 5, "speed_mult": 0.95, "damage_mult": 1.1, "ult_hp_cost_percent": 8, "downed_hits": 4 },
+    "hero_03": { "hp_adj": 0, "speed_mult": 1.1, "damage_mult": 0.95, "ult_hp_cost_percent": 8, "downed_hits": 4 },
+    "hero_04": { "hp_adj": -5, "speed_mult": 1.15, "damage_mult": 0.9, "ult_hp_cost_percent": 8, "downed_hits": 4 },
+    "hero_05": { "hp_adj": 10, "speed_mult": 0.9, "damage_mult": 1.15, "ult_hp_cost_percent": 8, "downed_hits": 8 }
+  },
+  "rufio_buff": {
+    "note": "RUFIO 补强：高速高伤补强条目，作用于敏捷型角色（hero_04），速度与伤害上调、HP 略降以平衡",
+    "target": "hero_04",
+    "speed_mult": 1.2,
+    "damage_mult": 1.1,
+    "hp_adj": -10
+  },
+  "assists": {
+    "auto_combo_assist": { "enabled": false, "combo_reset_window_seconds": 0.4 },
+    "friendly_fire_warning": { "enabled": true },
+    "extended_invincibility": { "enabled": false, "extra_frames": 20 }
+  },
+  "scoring": {
+    "combo_cap": 50,
+    "combo_decay_seconds": 1.5,
+    "time_bonus_per_second": 10,
+    "no_damage_bonus": 2000,
+    "pk_mode": { "enabled": true, "winner_bonus": 1000 }
+  },
+  "achievements": [
+    { "id": "ach_first_blood", "name": "初战告捷", "condition": "kills", "threshold": 10 },
+    { "id": "ach_combo_master", "name": "连击大师", "condition": "combo", "threshold": 30 },
+    { "id": "ach_treasure_collector", "name": "寻宝达人", "condition": "treasures", "threshold": 12 },
+    { "id": "ach_no_damage", "name": "毫发无伤", "condition": "no_damage_clear", "threshold": 1 },
+    { "id": "ach_all_heroes", "name": "全员出动", "condition": "all_heroes_clear", "threshold": 5 }
+  ],
+  "practice": {
+    "infinite_credits": true,
+    "spawn_dummy": true,
+    "dummy_hp": 9999,
+    "time_scale": 0.5
+  },
+  "highscore": {
+    "persist_path": "user://hook3d_highscore.json",
+    "key_format": "<hero_id>:<stage_id>"
+  }
+}
