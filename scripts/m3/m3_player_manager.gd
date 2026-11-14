@@ -143,16 +143,14 @@ func inject_input(slot: int, action: String) -> void:
 func register_input_actions() -> void:
 	## P1: A/D 移动 J 攻击 K 跳
 	## P2: ←/→ 移动 , 攻击 . 跳
-	## P3: I/L 移动 J 攻击 K 跳
-	## P4: T/F 移动 R 攻击 G 跳
+	## P3: I/L 移动 Z 攻击 X 跳（修复：原用 J/K 与 P1 冲突，本地多人互串）
+	## P4: T/F 移动 G 跳 R 攻击 H 跳
 	var defs := [
 		{"p1_left": KEY_A, "p1_right": KEY_D, "p1_up": KEY_W, "p1_a": KEY_J, "p1_b": KEY_K},
 		{"p2_left": KEY_LEFT, "p2_right": KEY_RIGHT, "p2_up": KEY_UP, "p2_a": KEY_COMMA, "p2_b": KEY_PERIOD},
-		{"p3_left": KEY_I, "p3_right": KEY_L, "p3_up": KEY_U, "p3_a": KEY_J, "p3_b": KEY_K},
+		{"p3_left": KEY_I, "p3_right": KEY_L, "p3_up": KEY_U, "p3_a": KEY_Z, "p3_b": KEY_X},
 		{"p4_left": KEY_T, "p4_right": KEY_F, "p4_up": KEY_G, "p4_a": KEY_R, "p4_b": KEY_H},
 	]
-	## 修正 P4 up 键（避免与攻击键冲突，用 KEY_G 作跳）。
-	defs[3]["p4_up"] = KEY_G
 	for d in defs:
 		for key in d:
 			var action_name: String = "m3_" + key

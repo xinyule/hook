@@ -20,7 +20,8 @@ var _pending: Array = []          ## 待生成的敌人模板 id 队列
 var _wave_enemies: Array = []     ## 当前波次生成的敌人引用
 var _spawn_x: float = 0.0
 var _spawn_side: int = 1
-var _max_onscreen: int = 12
+var _global_max: int = 12          ## 全局同屏上限（来自 balance.spawn）。
+var _wave_cap: int = 12            ## 当前波次上限（波数据可覆盖全局上限）。
 var _active: bool = false
 
 ## 初始化。arena 与 player_manager 由主场景注入。
@@ -28,7 +29,8 @@ func setup(anode: Node3D, pman: Node3D) -> void:
 	arena = anode
 	player_manager = pman
 	var sp: Dictionary = M2Data.balance().get("spawn", {})
-	_max_onscreen = int(sp.get("max_enemies_onscreen", 12))
+	_global_max = int(sp.get("max_enemies_onscreen", 12))
+	_wave_cap = _global_max
 
 ## 载入波次列表并开始。空波次列表视为无波次，不触发段完成事件
 ##（避免与主场景 _on_segment_cleared 形成同步递归；M3 阶段占位关卡波次为空）。
@@ -64,8 +66,9 @@ func _start_next_wave() -> void:
 		for i in count:
 			_pending.append([eid, variant])
 	## 本波屏幕上限（wave 可覆盖全局上限）。
-	var local_cap := int(w.get("max_onscreen", _max_onscreen))
-	_max_onscreen = local_cap
+	## 修复：原实现直接覆盖 _max_onscreen 且不复位，后续波次沿用上一档上限；
+	## 改为仅作用于当前波的 _wave_cap，全局上限保持不变。
+	_wave_cap = int(w.get("max_onscreen", _global_max))
 	wave_index += 1
 
 ## 每帧生成与清波检测。
@@ -74,7 +77,7 @@ func tick(dt: float) -> void:
 		return
 	## 生成敌人（受同屏上限约束）。
 	var onscreen := _count_onscreen()
-	while _pending.size() > 0 and onscreen < _max_onscreen:
+	while _pending.size() > 0 and onscreen < _wave_cap:
 		var entry: Array = _pending.pop_front()
 		_spawn_enemy(entry[0], int(entry[1]))
 		onscreen += 1
@@ -119,3 +122,5 @@ func reset() -> void:
 	_pending.clear()
 	_wave_enemies.clear()
 	_active = false
+	## 修复：复位时恢复全局同屏上限，避免上一关波次上限残留。
+	_wave_cap = _global_max

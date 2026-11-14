@@ -9,6 +9,7 @@ class_name M9Data
 static var logic_only: bool = false
 
 static var _delivery: Dictionary = {}
+static var _quality: Dictionary = {}
 
 static func _read(path: String) -> Dictionary:
 	## 导出构建中 ProjectSettings.globalize_path 返回文件系统路径，
@@ -81,3 +82,17 @@ static func artifacts() -> Array:
 ## 目标版本号。
 static func version_target() -> String:
 	return str(delivery().get("delivery", {}).get("version_target", "1.0.0"))
+
+## 画质分级数据（quality_m9.json）全量。
+static func quality() -> Dictionary:
+	if _quality.is_empty():
+		_quality = _read("res://data/quality_m9.json")
+	return _quality
+
+## 画质档位列表（低/中/高）。
+static func quality_tiers() -> Dictionary:
+	return quality().get("tiers", {})
+
+## 默认画质档。
+static func quality_default_tier() -> String:
+	return str(quality().get("default_tier", "medium"))

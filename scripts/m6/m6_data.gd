@@ -65,6 +65,10 @@ static func tinker_bell_cfg() -> Dictionary:
 static func crocodile_cfg() -> Dictionary:
 	return props_m6().get("crocodile", {})
 
+## 食物配置（回血与计分）。
+static func food_cfg() -> Dictionary:
+	return props_m6().get("food", {})
+
 ## 可击碎物件配置（type -> {hp, score}）。
 static func breakables_cfg() -> Dictionary:
 	return props_m6().get("breakables", {})

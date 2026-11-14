@@ -29,10 +29,12 @@ func _build() -> void:
 	root_panel.position = Vector2(0.0, 0.0)
 	root_panel.size = Vector2(1280.0, 720.0)
 	add_child(root_panel)
-	## 玩家 HP 条 + 命数（堆叠在左上）。
-	var sx := float(hud_cfg.get("stack_start_x", -6.0))
-	var sy := float(hud_cfg.get("stack_start_y", 2.6))
-	var row_gap := float(hud_cfg.get("stack_row_gap", 0.5))
+	## 玩家 HP 条 + 命数（堆叠在左上角）。
+	## 修复：原实现把 stack_start_x=-6.0 直接当像素坐标，HP 条落在屏幕外不可见；
+	## 改为像素坐标 + 行距按 100 倍换算，与血条尺寸缩放一致。
+	var sx := float(hud_cfg.get("stack_start_x", 20.0))
+	var sy := float(hud_cfg.get("stack_start_y", 10.0))
+	var row_gap := float(hud_cfg.get("stack_row_gap", 0.28)) * 100.0
 	var bar_w := float(hud_cfg.get("hp_bar_width", 2.0))
 	var bar_h := float(hud_cfg.get("hp_bar_height", 0.18))
 	var gap := float(hud_cfg.get("hp_bar_gap", 0.05))

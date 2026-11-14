@@ -126,10 +126,12 @@ func finish_defeat() -> void:
 		defeat_timer = 0
 
 ## 击败演出帧推进。
+## 修复：发射信号后清零 _defeat_started，避免信号每帧重复触发。
 func _tick_defeat() -> void:
 	defeat_timer -= 1
 	if defeat_timer <= 0:
 		is_dead = true
+		_defeat_started = false
 		defeat_sequence_finished.emit()
 
 ## 蜂窝连锁：被带蜂窝的玩家投出时触发（放鞭炮演出，可秒 / 打掉一管多）。
@@ -183,10 +185,9 @@ func _begin_move(name: String) -> void:
 	set_state("windup")
 	state_frames = 0
 
-## 全局命中 id 递增（M4Boss 继承 M2Actor，自行实现）。
+## 全局命中 id 递增（走 M2Actor 全局发号，跨攻击者唯一）。
 func _next_hit_id() -> int:
-	_hit_id += 1
-	return _hit_id
+	return M2Actor.next_hit_id()
 
 ## 执行招式命中判定。
 func _do_attack(arena, dir: int, mv: Dictionary) -> void:

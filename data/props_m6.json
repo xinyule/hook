@@ -28,6 +28,10 @@
     "shake": 0.7,
     "score": 2000
   },
+  "food": {
+    "heal_percent": 30,
+    "score": 100
+  },
   "breakables": {
     "crate": {"hp": 20, "score": 200},
     "barrel": {"hp": 20, "score": 200},

@@ -40,6 +40,9 @@ func reset() -> void:
 func tick(dt: float, arena: Node3D, player_manager: Node3D) -> void:
 	if eagle_cooldown > 0.0:
 		eagle_cooldown -= dt
+	## 修复：警示帧原设置后从不递减（死代码），此处正常递减供 HUD 警示展示。
+	if eagle_warning_frames > 0:
+		eagle_warning_frames -= 1
 	time_value -= decrement_per_second * dt
 	if time_value <= 0.0:
 		time_value = 0.0

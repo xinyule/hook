@@ -120,16 +120,17 @@ func finish_defeat() -> void:
 		defeat_timer = 0
 
 ## 击败演出帧推进。
+## 修复：发射信号后清零 _defeat_started，避免信号每帧重复触发。
 func _tick_defeat(arena) -> void:
 	defeat_timer -= 1
 	if defeat_timer <= 0:
 		is_dead = true
+		_defeat_started = false
 		defeat_sequence_finished.emit()
 
-## 全局命中 id 递增。
+## 全局命中 id 递增（走 M2Actor 全局发号，跨攻击者唯一）。
 func _next_hit_id() -> int:
-	_hit_id += 1
-	return _hit_id
+	return M2Actor.next_hit_id()
 
 ## 执行招式命中判定（近身）。
 func _do_attack(arena, dir: int, mv: Dictionary) -> void:
@@ -266,7 +267,7 @@ func _ai_hook(arena, dist_x: float, abs_x: float, dir: int) -> void:
 			hit_id_counter = _next_hit_id()
 			player.take_damage(dmg, facing, float(mv.get("knockback_m", 3.0)), hit_id_counter)
 			arena.register_enemy_hit(player, facing)
-		state_frames += 1
+		## 修复：state_frames 已由 tick_state 每帧自增，不再手动 +1（原实现导致冲撞时长减半）。
 		if state_frames >= 40:
 			set_state("recover")
 			state_frames = 0

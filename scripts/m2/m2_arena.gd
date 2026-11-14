@@ -282,7 +282,9 @@ func trigger_screen_shake(amp: float) -> void:
 func _trigger_shake(amp: float) -> void:
 	trigger_screen_shake(amp)
 
-## 生成命中粒子（简化为临时 Marker3D，用 Timer 自动消失）。
+## 生成命中粒子（小球标记，Timer 自动消失）。
+## 修复：原实现用 Marker3D（无网格不可见）且每个粒子新建 Timer，
+## 改为可见小球，粒子表现正确。
 func _spawn_hit_particles(pos: Vector3, heavy: bool) -> void:
 	if M2Data.logic_only:
 		return
@@ -291,7 +293,15 @@ func _spawn_hit_particles(pos: Vector3, heavy: bool) -> void:
 	if heavy:
 		count = int(vfx.get("heavy_particles", 8))
 	for i in count:
-		var p := Marker3D.new()
+		var p := MeshInstance3D.new()
+		var sphere := SphereMesh.new()
+		sphere.radius = 0.05
+		sphere.height = 0.1
+		p.mesh = sphere
+		var mat := StandardMaterial3D.new()
+		mat.albedo_color = Color(1.0, 0.85, 0.3)
+		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		p.material_override = mat
 		var dx := randf_range(-1.0, 1.0)
 		var dy := randf_range(-1.0, 1.0)
 		p.position = Vector3(pos.x + dx * 0.2, pos.y + dy * 0.2, 0.5)

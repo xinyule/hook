@@ -78,12 +78,21 @@ func _add_button(label: String, actions: Array, cx: float, cy: float, ultimate: 
 	add_child(btn)
 	_buttons.append({"btn": btn, "actions": actions})
 
-## 按钮按下：模拟动作按下（Godot 4 用 set_action_value 模拟，call 动态调用绕过静态解析）。
+## 按钮按下：模拟动作按下。
+## 修复：原实现用 Input.set_action_value，该方式不产生 just_pressed 事件，
+## 游戏逻辑用 Input.is_action_just_pressed 检测，会导致触摸按键无响应。
+## 改用 InputEventAction + parse_input_event，走正常输入管线，just_pressed 生效。
 func _on_pressed(actions: Array) -> void:
 	for a in actions:
-		Input.call("set_action_value", StringName(str(a)), 1.0)
+		var ev := InputEventAction.new()
+		ev.action = StringName(str(a))
+		ev.pressure = 1.0
+		Input.parse_input_event(ev)
 
 ## 按钮释放：模拟动作释放。
 func _on_released(actions: Array) -> void:
 	for a in actions:
-		Input.call("set_action_value", StringName(str(a)), 0.0)
+		var ev := InputEventAction.new()
+		ev.action = StringName(str(a))
+		ev.pressure = 0.0
+		Input.parse_input_event(ev)

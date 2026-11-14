@@ -138,14 +138,14 @@ func _explode_jar(rec: Dictionary) -> void:
 			continue
 		if abs(e.global_position.x - rec.x) <= radius:
 			var dir: int = 1 if rec.x >= e.global_position.x else -1
-			e.take_damage(dmg, dir, kb, 950 + int(rec.x))
+			e.take_damage(dmg, dir, kb, M2Actor.next_hit_id())
 	## 伤害范围内玩家。
 	var pm: M3PlayerManager = arena.player_manager
 	if pm != null:
 		for p in pm.active_players():
 			if abs(p.global_position.x - rec.x) <= radius:
 				var dir2: int = 1 if rec.x >= p.global_position.x else -1
-				p.take_damage(dmg, dir2, kb, 960 + int(rec.x))
+				p.take_damage(dmg, dir2, kb, M2Actor.next_hit_id())
 	rec.node.queue_free()
 	prop_records.erase(rec)
 
@@ -179,10 +179,12 @@ func resolve_spear_hit(x: float, dmg: int, kb: float) -> void:
 			continue
 		if abs(e.global_position.x - x) <= 0.8:
 			var dir: int = 1 if x >= e.global_position.x else -1
-			e.take_damage(dmg, dir, kb, 970 + int(x))
+			e.take_damage(dmg, dir, kb, M2Actor.next_hit_id())
 
 ## 冰柱可踩反跳检测：玩家落在冰柱顶部触发反跳。
 ## 返回 true 表示已处理（玩家被设为反跳）。
+## 修复：原实现 p.vy = bounce_height_m（1.2 m/s），相对跳跃速度 9.0 几乎不抬起玩家，
+## 反跳玩法失效。改为按重力与配置高度换算初速 v=√(2gh)，数据驱动。
 func check_ice_bounce(p: Node3D) -> bool:
 	if not bool(M5Data.ice_surface_cfg().get("bounce_on_land", true)):
 		return false
@@ -191,9 +193,10 @@ func check_ice_bounce(p: Node3D) -> bool:
 			continue
 		if abs(p.global_position.x - b.x) <= float(M5Data.ice_pillar_cfg().get("width_m", 0.6)):
 			if p.global_position.y >= b.top_y - 0.1 and p.global_position.y <= b.top_y + 0.3:
-				## 触发反跳：给玩家向上速度。
-				var bounce: float = float(M5Data.ice_pillar_cfg().get("bounce_height_m", 1.2))
-				p.vy = bounce
+				## 触发反跳：按配置高度与重力换算向上初速。
+				var bounce_h: float = float(M5Data.ice_pillar_cfg().get("bounce_height_m", 1.2))
+				var g: float = float(M2Data.m2_base().get("gravity", 26.0))
+				p.vy = sqrt(2.0 * g * bounce_h)
 				p.on_floor = false
 				return true
 	return false

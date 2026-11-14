@@ -70,6 +70,9 @@ func current_hitbox() -> Rect2:
 func tick(dt: float, arena: Node) -> void:
 	tick_state()
 	_decay_input()
+	## 落地必杀窗口逐帧递减（窗口在落地瞬间由 on_land 开启）。
+	if landing_ultimate_window > 0:
+		landing_ultimate_window -= 1
 	if is_thrown:
 		integrate(dt)
 		return
@@ -170,7 +173,7 @@ func _downed_hit(arena: Node) -> void:
 		if e.is_dead:
 			continue
 		if hb.intersects(e.hurtbox()):
-			hit_id_counter += 1
+			hit_id_counter = M2Actor.next_hit_id()
 			e.take_damage(8, facing, 0.8, hit_id_counter)
 			arena.register_hit(e, facing)
 
@@ -229,7 +232,7 @@ func _advance_attack(arena: Node) -> void:
 					continue
 				if hb.intersects(e.hurtbox()):
 					hit_enemies.append(e)
-					hit_id_counter += 1
+					hit_id_counter = M2Actor.next_hit_id()
 					var dmg := int(float(e.max_hp) * 0.12 * float(mv.get("damage_mult", 1.0)))
 					var kb := float(mv.get("knockback_m", 1.0))
 					e.take_damage(dmg, facing, kb, hit_id_counter)
@@ -264,7 +267,7 @@ func _advance_grab(arena: Node) -> void:
 		grab_hits += 1
 		var dmg := int(float(grab_target.max_hp) * 0.06)
 		grab_target.take_damage(dmg, facing, 0.3, hit_id_counter)
-		hit_id_counter += 1
+		hit_id_counter = M2Actor.next_hit_id()
 		arena.register_hit(grab_target, facing, 1.0)
 	if grab_hits >= max_hits:
 		_throw_target(arena)
@@ -278,7 +281,7 @@ func _throw_target(arena: Node) -> void:
 	var dmg_mult := float(cfg.get("throw_damage_mult", 2.5))
 	var dmg := int(float(grab_target.max_hp) * 0.10 * dmg_mult)
 	grab_target.take_damage(dmg, facing, 4.0, hit_id_counter)
-	hit_id_counter += 1
+	hit_id_counter = M2Actor.next_hit_id()
 	grab_target.start_throw(facing)
 	grab_target.throw_bounces = int(cfg.get("wall_bounce_count", 1))
 	arena.register_hit(grab_target, facing, dmg_mult)
@@ -293,7 +296,7 @@ func _air_throw(arena: Node) -> void:
 	var cfg := M2Data.air_throw()
 	var dmg := int(float(grab_target.max_hp) * 0.10 * float(cfg.get("damage_mult", 2.8)))
 	grab_target.take_damage(dmg, facing, float(cfg.get("throw_vx", 7.0)), hit_id_counter)
-	hit_id_counter += 1
+	hit_id_counter = M2Actor.next_hit_id()
 	grab_target.start_throw(facing)
 	grab_target.vx = facing * float(cfg.get("throw_vx", 7.0))
 	grab_target.vy = float(cfg.get("throw_vy", 6.0))
@@ -308,14 +311,14 @@ func _back_throw(arena: Node) -> void:
 	var cfg := M2Data.back_throw()
 	var dmg := int(float(grab_target.max_hp) * 0.10 * float(cfg.get("damage_mult", 2.0)))
 	grab_target.take_damage(dmg, -facing, float(cfg.get("throw_vx", 6.0)), hit_id_counter)
-	hit_id_counter += 1
+	hit_id_counter = M2Actor.next_hit_id()
 	grab_target.start_throw(-facing)
 	grab_target.vx = -facing * float(cfg.get("throw_vx", 6.0))
 	arena.register_hit(grab_target, -facing, float(cfg.get("damage_mult", 2.0)))
 	grab_target = null
 	grab_hits = 0
 
-## 尝试必杀技（A+B）。
+## 尝试必杀技（A+B）。落地 6 帧窗口内发动为加强版（落地必杀）。
 func _try_ultimate(arena: Node) -> void:
 	var ult := M2Data.ultimate()
 	var hp_pct := float(hp) / float(max_hp) * 100.0
@@ -331,34 +334,40 @@ func _try_ultimate(arena: Node) -> void:
 	invincible_frames = int(ult.get("invincible", 45))
 	set_state("ultimate")
 	state_frames = 0
+	## 落地必杀加强版：落地窗口内发动，冲击波范围与伤害倍率加强。
+	var landing := landing_ultimate_window > 0
+	landing_ultimate_window = 0
+	var dmg_mult := 1.0
+	var half_r := 3.0
+	if landing:
+		var lu := M2Data.landing_ultimate()
+		dmg_mult = float(lu.get("damage_mult", 3.0))
+		half_r = 3.5
 	## 必杀全屏判定。
-	var hb := Rect2(global_position.x - 3.0, global_position.y - 2.0, 6.0, 4.0)
+	var hb := Rect2(global_position.x - half_r, global_position.y - 2.0, half_r * 2.0, 4.0)
 	for e in arena.enemies:
 		if e.is_dead:
 			continue
 		if hb.intersects(e.hurtbox()):
-			hit_id_counter += 1
-			var dmg := int(float(e.max_hp) * 0.25)
+			hit_id_counter = M2Actor.next_hit_id()
+			var dmg := int(float(e.max_hp) * 0.25 * dmg_mult)
 			e.take_damage(dmg, facing, 3.0, hit_id_counter)
-			arena.register_hit(e, facing, 3.0)
+			arena.register_hit(e, facing, dmg_mult)
 			arena.trigger_screen_shake(float(M2Data.vfx_cfg().get("ultimate_shake", 0.6)))
 
 ## 必杀技帧推进。
 func _handle_ultimate(dt: float, arena: Node) -> void:
 	if state_frames == 0:
 		return
-	## 落地必杀窗口：必杀结束 6 帧内落地触发加强版。
-	var lu := M2Data.landing_ultimate()
-	if landing_ultimate_window > 0:
-		landing_ultimate_window -= 1
+	## 落地必杀窗口由 tick 统一递减（窗口在落地瞬间由 on_land 开启）。
 	state_frames += 1
 
-## 落地必杀：落地瞬间检测。
+## 落地必杀：落地瞬间开启 6 帧窗口，窗口内按必杀触发加强版。
+## 修复：原实现从未被调用（integrate 落地未回调），落地必杀实际不生效。
 func on_land() -> void:
-	if is_ulting and landing_ultimate_window > 0:
-		var lu := M2Data.landing_ultimate()
-		## 触发落地必杀冲击波。
-		pass  ## 由 arena 在检测到落地时调用，产生额外特效与伤害
+	if is_ulting:
+		return
+	landing_ultimate_window = int(M2Data.landing_ultimate().get("window_frames", 6))
 
 ## 取最近敌人。
 func _nearest_enemy(arena: Node) -> M2Actor:

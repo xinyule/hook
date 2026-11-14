@@ -345,7 +345,15 @@ func _spawn_hit_particles(pos: Vector3, heavy: bool) -> void:
 	if heavy:
 		count = int(vfx.get("heavy_particles", 8))
 	for i in count:
-		var p := Marker3D.new()
+		var p := MeshInstance3D.new()
+		var sphere := SphereMesh.new()
+		sphere.radius = 0.05
+		sphere.height = 0.1
+		p.mesh = sphere
+		var mat := StandardMaterial3D.new()
+		mat.albedo_color = Color(1.0, 0.85, 0.3)
+		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		p.material_override = mat
 		var dx := randf_range(-1.0, 1.0)
 		var dy := randf_range(-1.0, 1.0)
 		p.position = Vector3(pos.x + dx * 0.2, pos.y + dy * 0.2, 0.5)

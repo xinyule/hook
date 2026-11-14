@@ -10,6 +10,7 @@ class_name M9Arena
 var compliance9: M9Compliance = null
 var perf9: M9Perf = null
 var docs9: M9Docs = null
+var quality9: M9Quality = null
 
 ## ---- 构建 ----
 
@@ -46,6 +47,9 @@ func _build_systems() -> void:
 	add_child(perf9)
 	docs9 = M9Docs.new()
 	add_child(docs9)
+	## 画质分级（低/中/高三档，三端持久化，表现层按档位取值）。
+	quality9 = M9Quality.new()
+	add_child(quality9)
 	## 安卓虚拟按键（仅 Android 平台生效，其他平台 M9Touch 自行退出）。
 	var touch := M9Touch.new()
 	add_child(touch)
@@ -201,6 +205,22 @@ func _m9_selftest_checks(results: Array, counters: Dictionary) -> void:
 
 	## 21. M9 系统挂载。
 	_check(compliance9 != null and perf9 != null and docs9 != null, "M9 系统挂载（compliance/perf/docs）", results, counters)
+
+	## 22. 画质分级挂载。
+	_check(quality9 != null, "M9 画质分级挂载（quality9）", results, counters)
+
+	## 23. 画质配置加载（三档）。
+	var q_tiers: Dictionary = M9Data.quality_tiers()
+	_check(q_tiers.has("low") and q_tiers.has("medium") and q_tiers.has("high"), "M9 画质配置加载（低/中/高三档）", results, counters)
+
+	## 24. 默认画质档为 medium。
+	_check(M9Data.quality_default_tier() == "medium", "M9 默认画质档 medium", results, counters)
+
+	## 25. 画质档切换与倍率取值。
+	_check(quality9.set_tier("high") and quality9.render_scale() == 1.0 and quality9.vfx_particles_mult() == 1.0, "M9 画质档切换与倍率（high）", results, counters)
+	_check(quality9.set_tier("low") and absf(quality9.render_scale() - 0.6) < 0.001 and not quality9.outlines_enabled(), "M9 画质档切换与倍率（low）", results, counters)
+	## 复位到默认档。
+	quality9.set_tier(M9Data.quality_default_tier())
 
 ## 在合规检查结果中查找指定 id 的条目。
 func _find_compliance_item(id: String) -> Dictionary:

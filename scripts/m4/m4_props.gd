@@ -116,7 +116,7 @@ func _resolve_iron_ball(b: Dictionary) -> void:
 	for p in pm.active_players():
 		if abs(p.global_position.x - b.x) <= radius and abs(p.global_position.y) <= radius:
 			var dir: int = 1 if b.x >= p.global_position.x else -1
-			p.take_damage(dmg, dir, kb, 900 + b.x)
+			p.take_damage(dmg, dir, kb, M2Actor.next_hit_id())
 			arena.register_enemy_hit(p, dir)
 
 ## 玩家拾取检测：蜂窝与食物。

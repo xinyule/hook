@@ -1,0 +1,33 @@
+{
+  "schema": "quality_m9/1",
+  "note": "M9 画质分级配置：低/中/高三档，用户可在游戏内切换并持久化。渲染分辨率缩放、特效粒子倍率、天气粒子倍率、描边开关。全部数据驱动，不硬编码。",
+  "tiers": {
+    "low": {
+      "label": "流畅（低配）",
+      "render_scale": 0.6,
+      "vfx_particles_mult": 0.3,
+      "weather_particles_mult": 0.0,
+      "outlines": false
+    },
+    "medium": {
+      "label": "均衡（中配）",
+      "render_scale": 0.8,
+      "vfx_particles_mult": 0.6,
+      "weather_particles_mult": 0.5,
+      "outlines": true
+    },
+    "high": {
+      "label": "精细（高配）",
+      "render_scale": 1.0,
+      "vfx_particles_mult": 1.0,
+      "weather_particles_mult": 1.0,
+      "outlines": true
+    }
+  },
+  "default_tier": "medium",
+  "persist_path": "user://hook3d_quality.json",
+  "render": {
+    "base_width": 1280,
+    "base_height": 720
+  }
+}

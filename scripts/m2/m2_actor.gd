@@ -46,7 +46,16 @@ var wall_jump_bounces: int = 0
 ## ---- 视觉 ----
 var _visual: Node3D = null
 var _hit_id: int = 0
-var hit_id_counter: int = 0          ## 全局命中 id 生成（子类共用）
+var hit_id_counter: int = 0          ## 实例级命中 id（兼容旧接口，实际发号走全局）
+
+## 全局命中 id 生成器。
+## 修复：原先每个实例各自从 0 递增，不同攻击者（敌人 A/B、多玩家）
+## 会产生相同 hit_id，目标端去重会把其他攻击者的命中误判为重复而吞掉伤害。
+## 改为全局唯一发号，保证同一招式重放才会被去重。
+static var _global_hit_id: int = 0
+static func next_hit_id() -> int:
+	_global_hit_id += 1
+	return _global_hit_id
 
 ## 角色配置 id（玩家用角色 id，敌人用模板 id）。
 var actor_id: String = ""
@@ -137,8 +146,14 @@ func integrate(dt: float) -> void:
 		pos.y = 0.0
 		vy = 0.0
 		if not on_floor:
+			## 修复：落地时回调 on_land（M2Player 用于落地必杀窗口，原实现从未调用）。
+			on_land()
 			on_floor = true
 	global_position = pos
+
+## 落地回调（子类可覆写；M2Player 用于落地必杀窗口，其余默认空实现）。
+func on_land() -> void:
+	pass
 
 ## 撞墙回调：反弹、清速、墙跳触发。
 func on_wall_hit() -> void:

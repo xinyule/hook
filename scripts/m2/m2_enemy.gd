@@ -116,9 +116,11 @@ func _ai_tick(dt: float, arena: Node) -> void:
 		_ai_melee(dt, arena, abs_x, dir)
 
 ## 基础近战 AI（grunt）。
+## 修复：walk 状态复用 idle 分支的距离判定，避免敌人进入 walk 后
+## 无分支处理而永久卡住、不再攻击（原实现 set_state("walk") 后无 walk 分支）。
 func _ai_melee(dt: float, arena: Node, abs_x: float, dir: int) -> void:
 	var atk_range := float(ai.get("attack_range_m", 0.8))
-	if state == "idle":
+	if state == "idle" or state == "walk":
 		facing = dir
 		if abs_x > atk_range:
 			vx = dir * float(ai.get("speed_mps", 2.0))
@@ -143,10 +145,11 @@ func _ai_melee(dt: float, arena: Node, abs_x: float, dir: int) -> void:
 			state_frames = 0
 
 ## 远程突刺 AI（spearman）。
+## 修复：walk 状态复用 idle 分支（同上，避免卡死）。
 func _ai_ranged(dt: float, arena: Node, dist_x: float, abs_x: float, dir: int) -> void:
 	var atk_range := float(ai.get("attack_range_m", 2.0))
 	var retreat := float(ai.get("backoff_m", 1.5))
-	if state == "idle":
+	if state == "idle" or state == "walk":
 		facing = dir
 		if abs_x > atk_range:
 			vx = dir * float(ai.get("speed_mps", 1.8))
@@ -203,9 +206,10 @@ func _do_ranged_attack(arena: Node, dir: int) -> void:
 		arena.trigger_screen_shake(float(M2Data.vfx_cfg().get("enemy_hit_shake", 0.2)))
 
 ## 空中突袭 AI（flyer）。
+## 修复：walk 状态复用 idle 分支（同上，避免卡死）。
 func _ai_flyer(dt: float, arena: Node, dist_x: float, abs_x: float, dir: int, dist_y: float) -> void:
 	var atk_range := float(ai.get("attack_range_m", 1.2))
-	if state == "idle":
+	if state == "idle" or state == "walk":
 		facing = dir
 		## 悬停接近玩家水平位置。
 		var target_y := fly_height
@@ -253,9 +257,10 @@ func _do_flyer_dive(arena: Node, dir: int) -> void:
 		arena.trigger_screen_shake(float(M2Data.vfx_cfg().get("enemy_hit_shake", 0.2)))
 
 ## 抓取型 AI（fatty）。
+## 修复：walk 状态复用 idle 分支（同上，避免卡死）。
 func _ai_grapple(dt: float, arena: Node, abs_x: float, dir: int) -> void:
 	var atk_range := float(ai.get("attack_range_m", 1.0))
-	if state == "idle":
+	if state == "idle" or state == "walk":
 		facing = dir
 		if abs_x > atk_range:
 			vx = dir * float(ai.get("speed_mps", 1.6))
@@ -291,9 +296,10 @@ func _do_grapple(arena: Node, dir: int) -> void:
 		arena.register_enemy_hit(player, dir)
 
 ## 慢速重击 AI（swordsman）。
+## 修复：walk 状态复用 idle 分支（同上，避免卡死）。
 func _ai_slow_heavy(dt: float, arena: Node, abs_x: float, dir: int) -> void:
 	var atk_range := float(ai.get("attack_range_m", 1.1))
-	if state == "idle":
+	if state == "idle" or state == "walk":
 		facing = dir
 		if abs_x > atk_range:
 			vx = dir * float(ai.get("speed_mps", 1.4))
@@ -318,10 +324,11 @@ func _ai_slow_heavy(dt: float, arena: Node, abs_x: float, dir: int) -> void:
 			state_frames = 0
 
 ## 醉酒摇摆 AI（drunk）——含友伤。
+## 修复：walk 状态复用 idle 分支（同上，避免卡死）。
 func _ai_stagger(dt: float, arena: Node, abs_x: float, dir: int) -> void:
 	var atk_range := float(ai.get("attack_range_m", 0.8))
 	## 随机摇摆方向。
-	if state == "idle":
+	if state == "idle" or state == "walk":
 		facing = dir
 		## 随机加入横向摇摆。
 		if randf() < 0.05:
@@ -376,9 +383,10 @@ func _deal_damage_to(target: M2Actor, dir: int, arena: Node) -> void:
 	arena.trigger_screen_shake(float(M2Data.vfx_cfg().get("enemy_hit_shake", 0.2)))
 
 ## 格挡反击 AI（flail）。
+## 修复：walk 状态复用 idle 分支（同上，避免卡死）。
 func _ai_block_counter(dt: float, arena: Node, abs_x: float, dir: int) -> void:
 	var atk_range := float(ai.get("attack_range_m", 0.9))
-	if state == "idle":
+	if state == "idle" or state == "walk":
 		facing = dir
 		if abs_x > atk_range:
 			vx = dir * float(ai.get("speed_mps", 1.6))
@@ -427,10 +435,9 @@ func _do_counter(arena: Node, dir: int) -> void:
 		arena.register_enemy_hit(player, dir)
 		arena.trigger_screen_shake(float(M2Data.vfx_cfg().get("heavy_hit_shake", 0.4)))
 
-## 全局命中 id 递增。
+## 全局命中 id 递增（走 M2Actor 全局发号，跨攻击者唯一）。
 func _next_hit_id() -> int:
-	_hit_id += 1
-	return _hit_id
+	return M2Actor.next_hit_id()
 
 ## 重置敌人。
 func reset_enemy() -> void:

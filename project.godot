@@ -18,6 +18,10 @@ window/stretch/mode="canvas_items"
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+; Android export validation requires ETC2/ASTC texture import to be enabled
+; (should_import_etc2_astc()); CI Linux hosts default to S3TC, so set it explicitly.
+textures/vram_compression/import_etc2_astc=true
+textures/vram_compression/import_s3tc_bptc=true
 
 [physics]
 

@@ -207,14 +207,16 @@ func _break_prop(rec: Dictionary, src: Node3D) -> void:
 			var tcfg: Dictionary = M6Data.treasure_carrier_cfg()
 			arena_score.add_breakable(int(tcfg.get("treasure_drop_score", 500)))
 	elif rec.type == "food":
+		## 修复：回血与计分改为数据驱动（原 0.3 硬编码，违反数值不硬编码约束）。
+		var fcfg: Dictionary = M6Data.food_cfg()
 		var pm: Node3D = arena.player_manager
 		if pm != null:
 			for p in pm.active_players():
 				if abs(p.global_position.x - rec.x) <= 1.0:
-					var heal: int = int(float(p.max_hp) * 0.3)
+					var heal: int = int(float(p.max_hp) * float(fcfg.get("heal_percent", 30)) / 100.0)
 					p.hp = min(p.hp + heal, p.max_hp)
 		if arena_score != null:
-			arena_score.add_breakable(100)
+			arena_score.add_breakable(int(fcfg.get("score", 100)))
 	else:
 		if arena_score != null:
 			var bcfg: Dictionary = M6Data.breakables_cfg().get(rec.type, {})

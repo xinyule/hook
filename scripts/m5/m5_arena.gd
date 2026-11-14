@@ -272,13 +272,15 @@ func _tick_ki_waves(dt: float) -> void:
 			for p in pm.active_players():
 				if abs(p.global_position.x - kw.x) <= 0.6:
 					var dir: int = 1 if kw.x >= p.global_position.x else -1
-					p.take_damage(int(kw.damage), dir, float(kw.kb), 980 + i)
+					p.take_damage(int(kw.damage), dir, float(kw.kb), M2Actor.next_hit_id())
 					break
 		## 超距移除。
 		if kw.traveled >= kw.range:
 			ki_waves.remove_at(i)
 
-## 假 Hook 段清空检测：所有假 Hook 消失后推进段落。
+## 假 Hook 段清空检测：所有假 Hook 消失后完成关卡。
+## 修复：原实现调用 _on_segment_cleared()，但该函数对 Boss 段直接 return，
+## 导致 stage_03 打完假 Hook 后永远卡住无法进入下一关。Boss 段清空应直接完成关卡。
 func _check_fake_hook_cleared() -> void:
 	if _fake_hook_cleared or not stage_runner.is_boss_segment():
 		return
@@ -292,7 +294,7 @@ func _check_fake_hook_cleared() -> void:
 			alive += 1
 	if alive == 0 and not _fake_hook_cleared:
 		_fake_hook_cleared = true
-		_on_segment_cleared()
+		_on_stage_complete()
 
 ## 更新 Boss 血条显示。Boss 在场且未死亡时显示（仅真 Boss）。
 func _update_boss_bar() -> void:
