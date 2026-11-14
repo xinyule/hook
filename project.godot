@@ -2,7 +2,7 @@ config_version=5
 
 [application]
 
-config/name="hook3d (internal) - M9 internal final"
+config/name="hook3d"
 config/description="2.5D side-scrolling faithful remake - M9 internal final delivery - INTERNAL ONLY"
 run/main_scene="res://scenes/m9.tscn"
 config/version="1.0.0"
