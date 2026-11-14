@@ -229,6 +229,17 @@ jobs:
         run: |
           set -euxo pipefail
           mkdir -p build/android
+          # Release export requires a keystore. Generate one on the runner (JDK's
+          # keytool is preinstalled) and pass it to Godot via its env vars.
+          keytool -genkeypair -v \
+            -keystore "$HOME/hook3d-release.keystore" \
+            -alias hook3d \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass hook3dpass -keypass hook3dpass \
+            -dname "CN=Hook3D, OU=Internal, O=Hook3D, L=Internal, ST=Internal, C=CN"
+          export GODOT_ANDROID_KEYSTORE_RELEASE_PATH="$HOME/hook3d-release.keystore"
+          export GODOT_ANDROID_KEYSTORE_RELEASE_USER="hook3d"
+          export GODOT_ANDROID_KEYSTORE_RELEASE_PASSWORD="hook3dpass"
           ./.godot-bin/Godot_v4.3-stable_linux.x86_64 --headless --path . --export-release "Android" "build/android/$PRODUCT.apk"
           ls -lh build/android
 
